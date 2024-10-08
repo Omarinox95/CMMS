@@ -102,7 +102,7 @@ equipment.hasMany(spare_parts)
 sequelize.sync()
 //sequelize.sync({force:true})
 .then(res => {
-    app.listen(5000,() => {
+    app.listen(3000,() => {
         console.log('Running')
        })
       
