@@ -165,7 +165,9 @@ exports.editWorkOrder=(req,res)=>{
          med:workOrder.Priority=='Medium'?true:false,
          high:workOrder.Priority=='High'?true:false,
          low:workOrder.Priority=='Low'?true:false,
-         ClinicalEnginnerDSSN:workOrder.ClinicalEnginnerDSSN 
+         ClinicalEnginnerDSSN:workOrder.ClinicalEnginnerDSSN, 
+         Solution:workOrder.Solution,
+         Workdate:workOrder.Workdate
 
       }
 
@@ -179,6 +181,8 @@ exports.editWorkOrder=(req,res)=>{
      .catch(err=>console.log("errorrrrr",err))
 
 }
+
+
 
 
 exports.editMaintenance=(req,res)=>{

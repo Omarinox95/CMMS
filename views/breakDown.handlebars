@@ -5,23 +5,23 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- DATA TABLE -->
-                    <h3 class="title-5 m-b-35">Breakdowns</h3>
+                    <h3 class="title-5 m-b-35">Historial de Fallas</h3>
                     <div class="table-data__tool">
                         
                             <div  class="table-data__tool-right">
                                <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i>Add Breakdown</a>
+                                <i class="zmdi zmdi-plus"></i>Añadir Falla</a>
                             </div>
                     </div>
                     <div class="table-responsive table-responsive-data2">
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-                                    <th>Code</th>
-                                    <th>Reason</th>
-                                    <th>Date</th>
-                                    <th>Department</th>
-                                    <th>Equipment</th>
+                                    <th>Código</th>
+                                    <th>Razón</th>
+                                    <th>Fecha</th>
+                                    <th>Departamento</th>
+                                    <th>Equipo</th>
                                 </tr>
                             </thead>
                            {{#if hasBreakDown}} 
@@ -76,11 +76,11 @@
                 <div class="login-form">
                     <form action="" method="post">
                         <div class="form-group">
-                            <label class=" form-control-label">Date</label>
-                            <input type="Date" required name="DATE" placeholder="Enter Date" class="form-control">
+                            <label class=" form-control-label">Fecha</label>
+                            <input type="Date" required name="DATE" placeholder="Ingresa Fecha" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">EquipmentId</label>
+                            <label class=" form-control-label">EquipoId</label>
                             <select name="EquipmentCode"required id="select" class="form-control">
                                 {{#each Equipments}}
                                     <option value="{{this.Code}}">{{this.Name}}-{{this.Code}}-{{this.Department}}</option>
@@ -88,10 +88,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Reason</label>
-                            <input type="text" required name="Reason"  placeholder="Enter Reason" class="form-control">
+                            <label class=" form-control-label">Razón</label>
+                            <input type="text" required name="Reason"  placeholder="Ingresa la Razón" class="form-control">
                         </div>
-                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">ADD</button>
+                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
                     </form>  
                 </div>
             </form>

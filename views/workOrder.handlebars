@@ -5,26 +5,26 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- DATA TABLE -->
-                    <h3 class="title-5 m-b-35">Work Order</h3>
+                    <h3 class="title-5 m-b-35">Ordenes de Trabajo</h3>
                     <div class="table-data__tool">
                         
                             <div  class="table-data__tool-right">
                             <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i>Add Work Order</a>
+                                <i class="zmdi zmdi-plus"></i>Añadir Orden de trabajo</a>
                         </div>
                     </div>
                     <div class="table-responsive table-responsive-data2">
                         <table class="table table-data2">
                             <thead>
                                 <tr>
-                                    <th>Code</th>
-                                    <th>Desciption</th>
-                                    <th>Start Date</th>
-                                    <th>End Date</th>
-                                    <th>Cost</th>
-                                    <th>Priority</th>
-                                    <th>Equipment</th>
-                                    <th>Clinical Engineer</th>
+                                    <th>ID_OT</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha de inicio</th>
+                                    <th>Fecha Final</th>
+                                    <th>Costo</th>
+                                    <th>Prioridad</th>
+                                    <th>Equipo</th>
+                                    <th>Ingeniero Clínico</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -85,11 +85,11 @@
                 </div>
                 <div class="login-form">
                         <div class="form-group">
-                            <label class=" form-control-label">Desciption</label>
-                            <input type="text" required name="Description" placeholder="Enter Description  " class="form-control">
+                            <label class=" form-control-label">Descripción</label>
+                            <input type="text" required name="Description" placeholder="Ingresa la Descripción" class="form-control">
                         </div>
                        <div class="form-group">
-                            <label class=" form-control-label">EquipmentCode</label>
+                            <label class=" form-control-label">CodigoEquipo</label>
                                 <select name="EquipmentCode"required id="select" class="form-control">
                                 {{#each Equipments}}
                                     <option value="{{this.Code}}">{{this.Name}} {{this.Code}} {{this.DepartmentName}}</option>
@@ -97,7 +97,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">ClinicalEngineerDSSN</label>
+                            <label class=" form-control-label">CIIngClinico</label>
                            
                             <select name="ClinicalEngineerDSSN"required id="select" class="form-control">
                                 {{#each Engineers}}
@@ -106,26 +106,34 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Date</label>
-                            <input type="Date"  required name="StartDATE" placeholder="Enter Start Date" class="form-control">
+                            <label class=" form-control-label">Fecha inicial</label>
+                            <input type="Date"  required name="StartDATE" placeholder="Ingresa Fecha Inicio" class="form-control">
                         </div>
                          <div class="form-group">
-                            <label class=" form-control-label">Date</label>
-                            <input type="Date"  required name="EndDATE" placeholder="Enter End Date" class="form-control">
+                            <label class=" form-control-label">Fecha Final</label>
+                            <input type="Date"  required name="EndDATE" placeholder="Ingresa Fecha Fin" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Cost</label>
-                            <input type="number" required name="Cost" placeholder="Enter number" class="form-control">
+                            <label class=" form-control-label">Costo</label>
+                            <input type="number" required name="Cost" placeholder="Ingresa Costo" class="form-control">
                         </div>
                          <div class="form-group">
-                                            <label class=" form-control-label">Priority</label>
+                                            <label class=" form-control-label">Prioridad</label>
                                             <select name="Priority"required id="select"  class="form-control" >
-                                                <option value="Low">Low</option>
-                                                <option value="Medium">Medium</option>
-                                                <option value="High">High</option>
+                                                <option value="Low">Baja</option>
+                                                <option value="Medium">Media</option>
+                                                <option value="High">Alta</option>
                                             </select>
                         </div>       
-                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">ADD</button>
+                        <div class="form-group">
+                            
+                            <input type="text" hidden name="Solution" placeholder="Ingresa la Solución" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            
+                            <input type="Date" hidden name="Workdate" placeholder="Ingresa Fecha de trabajo" class="form-control">
+                        </div>
+                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
                     </form>  
                 </div>
             </form>
@@ -133,3 +141,29 @@
         </div>
     </div>     
 </div>  
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const equipmentSelect = document.getElementById('equipmentSelect');
+    const engineerSelect = document.getElementById('engineerSelect');
+
+    equipmentSelect.addEventListener('change', function() {
+        const equipmentCode = this.value;
+
+        fetch(`/engineers?equipmentCode=${equipmentCode}`)
+            .then(response => response.json())
+            .then(engineers => {
+                // Limpiar las opciones actuales
+                engineerSelect.innerHTML = '';
+
+                // Agregar nuevas opciones basadas en la respuesta
+                engineers.forEach(engineer => {
+                    const option = document.createElement('option');
+                    option.value = engineer.DSSN;
+                    option.textContent = `${engineer.FName} ${engineer.LName}`;
+                    engineerSelect.appendChild(option);
+                });
+            })
+            .catch(err => console.error('Error:', err));
+    });
+});
+</script>
