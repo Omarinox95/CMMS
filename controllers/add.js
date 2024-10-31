@@ -341,7 +341,7 @@ exports.addWorkOrder=(req,res) => {
                             workorder.save().then(workorder => res.redirect('/workOrder'))
                         }
                         else {
-                            WorkOrders.create({StartDate:startdate,EndDate:enddate,Description:description,
+                            WorkOrders.create({StartDate:startDate,EndDate:endDate,Description:description,
                             Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority, 
                             Solution:solution, Workdate: workdate})
                             .then(workorder => res.redirect('/workOrder') )
