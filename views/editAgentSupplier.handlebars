@@ -14,15 +14,15 @@
                                     <form action="/agentSupplier/add" method="POST">
                                       <input type="text" name="Id" hidden required value="{{ agentSupplier.Id }}" class="form-control">
                                         <div class="form-group">
-                                            <label class=" form-control-label">Nombre</label>
+                                            <label class=" form-control-label">Name</label>
                                             <input type="text" name="Name" required value="{{ agentSupplier.Name }}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Dirección</label>
+                                            <label class=" form-control-label">Address</label>
                                             <input type="text" required name="Address" value="{{ agentSupplier.Adress }}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Celular</label>
+                                            <label class=" form-control-label">Phone</label>
                                             <input type="phone" name="Phone" required  value="0{{ agentSupplier.Phone }}" class="form-control">
                                         </div>
                                         <div class="form-group">
@@ -30,10 +30,10 @@
                                             <input type="email"  required name="Email" value="{{ agentSupplier.Email }}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Notas</label>
+                                            <label class=" form-control-label">Notes</label>
                                             <input type="text"  name="Notes" value="{{ agentSupplier.Notes }}" class="form-control">
                                         </div>
-                                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
+                                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">ADD</button>
                                     </form>  
                                 </div>
                             </div>

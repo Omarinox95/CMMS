@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="table-data__tool">    
                     <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                    <i class="zmdi zmdi-plus"></i>Añadir ingeniero Clínico</a>
+                    <i class="zmdi zmdi-plus"></i>Add Clinical Engineer</a>
             </div>
            {{#if hasEngineers}} 
             <div class="row">
@@ -12,14 +12,14 @@
                     <div class="card" style="width: auto;">
                         <img class="card-img-top" src="images/{{this.Image}}" alt="Card image cap" style="height: 250px;">
                         <div class="card-body">
-                            <div class="card-text">CI: <span>{{ this.DSSN }}</span></div>
-                            <div class="card-text">Nombre: <span>{{ this.FName }} {{ this.LName }}</span></div>
-                            <div class="card-text">Celular: <span>{{ this.Phone }}</span></div>
-                            <div class="card-text">Edad: <span>{{ this.Age }}</span></div>
+                            <div class="card-text">DSSN: <span>{{ this.DSSN }}</span></div>
+                            <div class="card-text">Name: <span>{{ this.FName }} {{ this.LName }}</span></div>
+                            <div class="card-text">Phone: <span>{{ this.Phone }}</span></div>
+                            <div class="card-text">Age: <span>{{ this.Age }}</span></div>
                             <div class="card-text">Email: <span>{{ this.Email }}</span></div>
-                            <div class="card-text">Dirección: <span>{{ this.Adress }}</span></div>
-                            <div class="card-text">Horas de trabajo: <span>{{ this.WorkHours }}</span></div>
-                            <div class="card-text">Departmento: <span>{{ this.DepartmentCode }}</span></div>
+                            <div class="card-text">Address: <span>{{ this.Adress }}</span></div>
+                            <div class="card-text">Work Hours : <span>{{ this.WorkHours }}</span></div>
+                            <div class="card-text">Department: <span>{{ this.DepartmentCode }}</span></div>
 
                         </div>
                         <div class="table-data-feature">
@@ -56,55 +56,55 @@
                 <div class="login-form">
                                 <div class="form-group">
                                     <label class=" form-control-label">DSSN</label>
-                                    <input type="text" required name="DSSN" placeholder="Ingrese CI" class="form-control">
+                                    <input type="text" required name="DSSN" placeholder="Enter DSSN" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Nombres</label>
-                                    <input type="text" required name="FName"  placeholder="Ingrese Nombres" class="form-control">
+                                    <label class=" form-control-label">FName</label>
+                                    <input type="text" required name="FName"  placeholder="Enter First name" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Apellidos</label>
-                                    <input type="text" required name="LName" placeholder="Ingrese Apellidos" class="form-control">
+                                    <label class=" form-control-label">LName</label>
+                                    <input type="text" required name="LName" placeholder="Enter Last name" class="form-control">
                                 </div>
                                   <div class="form-group">
-                                    <label class=" form-control-label">Foto</label>
-                                    <input type="file" required name="image" placeholder="Seleccione una foto" class="form-control" >
+                                    <label class=" form-control-label">Photo</label>
+                                    <input type="file" required name="image" placeholder="Choose a photo" class="form-control" >
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Celular</label>
-                                    <input type="text" required name="Phone" placeholder="Ingrese Celular" class="form-control">
+                                    <label class=" form-control-label">Phone</label>
+                                    <input type="text" required name="Phone" placeholder="Enter Phone" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Edad</label>
-                                    <input type="text"  required name="Age" placeholder="Ingrese Edad" class="form-control">
+                                    <label class=" form-control-label">Age</label>
+                                    <input type="text"  required name="Age" placeholder="Enter Age" class="form-control">
                                 </div>
                                 <div class="form-group">
                                     <label class=" form-control-label">Email</label>
-                                    <input type="email" required name="Email" placeholder="Ingrese Email" class="form-control">
+                                    <input type="email" required name="Email" placeholder="Enter Email" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Dirección</label>
-                                    <input type="text" required name="Address" placeholder="Ingrese Dirección" class="form-control">
+                                    <label class=" form-control-label">Address</label>
+                                    <input type="text" required name="Address" placeholder="Enter Address" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Horas de trabajo</label>
-                                    <input type="text" required name="workHours" placeholder="Ingrese Horas de Trabajo" class="form-control">
+                                    <label class=" form-control-label">Work Hours</label>
+                                    <input type="text" required name="workHours" placeholder="Enter Work Hours" class="form-control">
                                 </div>
                                 <div class="form-group">
-                                    <label class=" form-control-label">Departmento</label>
+                                    <label class=" form-control-label">Department</label>
                                     <select name="Department"required id="select" class="form-control">
-                                        <option value="Radiology">Radiología</option>
+                                        <option value="Radiology">Radiology</option>
                                         <option value="OR">OR</option>
                                         <option value="ICU">ICU</option>
                                         <option value="CSSD">CSSD</option>
                                     </select>
                                 </div>
                                     <div class="form-group">
-                                    <label class=" form-control-label">Contraseña</label>
-                                    <input type="password" required name="Password" placeholder="Ingrese Contrasela" class="form-control">
+                                    <label class=" form-control-label">Password</label>
+                                    <input type="password" required name="Password" placeholder="Enter Password" class="form-control">
                                 </div>
                                 
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">AÑADIR</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">ADD</button>
                                 
                         </div>
             </form>

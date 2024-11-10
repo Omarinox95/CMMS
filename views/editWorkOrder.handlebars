@@ -14,46 +14,38 @@
                                     <form action="/workOrder/add" method="POST">
                                         <input type="text" hidden required name="Code"  placeholder="New Code" value="{{ workOrder.Code}}" class="form-control">
                                       <div class="form-group">
-                                            <label class=" form-control-label">Descripción</label>
+                                            <label class=" form-control-label">Description</label>
                                             <input type="text" required name="Description"  placeholder="New Description" value="{{ workOrder.Description}}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Fecha de Inicio</label>
-                                            <input type="date" required name="StartDATE" value="{{ workOrder.StartDate}}" class="form-control">
+                                            <label class=" form-control-label">Start Date</label>
+                                            <input type="date" required name="StartDATE"  placeholder="New Datee" value="{{ workOrder.StartDate}}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Fecha de Finalización</label>
+                                            <label class=" form-control-label">End Date</label>
                                             <input type="date" required name="EndDATE"  placeholder="New Datee" value="{{ workOrder.EndDate}}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Costo</label>
+                                            <label class=" form-control-label">Cost</label>
                                             <input type="text" required name="Cost" placeholder="New Cost" value="{{ workOrder.Cost}}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Código Equipo</label>
+                                            <label class=" form-control-label">Equipment Code</label>
                                             <input type="text" required name="EquipmentCode" placeholder="New Equipment Code"  value="{{ workOrder.EquipmentCode }}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">CI de Ing. Clínico</label>
+                                            <label class=" form-control-label">clinical Engineer DSSN</label>
                                             <input type="text"  required name="ClinicalEngineerDSSN" placeholder="New DSSN" value="{{ workOrder.ClinicalEnginnerDSSN }}" class="form-control">
                                         </div>
                                         <div class="form-group">
-                                            <label class=" form-control-label">Prioridad</label>
+                                            <label class=" form-control-label">Priority</label>
                                             <select name="Priority"required id="select"  class="form-control" >
-                                                <option value="Low" {{#if workOrder.low}} selected {{/if}}>Baja</option>
-                                                <option value="Medium" {{#if workOrder.med}} selected {{/if}}>Media</option>
-                                                <option value="High" {{#if workOrder.high}} selected {{/if}}>Alta</option>
+                                                <option value="Low" {{#if workOrder.low}} selected {{/if}}>Low</option>
+                                                <option value="Medium" {{#if workOrder.med}} selected {{/if}}>Medium</option>
+                                                <option value="High" {{#if workOrder.high}} selected {{/if}}>High</option>
                                             </select>
-                                        </div> 
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Solución</label>
-                                            <input type="text" required name="Solution"  placeholder="Ingresa la solucion" value="{{ workOrder.Solution}}" class="form-control">
-                                        </div>             
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Fecha de Trabajo</label>
-                                            <input type="Date"  name="Workdate" placeholder="Ingresa Fecha de trabajo" value="{{ workOrder.Workdate }}" class="form-control">
-                                        </div>                        
-                                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Editar</button>
+                                        </div>                                        
+                                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Edit</button>
                                 
                                     </form>  
                                 </div>
@@ -66,44 +58,3 @@
         </div>
     </div>        
 </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    var startDateInput = document.querySelector('input[name="StartDATE"]');
-    var endDateInput = document.querySelector('input[name="EndDATE"]');
-
-    if (startDateInput) {
-        console.log('Start Date Input Value:', startDateInput.value);
-    }
-
-    if (endDateInput) {
-        console.log('End Date Input Value:', endDateInput.value);
-    }
-});
-</script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const equipmentSelect = document.getElementById('equipmentSelect');
-    const engineerSelect = document.getElementById('engineerSelect');
-
-    equipmentSelect.addEventListener('change', function() {
-        const equipmentCode = this.value;
-
-        fetch(`/engineers?equipmentCode=${equipmentCode}`)
-            .then(response => response.json())
-            .then(engineers => {
-                // Limpiar las opciones actuales
-                engineerSelect.innerHTML = '';
-
-                // Agregar nuevas opciones basadas en la respuesta
-                engineers.forEach(engineer => {
-                    const option = document.createElement('option');
-                    option.value = engineer.DSSN;
-                    option.textContent = `${engineer.FName} ${engineer.LName}`;
-                    engineerSelect.appendChild(option);
-                });
-            })
-            .catch(err => console.error('Error:', err));
-    });
-});
-</script>

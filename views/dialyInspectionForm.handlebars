@@ -6,12 +6,12 @@
                 <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
             </div>
             <h3 class="title-3 m-b-30">
-            <i class="zmdi zmdi-account-calendar"></i>Inspecciones Diarias</h3>
+            <i class="zmdi zmdi-account-calendar"></i>Daily Inspection</h3>
             <form action="/engineer/dialyInspection" method="POST">
                     <div class="login-form">
                             <div class="row form-group">
                                 <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Fecha:</label>
+                                    <label for="text-input" class=" form-control-label">Date:</label>
                                 </div>
                                 <div class="col col-sm-3">
                                     <input type="date" required name="DATE" placeholder="Enter Date" class="form-control">
@@ -19,7 +19,7 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col col-md-3">
-                                    <label for="text-input"  class=" form-control-label">Equipo:</label>
+                                    <label for="text-input"  class=" form-control-label">Device:</label>
                                 </div>
                                 <div class="col col-sm-3">
                                        <select name="Device"required id="select" class="form-control">
@@ -36,12 +36,12 @@
                                 <table class="table table-top-campaign" >
                                 <thead>
                                     <tr>
-                                        <td> Preguntas</td>
-                                        <td>Seleccionado</td>    
+                                        <td> Questions</td>
+                                        <td>Check</td>    
                                         <td></td>
                                     </tr>
                                     <tr>
-                                        <td> 1- Revisión externa del equipo, está correcto?</td>
+                                        <td> 1- Are all machine parts adequately guarded?</td>
                                         <td>
                                             <label class="au-checkbox">
                                                 <input type="checkbox" name="Q1">
@@ -50,7 +50,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> 2- El equipo cumple con los estandares requeridos?</td>
+                                        <td> 2- Do machine guards meet standards?</td>
                                         <td>
                                             <label class="au-checkbox">
                                                 <input type="checkbox" name="Q2">
@@ -59,7 +59,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> 3- Están todos los manuales requeridos del equipo?</td>
+                                        <td> 3- Are manufacturers' manuals kept and followed for all tools and machinery?</td>
                                         <td>
                                             <label class="au-checkbox">
                                                 <input type="checkbox" name="Q3">
@@ -68,7 +68,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> 4- Las tomas electricas cumplen los estandares?</td>
+                                        <td> 4- Do power tools conform to standards?</td>
                                         <td>
                                             <label class="au-checkbox">
                                                 <input type="checkbox" name="Q4">

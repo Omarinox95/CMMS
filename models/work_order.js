@@ -1,6 +1,5 @@
 const Sequelize=require('sequelize');
 const sequelize=require('../util/db.js');
-//const { toDefaultValue } = require('sequelize/types/lib/utils.js');
 
 
 const Work_order=sequelize.define('WorkOrder',{
@@ -29,16 +28,7 @@ Cost:{
 Priority:{
     type:Sequelize.STRING,
     allowNull:false
-},
-Solution:{
-    type:Sequelize.TEXT,
-    allowNull:false
-},
-Workdate:{
-    type:Sequelize.TEXT,
-    //defaultValue: Sequelize.NOW,
-    allowNull:false
-},
+}
 
 
 })
