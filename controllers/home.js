@@ -21,6 +21,7 @@ exports.signIn=(req,res) => {
    email=req.body.email
    pass=req.body.password
    if(email == 'admin@gmail.com' && pass==0000){
+    req.session.DSSN = 1;
     res.redirect('/home');  
    }
    else{

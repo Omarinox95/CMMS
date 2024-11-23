@@ -16,6 +16,7 @@
     "express-handlebars": "^4.0.4",
     "express-session": "^1.17.1",
     "moment": "^2.25.3",
+    "mqtt": "^5.10.0",
     "multer": "^1.4.2",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.6"
@@ -31,5 +32,9 @@
   "bugs": {
     "url": "https://github.com/remonalbear/CMMS/issues"
   },
-  "homepage": "https://github.com/remonalbear/CMMS#readme"
+  "homepage": "https://github.com/remonalbear/CMMS#readme",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": []
 }

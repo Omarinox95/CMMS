@@ -6,11 +6,11 @@
                 <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
             </div>
             <h3 class="title-3 m-b-30">
-            <i class="zmdi zmdi-account-calendar"></i>Daily Inspection</h3>
+            <i class="zmdi zmdi-account-calendar"></i>Inspecciones Diarias</h3>
             <div class="card-body">
-                <div class="card-text">Date:  {{ report.DATE}}</div>
-                <div class="card-text">Device: {{ report.EquipmentName}} ,   Model: {{ report.EquipmentModel}}</div>
-                <div class="card-text">Engineer: {{ report.Engineer}}</div>
+                <div class="card-text">Fecha:  {{ report.DATE}}</div>
+                <div class="card-text">Equipo: {{ report.EquipmentName}} ,   Modelo: {{ report.EquipmentModel}}</div>
+                <div class="card-text">Ingeniero: {{ report.Engineer}}</div>
             </div>
             
             <div class="top-campaign">
@@ -18,12 +18,12 @@
                     <table class="table table-top-campaign">
                         <thead>
                             <tr>
-                                <td> Questions</td>
-                                <td>Check</td>
+                                <td> Preguntas</td>
+                                <td>Selección</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td> 1- Are all machine parts adequately guarded?</td>
+                                <td> 1- Revisión externa del equipo, está correcto?</td>
                                 <td>
                                     <label class="au-checkbox">
                                         <input type="checkbox" {{#if report.Q1}} checked {{/if}} disabled >
@@ -31,7 +31,7 @@
                                     </label>
                                 </td>
                             <tr>
-                                <td> 2- Do machine guards meet standards?</td>
+                                <td> 2- El equipo cumple con los estandares requeridos?</td>
                                 <td>
                                     <label class="au-checkbox">
                                         <input type="checkbox" disabled {{#if report.Q2}} checked {{/if}} >
@@ -40,7 +40,7 @@
                                 </td>  
                             </tr>
                             <tr>
-                                <td> 3- Are manufacturers' manuals kept and followed for all tools and machinery?</td>
+                                <td> 3- Están todos los manuales requeridos del equipo?</td>
                                 <td>
                                     <label class="au-checkbox">
                                         <input type="checkbox" {{#if report.Q3}} checked {{/if}}   disabled>
@@ -50,7 +50,7 @@
                                 
                             </tr>
                             <tr>
-                                <td> 4- Do power tools conform to standards?</td>
+                                <td> 4- Las tomas electricas cumplen los estandares?</td>
                                 <td>
                                     <label class="au-checkbox">
                                         <input type="checkbox" {{#if report.Q4}} checked {{/if}} disabled>

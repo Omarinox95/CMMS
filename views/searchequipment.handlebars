@@ -1,0 +1,214 @@
+
+
+
+<!-- Página de búsqueda de equipos 
+<div class="main-content">
+    <div class="section__content section__content--p30"> 
+        <div class="container-fluid">
+            <div class="table-data__tool">
+                <h2>Buscar Equipos</h2>
+            </div>
+            <!-- Formulario de búsqueda 
+            <form method="GET" action="/equipment/search">
+                <div class="form-group">
+                    <label for="searchBy">Buscar por:</label>
+                    <select id="searchBy" name="searchBy" class="form-control" required>
+                        <option value="Code">Código</option>
+                        <option value="Name">Nombre</option>
+                        <option value="Model">Modelo</option>
+                        <option value="Location">Ubicación</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchValue">Valor de búsqueda:</label>
+                    <input type="text" id="searchValue" name="searchValue" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+
+            <div class="table-responsive m-b-40">
+                <table class="table table-borderless table-data3">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Model</th>
+                            <th>Location</th>
+                            <th>Department</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    {{#if error}}
+                        <tr>
+                            <td colspan="6" style="text-align:center; color:red;">{{error}}</td>
+                        </tr>
+                    {{/if}}
+
+                    {{#if results}}
+                        <tbody>
+                            {{#each results}}
+                                <tr>
+                                    <td>{{this.Code}}</td>
+                                    <td>{{this.Name}}</td>
+                                    <td>{{this.Model}}</td>
+                                    <td>{{this.Location}}</td>
+                                    <td>{{this.Department}}</td>
+                                    <td>
+                                        <div class="table-data-feature">      
+                                            <a href="/report/equipment/installation/{{ this.Code }}" class="item" data-toggle="tooltip" data-placement="top" title="Más detalles">
+                                                <i class="zmdi zmdi-more"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}} 
+                        </tbody>
+                    {{/if}}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- END PAGE CONTAINER-->
+<!-- Modal para escanear RFID -->
+<!-- Página de búsqueda de equipos -->
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="table-data__tool">
+                <h2>Buscar Equipos</h2>
+                <!-- Botón para buscar por RFID -->
+                <button id="readRFID" class="btn btn-primary">Buscar por RFID</button>
+            </div>
+
+            <!-- Formulario de búsqueda -->
+            <form method="GET" action="/equipment/search">
+                <div class="form-group">
+                    <label for="searchBy">Buscar por:</label>
+                    <select id="searchBy" name="searchBy" class="form-control" required>
+                        <option value="Code">Código</option>
+                        <option value="Name">Nombre</option>
+                        <option value="Model">Modelo</option>
+                        <option value="Location">Ubicación</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="searchValue">Valor de búsqueda:</label>
+                    <input type="text" id="searchValue" name="searchValue" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+            </form>
+
+            <!-- Tabla de resultados -->
+            <div class="table-responsive m-b-40">
+                <table class="table table-borderless table-data3">
+                    <thead>
+                        <tr>
+                            <th>Code</th>
+                            <th>Name</th>
+                            <th>Model</th>
+                            <th>Location</th>
+                            <th>Department</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    {{#if error}}
+                    <tr>
+                        <td colspan="6" style="text-align:center; color:red;">{{error}}</td>
+                    </tr>
+                    {{/if}}
+                    {{#if results}}
+                    <tbody>
+                        {{#each results}}
+                        <tr>
+                            <td>{{this.Code}}</td>
+                            <td>{{this.Name}}</td>
+                            <td>{{this.Model}}</td>
+                            <td>{{this.Location}}</td>
+                            <td>{{this.Department}}</td>
+                            <td>
+                                <div class="table-data-feature">
+                                    <a href="/report/equipment/installation/{{this.Code}}" class="item" data-toggle="tooltip" data-placement="top" title="Más detalles">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                    {{/if}}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para escanear RFID -->
+<div id="rfidModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 20px; border-radius: 10px; text-align: center; width: 300px;">
+        <h2>Escaneando TAG RFID</h2>
+        <p>Por favor, acerque su dispositivo RFID.</p>
+        <div style="margin-top: 20px;">
+            <img src="https://i.gifer.com/YCZH.gif" alt="Escaneando" style="width: 50px; height: 50px;">
+        </div>
+        <button id="closeRFIDModal" class="btn btn-secondary" style="margin-top: 20px;">Cancelar</button>
+    </div>
+</div>
+
+<!-- Añadir los scripts al final del body -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  <!-- Aquí añades jQuery directamente -->
+<script type="text/javascript">
+    $(document).ready(function () {
+        const modal = $('#rfidModal'); // Referencia al modal
+
+        // Mostrar el modal
+        function showModal() {
+            modal.css('display', 'flex'); // Mostrar el modal como flexbox para centrarlo
+        }
+
+        // Ocultar el modal
+        function hideModal() {
+            modal.css('display', 'none'); // Ocultar el modal
+        }
+
+        // Función para leer el RFID y redirigir
+        function leerEquipo() {
+            $.ajax({
+                url: '/equipment/rfid', // Ruta correcta que consulta el equipo basado en RFID
+                type: 'GET',
+                dataType: 'json',
+                success: function (resultado) {
+                    console.log('RFID leído:', resultado);  // Verifica el JSON en la consola
+                    const idEquipo = resultado.Code; // Cambia 'id' por 'Code' para acceder al código del equipo
+
+                    if (idEquipo) {
+                        hideModal();
+                        window.location.href = `/report/equipment/installation/${idEquipo}`; // Redirige a la página de instalación
+                    } else {
+                        alert('No se pudo leer el código RFID. Intenta nuevamente.');
+                    }
+                },
+                error: function (err) {
+                    console.error('Error al leer RFID:', err);  // Imprime el error en consola
+                    alert('Error al intentar leer el RFID.');
+                }
+            });
+        }
+
+        // Mostrar el modal al hacer clic en el botón
+        $('#readRFID').click(function () {
+            showModal(); // Mostrar el modal
+            setTimeout(leerEquipo, 2000); // Intentar leer el RFID después de 2 segundos
+        });
+
+        // Cerrar el modal manualmente
+        $('#closeRFIDModal').click(function () {
+            hideModal();
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -43,6 +43,7 @@ client.on('connect', () => {
     client.subscribe('esp32/rfid', () => {
       client.on('message', (topic, rfid) => {
         console.log(`Received '${rfid}' on '${topic}'`);
+        //const rfid1 = rfid.toString();
         const d = new Date();
         d.setHours(d.getHours() - 4);
         const fecha = d.toISOString().replace('T', ' ').substr(0, 19);
@@ -64,6 +65,11 @@ client.on('connect', () => {
             });
           }
         }
+
+        //aumentado 22
+        // Enviar el RFID al tema 'lecturaEquipo' para que se lea en el frontend
+       // client.publish('lecturaEquipo', rfid1);  // Publicar el RFID para que el frontend lo reciba
+
       });
     });
   

@@ -7,7 +7,7 @@ const SpareParts = require('../models/spare_part')
 const BreakDowns = require('../models/break_down')
 const WorkOrders = require('../models/work_order')
 const Maintenance = require('../models/maintenance')
-
+const client = require('../emqx/emqx-connection');
 
 
 
@@ -184,6 +184,27 @@ exports.addEquipment=(req,res) => {
                                     Cost:cost,Model:model,SerialNumber:serialnumber,AgentSupplierId:agentCode,Notes:notes,
                                     Location:location,Manufacturer:manufacturer,InstallationDate:installationdate,DepartmentCode:departmentCode})
                                     .then(equipment => res.redirect('/equipment') )
+
+                            client.publish('equipoRegistro', code, () => {
+                                console.log('Confirmacion enviada a circuito');
+                            });
+
+                            /*client.publish('insumosEquiposRegistro', nuevoId.toString(), function() {
+                                console.log("Message is published");   
+                                client.subscribe('regEquipos/conf2',function() {
+                                    client.on('message', function(topic, confirmacion2, packet) {
+                                        console.log("Received '" + confirmacion2 + "' on '" + topic + "'"+ req.session.verificacionEquipos_rec);
+                                        req.session.verificacionEquipos = confirmacion2;
+                                        if(req.session.verificacionEquipos == "Registro exitoso" || req.session.verificacionEquipos == "Registro fallido") {
+                                            mySQL.query(`SELECT * FROM maquinas `, (rows,msg) => {
+                                                res.render('mainb', {'content': 'biomedicoInventarioEquipos', 'title': 'Biomédico: Inventario equipos', 'user': req.user, 'maquinas': rows, 'verificacion': req.session.verificacionEquipos});
+                                                req.session.verificacionEquipos = '';
+                                            });
+                                        }
+                                    });
+                                }); 
+                            });*/
+
                         }
                     })
                 }
@@ -281,17 +302,25 @@ exports.addBreakDown=(req,res)=>{
 
 }
 
+///formato de fecha
+
+
+
+//ordenes de trabajo 
 exports.addWorkOrder=(req,res) => {
     code =req.body.Code
     cost=req.body.Cost
-    startdate=req.body.StartDATE
-    enddate=req.body.EndDATE
+    startDate=req.body.StartDATE
+    endDate=req.body.EndDATE
     description=req.body.Description
     priority = req.body.Priority
     equipmentId=req.body.EquipmentCode
     engineerId=req.body.ClinicalEngineerDSSN
+    solution=req.body.Solution //solución de la orden de trabajo
+    workdate=req.body.Workdate  //fecha de realizacion del trabajo
     var equId=null
     var engId=null
+    
     Equipment.findOne({where:{Code:equipmentId}}).then(equipment => { 
         if(equipment){
             equId=equipment.Code
@@ -300,19 +329,25 @@ exports.addWorkOrder=(req,res) => {
                     engId = clinicalengineer.DSSN
                     WorkOrders.findByPk(code).then(workorder=>{
                         if(workorder){
-                            workorder.StartDATE=startdate
-                            workorder.EndDATE=enddate
+                            workorder.StartDate=startDate
+                            workorder.EndDate=endDate
                             workorder.Description=description
                             workorder.Cost=cost
                             workorder.EquipmentCode=equId
                             workorder.ClinicalEngineerDSSN=engId
                             workorder.Priority=priority
+                            workorder.Solution=solution
+                            workorder.Workdate=workdate
                             workorder.save().then(workorder => res.redirect('/workOrder'))
                         }
                         else {
-                            WorkOrders.create({StartDate:startdate,EndDate:enddate,Description:description,
-                            Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority})
+                            WorkOrders.create({StartDate:startDate,EndDate:endDate,Description:description,
+                            Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority, 
+                            Solution:solution, Workdate: workdate})
                             .then(workorder => res.redirect('/workOrder') )
+                           /* WorkOrders.create({StartDate:startdate,EndDate:enddate,Description:description,
+                                Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority})
+                                .then(workorder => res.redirect('/workOrder') )*/
                             }
                    })
                 }

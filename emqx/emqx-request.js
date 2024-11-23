@@ -4,6 +4,9 @@ const router = express.Router();
 const client = require('../emqx/emqx-connection');
 const TagNotification = require('../models/tagnotification');
 
+//aumentado
+const Equipment = require('../models/equipment');
+
 ////////////INICIO DE RFID//////////////////
 
 /*const clientId = 'mqttjs_' + Math.random().toString(16).substr(2, 8);
@@ -118,6 +121,34 @@ router.get('/confirmacion', (req, res) => {
       }
     });
     
+});
+
+/*aumentado*/
+// Ruta para obtener el equipo por el último tag almacenado
+router.get('/equipment/rfid', async (req, res) => {
+  try {
+    // Consultar el último tag almacenado para el usuario actual
+    const notification = await TagNotification.findOne({ where: { user: req.session.DSSN.toString() } });
+    
+    if (!notification || !notification.message) {
+      return res.status(404).json({ error: 'No se ha leído ningún tag RFID recientemente.' });
+    }
+
+    const rfid = notification.message;
+
+    // Buscar el equipo asociado al RFID en la base de datos
+    const equipment = await Equipment.findOne({ where: { Code: rfid } });
+
+    if (!equipment) {
+      return res.status(404).json({ error: 'Equipo no encontrado para este RFID.' });
+    }
+
+    // Enviar los datos del equipo
+    res.json(equipment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Error al procesar la solicitud.' });
+  }
 });
 
 module.exports=router;

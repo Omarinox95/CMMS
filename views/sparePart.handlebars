@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="table-data__tool">
                 <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                <i class="zmdi zmdi-plus"></i>Add Spare Part</a>
+                <i class="zmdi zmdi-plus"></i>Añadir Repuesto</a>
             </div>
            {{#if hasPart}} 
             <div class="row">
@@ -12,11 +12,11 @@
                     <div class="card" style="width: auto;">
                         <img class="card-img-top" src="images/{{this.Image}}" alt="Card image cap" style="height: 250px;">
                         <div class="card-body">
-                            <div class="card-text">Code: <span>{{this.Code}}</span></div>
-                            <div class="card-text">Name: <span>{{this.Name}}</span></div>
-                            <div class="card-text">Amount: <span>{{this.Amount}}</span></div>
-                             <div class="card-text">Equipment Code: <span>{{ this.EquipmentName }} (Code:{{this.EquipmentCode}})</span></div>
-                            <div class="card-text">Agent ID: <span>{{ this.AgentSupplierName }} (Id:{{this.AgentSupplierId}})</span></div>
+                            <div class="card-text">Código: <span>{{this.Code}}</span></div>
+                            <div class="card-text">Nombre: <span>{{this.Name}}</span></div>
+                            <div class="card-text">Cantidad: <span>{{this.Amount}}</span></div>
+                             <div class="card-text">Código Equipo: <span>{{ this.EquipmentName }} (Code:{{this.EquipmentCode}})</span></div>
+                            <div class="card-text">ID Proveedor: <span>{{ this.AgentSupplierName }} (Id:{{this.AgentSupplierId}})</span></div>
                         </div>
                         <div class="table-data-feature">
                             <a href="/sparePart/edit/{{ this.Code }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -53,15 +53,15 @@
                 </div>
                 <div class="login-form">
                         <div class="form-group">
-                            <label class=" form-control-label">Code</label>
-                            <input type="text" name="Code" required placeholder="Enter code" class="form-control">
+                            <label class=" form-control-label">Código</label>
+                            <input type="text" name="Code" required placeholder="Ingresa Código" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Name</label>
-                            <input type="text" name="Name" required placeholder="Enter name" class="form-control">
+                            <label class=" form-control-label">Nombre</label>
+                            <input type="text" name="Name" required placeholder="Ingresa nombre" class="form-control">
                         </div>
                           <div class="form-group">
-                            <label class=" form-control-label">Equipment Code</label>
+                            <label class=" form-control-label">Código Equipo</label>
                             <select name="EquipmentCode"required id="select" class="form-control">
                                 {{#each Equipments}}
                                     <option value="{{this.Code}}">{{this.Name}} {{this.Code}} {{this.DepartmentName}}</option>
@@ -69,11 +69,11 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Amount</label>
-                            <input type="text" name="Amount" required placeholder="Enter Amount" class="form-control">
+                            <label class=" form-control-label">Cantidad</label>
+                            <input type="text" name="Amount" required placeholder="Ingresa Cantidad" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Agent Id</label>
+                            <label class=" form-control-label">Id Proveedor</label>
                            <select name="AgentSupplierId"required id="select" class="form-control">
                                 {{#each Agents}}
                                     <option value="{{this.Id}}">{{this.Name}} {{this.Id}} </option>
@@ -81,10 +81,10 @@
                             </select>
                         </div>
                          <div class="form-group">
-                            <label class=" form-control-label">Photo</label>
-                            <input type="file"required name="image" placeholder="Enter Name" class="form-control">
+                            <label class=" form-control-label">Foto</label>
+                            <input type="file"required name="image" placeholder="Ingresa Fotografía" class="form-control">
                         </div>
-                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">ADD</button>
+                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
                 </div>
             </form>
           </div>  
