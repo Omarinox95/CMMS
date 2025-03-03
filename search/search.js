@@ -1,5 +1,8 @@
 const { Op } = require('sequelize');
-const Equipment = require('../models/equipment');  // Asegúrate de que el modelo esté correctamente importado
+const Equipment = require('../models/equipment');  
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 // Controlador para manejar la búsqueda de equipos
 exports.searchEquipment = (req, res) => {

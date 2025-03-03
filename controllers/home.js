@@ -11,6 +11,8 @@ const DailyInspection = require('../models/dialy_inspection');
 const PpmQuestions =require('../models/ppm_questions')
 const PPM =require('../models/ppm')
 const moment=require('moment')
+const Category = require('../models/category');
+
 
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
@@ -333,8 +335,8 @@ exports.clinicalEngineer=(req,res)=>{
     
 }
 
-exports.sparePart=(req,res)=>{
-    SparePart.findAll({include:[{model:AgentSupplier},{model:Equipment}]}).then(sparepart => {
+/*exports.sparePart=(req,res)=>{
+    SparePart.findAll({include:[{model:AgentSupplier},{model:Equipment},{model:Category}]}).then(sparepart => {
         const sp = sparepart.map(sparepart => {
                   return {
                     Code:sparepart.Code,
@@ -344,8 +346,8 @@ exports.sparePart=(req,res)=>{
                     AgentSupplierId:sparepart.AgentSupplier.dataValues.Id,
                     AgentSupplierName:sparepart.AgentSupplier.dataValues.Name,
                     EquipmentCode:sparepart.Equipment.dataValues.Code,
-                    EquipmentName:sparepart.Equipment.dataValues.Name
-
+                    EquipmentName:sparepart.Equipment.dataValues.Name,
+                    CategoryName: sparepart.Category.dataValues.Name
 
                   }
                 })
@@ -374,8 +376,87 @@ exports.sparePart=(req,res)=>{
      console.log(err)
      res.render('error',{layout:false,pageTitle:'Error',href:'/home',message:'Sorry !!! Could Not Get Spare Parts'})
 })
-}
+}*/
+//añadido 03/03/25
+exports.sparePart = (req, res) => {
+    SparePart.findAll({
+        include: [
+            { model: AgentSupplier },
+            { model: Equipment },
+            { model: Category }  // Aquí añadimos Category
+        ]
+    })
+    .then(sparepart => {
+        const sp = sparepart.map(sparepart => {
+            return {
+                Code: sparepart.Code,
+                Name: sparepart.Name,
+                Amount: sparepart.Amount,
+                Image: sparepart.Image,
+                AgentSupplierId: sparepart.AgentSupplier.dataValues.Id,
+                AgentSupplierName: sparepart.AgentSupplier.dataValues.Name,
+                EquipmentCode: sparepart.Equipment.dataValues.Code,
+                EquipmentName: sparepart.Equipment.dataValues.Name,
+                CategoryName: sparepart.Category.dataValues.Name // Obtener nombre de la categoría
+            };
+        });
 
+        // Obtener Equipos
+        Equipment.findAll({ include: [{ model: Department }] })
+        .then(equipments => {
+            const eq = equipments.map(equipment => {
+                return {
+                    Code: equipment.Code,
+                    Name: equipment.Name,
+                    DepartmentName: equipment.Department.Name
+                };
+            });
+
+            // Obtener Proveedores
+            AgentSupplier.findAll()
+            .then(agents => {
+                const ag = agents.map(agent => {
+                    return {
+                        Name: agent.Name,
+                        Id: agent.Id
+                    };
+                });
+
+                // Aquí, también agregamos todas las categorías para el formulario de agregar repuestos
+                Category.findAll()
+                .then(categories => {
+                    const cat = categories.map(category => {
+                        return {
+                            id: category.IdCat,
+                            name: category.Name
+                        };
+                    });
+
+                    res.render('sparePart', {
+                        pageTitle: 'SpareParts',
+                        SP: true,
+                        SpareParts: sp,
+                        hasPart: sp.length > 0,
+                        Equipments: eq,
+                        Agents: ag,
+                        categories: cat  // Pasamos las categorías al frontend
+                    });
+                });
+            });
+        });
+    })
+    .catch(err => {
+        if (err) console.log(err);
+        res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            href: '/home',
+            message: 'Sorry !!! Could Not Get Spare Parts'
+        });
+    });
+};
+
+//
 exports.agentSupplier=(req,res)=>{
     AgentSupplier.findAll().then(agentsuppliers => {
         const as = agentsuppliers.map(agentsupplier => {
@@ -501,7 +582,16 @@ exports.equipment=(req,res)=>{
                     Location:equipment.Location,
                     Notes:equipment.Notes,
                     DepartmentCode:equipment.Department.dataValues.Name,
-                    AgentSupplierId:equipment.AgentSupplier.dataValues.Name
+                    AgentSupplierId:equipment.AgentSupplier.dataValues.Name,
+                    //añadido 02/03/25
+                    Software:equipment.Software,
+                    SoftwareVersion: equipment.SoftwareVersion,
+                    SoftwarePass: equipment.SoftwarePass,
+                    NetworkAddress: equipment.NetworkAddress,
+                    AssetStatus: equipment.AssetStatus,
+                    InsuranceStatus: equipment.InsuranceStatus,
+                    FuntionalStatus: equipment.FuntionalStatus
+                    //
                   }
                 })
 
@@ -545,7 +635,16 @@ exports.installation=(req,res)=>{
                     Location:equipment.Location,
                     Notes:equipment.Notes,
                     DepartmentCode:equipment.Department.dataValues.Name,
-                    AgentSupplierId:equipment.AgentSupplier.dataValues.Name
+                    AgentSupplierId:equipment.AgentSupplier.dataValues.Name,
+                    //añadido 02/03/25
+                    Software:equipment.Software,
+                    SoftwareVersion: equipment.SoftwareVersion,
+                    SoftwarePass: equipment.SoftwarePass,
+                    NetworkAddress: equipment.NetworkAddress,
+                    AssetStatus: equipment.AssetStatus,
+                    InsuranceStatus: equipment.InsuranceStatus,
+                    FuntionalStatus: equipment.FuntionalStatus
+                    //
                   }
                 })
         res.render('installationTable',{pageTitle:'Installation',Reports:true,

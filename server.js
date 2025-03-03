@@ -25,6 +25,7 @@ const reportController = require('./routes/report');
 const emqxController = require('./emqx/emqx-request');
 const searchController = require('./search/search');
 const equipmentRoutes = require('./routes/equipmentRoutes');
+const equipmentsparepart = require('./models/equipmentsparepart');
 const { Equipment, Department } = require('./models'); // Importa los modelos desde index.js
 
 ///AUMENTADO PARA MP
@@ -112,6 +113,7 @@ equipment.hasMany(spare_parts);
 sequelize.sync()
   // .sync({force: true}) // Uncomment this line only if you want to drop and recreate tables
   .then(() => {
+    console.log('Sincronizado correctamente');
     app.listen(3000, () => {
       console.log('Running on port 3000');
     });

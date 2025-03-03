@@ -24,6 +24,8 @@ const searchController = require('../search/search'); // Asegúrate de que la ru
 // Ruta para realizar la búsqueda
 router.get('/search', searchController.searchEquipment);
 
+
+
 module.exports = router;
 
 

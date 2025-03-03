@@ -29,7 +29,16 @@ Equipment.findAll({where:{DepartmentCode:code},include:[{model:AgentSupplier}]})
               SerialNumber:equipment.SerialNumber,
               Manufacturer:equipment.Manufacturer,
               Location:equipment.Location,
-              Agent:equipment.AgentSupplier.Name
+              Agent:equipment.AgentSupplier.Name,
+              //aumentado en 02/03/25
+              Software:equipment.Software,
+              SoftwareVersion: equipment.SoftwareVersion,
+              SoftwarePass: equipment.SoftwarePass,
+              NetworkAddress: equipment.NetworkAddress,
+              AssetStatus: equipment.AssetStatus,
+              InsuranceStatus: equipment.InsuranceStatus,
+              FuntionalStatus: equipment.FuntionalStatus
+              //
             }
     
     
@@ -136,7 +145,16 @@ exports.agentEquipmentsReport=(req,res)=>{
                     SerialNumber:equipment.SerialNumber,
                     Manufacturer:equipment.Manufacturer,
                     Location:equipment.Location,
-                    Department:equipment.Department.Name
+                    Department:equipment.Department.Name,
+                    Software:equipment.Software,
+                    //añadido el 02/03/25
+                    SoftwareVersion: equipment.SoftwareVersion,
+                    SoftwarePass: equipment.SoftwarePass,
+                    NetworkAddress: equipment.NetworkAddress,
+                    AssetStatus: equipment.AssetStatus,
+                    InsuranceStatus: equipment.InsuranceStatus,
+                    FuntionalStatus: equipment.FuntionalStatus
+                    //
                 }
               })
               res.render('reportAgentEquipments',{layout:'agentReportLayout',pageTitle:'Equipments',
@@ -176,7 +194,16 @@ exports.equipmentInstallationReport=(req,res)=>{
                 Notes:equipment.Notes,
                 PM:equipment.PM,
                 Department:equipment.Department.Name,
-                Agent:equipment.AgentSupplier.Name
+                Agent:equipment.AgentSupplier.Name,
+                //añadido el 02/03/25
+                Software:equipment.Software,
+                SoftwareVersion: equipment.SoftwareVersion,
+                SoftwarePass: equipment.SoftwarePass,
+                NetworkAddress: equipment.NetworkAddress,
+                AssetStatus: equipment.AssetStatus,
+                InsuranceStatus: equipment.InsuranceStatus,
+                FuntionalStatus: equipment.FuntionalStatus
+                //
               }
 
               res.render('installationReport',{layout:layout,pageTitle:'Installation',

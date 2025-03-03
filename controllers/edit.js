@@ -5,6 +5,7 @@ const SparePart =require('../models/spare_part');
 const BreakDown =require('../models/break_down');
 const WorkOrder =require('../models/work_order');
 const Maintenance =require('../models/maintenance');
+const Category = require('../models/category');
 
 
 
@@ -87,12 +88,22 @@ exports.editClinicalEngineer=(req,res) => {
               PM:equipment.PM,
               Image:equipment.Image,
               DepartmentCode:equipment.DepartmentCode,
+              //añadido 02/03
+              Software: equipment.Software,
+              SoftwareVersion: equipment.SoftwareVersion,
+              SoftwarePass: equipment.SoftwarePass,
+              NetworkAddress: equipment.NetworkAddress,
+              AssetStatus: equipment.AssetStatus,
+              InsuranceStatus: equipment.InsuranceStatus,
+              FuntionalStatus: equipment.FuntionalStatus,
+              //
               AgentSupplierId:equipment.AgentSupplierId,
               OR:equipment.Department.Name =='OR' ? true : false,
               CSSD:equipment.Department.Name =='CSSD' ? true:false,
               ICU:equipment.Department.Name=='ICU' ? true:false,
               Radiology:equipment.Department.Name == 'Radiology' ? true:false
             }
+            console.log("Datos recibidos en el backend:", eq);
    if(eq.PM =="Annualy"){
       res.render('editEquipment',{layout:'main-layout.handlebars' ,pageTitle:'Edit',
                                        Equipment:true,equipment:eq,A:true});
@@ -111,17 +122,18 @@ exports.editClinicalEngineer=(req,res) => {
  }
 
 
-
+/*
  exports.editSparePart=(req,res)=>{
    code=req.params.id
-   SparePart.findByPk(code).then(sparePart =>{ 
+   SparePart.findByPk(code,{include:[{model:Category}]}).then(sparePart =>{ 
        const sp = {
              Name: sparePart.Name,
              Code: sparePart.Code,
              Amount:sparePart.Amount,
              Image:sparePart.Image,
              AgentSupplierId:sparePart.AgentSupplierId,
-             EquipmentCode:sparePart.EquipmentCode
+             EquipmentCode:sparePart.EquipmentCode,
+             CategoryId: sparePart.CategoryId
            }
        
    res.render('editSparePart',{layout:'main-layout.handlebars' ,pageTitle:'Edit',
@@ -129,9 +141,72 @@ exports.editClinicalEngineer=(req,res) => {
 })
    .catch(err => console.log("ERROR!!!!!!",err) )
 
-
 }
+*/
+//añadido 03/03/25
+exports.editSparePart = (req, res) => {
+   const code = req.params.id;
 
+   // Buscar el repuesto junto con la categoría y otras relaciones necesarias
+   SparePart.findByPk(code, {
+      include: [
+         { model: AgentSupplier },   // Incluir Proveedor
+         { model: Equipment },       // Incluir Equipo
+         { model: Category }         // Incluir Categoría
+      ]
+   }).then(sparePart => {
+      if (!sparePart) {
+         return res.status(404).send('Repuesto no encontrado');
+      }
+
+      // Preparar los datos del repuesto
+      const sp = {
+         Name: sparePart.Name,
+         Code: sparePart.Code,
+         Amount: sparePart.Amount,
+         Image: sparePart.Image,
+         AgentSupplierId: sparePart.AgentSupplierId,
+         EquipmentCode: sparePart.EquipmentCode,
+         CategoryId: sparePart.Category?.IdCat,  // Obtener el Id de la categoría
+         CategoryName: sparePart.Category?.Name  // Obtener el nombre de la categoría
+      };
+
+      // Obtener todas las categorías disponibles para el formulario
+      Category.findAll().then(categories => {
+         const cat = categories.map(category => ({
+            id: category.IdCat,
+            name: category.Name
+         }));
+
+         // Renderizar la vista de edición, pasando los datos del repuesto y las categorías
+         res.render('editSparePart', {
+            layout: 'main-layout.handlebars',
+            pageTitle: 'Editar Repuesto',
+            SP: true,
+            sparePart: sp,         // Datos del repuesto a editar
+            categories: cat        // Lista de categorías disponibles
+         });
+      }).catch(err => {
+         console.log("ERROR AL OBTENER CATEGORÍAS:", err);
+         res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            href: '/home',
+            message: 'No se pudo obtener las categorías'
+         });
+      });
+   }).catch(err => {
+      console.log("ERROR AL OBTENER EL REPUESO:", err);
+      res.render('error', {
+         layout: false,
+         pageTitle: 'Error',
+         href: '/home',
+         message: 'No se pudo obtener el repuesto para editar.'
+      });
+   });
+};
+
+//
 exports.editBreakDown=(req,res)=>{
    code=req.params.id
    BreakDown.findByPk(code).then(breakDown =>{ 

@@ -1,3 +1,17 @@
+<head>
+    <style>
+        /* Estilo para los títulos dentro de card-text */
+        .card-text {
+            color: #009f48; /* Verde para los títulos */
+        }
+
+        /* Estilo para los valores dentro de span */
+        .card-text span {
+            color: #303655; /* Gris oscuro para los valores */
+        }
+    </style>
+</head>
+
 <!-- controlador para tag de grabador de equipo-->
 <script type="text/javascript">
   class FunctionController {
@@ -154,6 +168,68 @@
                                     <option value="CSSD">CSSD</option>
                             </select>
                         </div>
+                        <!añadido en 02/03/25->
+                        <div class="form-group">
+                            <label class=" form-control-label">Software</label>
+                            <select name="Software" required id="select" class="form-control">
+                                    <option value="Si" {{#if Si}} selected {{/if}} >Si</option>
+                                    <option value="No" {{#if No}} selected {{/if}}>No</option> 
+                            </select>
+                        </div>   
+
+                        <div class="form-group">
+                            <label class=" form-control-label">Versión de Software</label>
+                            <input type="text" name="SoftwareVersion" placeholder="Ingrese versión SW" value="{{ equipment.SoftwareVersion }}" class="form-control">
+                        </div> 
+
+                        <div class="form-group">
+                            <label class=" form-control-label">Contraseña del Software</label>
+                            <input type="text" name="SoftwarePass" placeholder="Ingrese contraseña de SW" value="{{ equipment.SoftwarePass }}" class="form-control">
+                        </div> 
+
+                        <div class="form-group">
+                            <label class=" form-control-label">Conexion IP</label>
+                            <input type="text" name="NetworkAddress" placeholder="Ingrese IP" value="{{ equipment.NetworkAddress }}" class="form-control">
+                        </div> 
+                        
+                        <div class="form-group">
+                            <label class=" form-control-label">Estado Activo</label>
+                            <select name="AssetStatus" id="select" class="form-control">
+                                    <option value="Activo">Activo</option>
+                                    <option value="No Activo">No Activo</option> 
+                                    <option value="Baja">Baja</option> 
+                            </select>
+                        </div>   
+
+                        <div class="form-group">
+                            <label class=" form-control-label">Estado del Seguro</label>
+                            <select name="InsuranceStatus" id="select" class="form-control">
+                                    <option value="Activo">Activo</option>
+                                    <option value="No Activo">No Activo</option> 
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class=" form-control-label">Estado Activo</label>
+                            <select name="FuntionalStatus" id="select" class="form-control">
+                                    <option value="Funcionando">Funcionando</option>
+                                    <option value="Reparación">Reparación</option> 
+                                    <option value="En espera de repuesto">En espera de repuesto</option> 
+                                    <option value="Con Proveedor">Con el Proveedor</option>
+                                    <option value="Sin Consumible">Sin consumible</option> 
+                            </select>
+                        </div>
+                        <!añadido 03/03/25 ->
+                        <div class="form-group">
+                            <label class="form-control-label">Repuestos Asociados</label>
+                            <select name="spareParts" class="form-control" multiple>
+                                {{#each spareParts}} <!-- Lista de repuestos disponibles -->
+                                    <option value="{{this.Code}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <! ->
+
                          <div class="form-group">
                             <label class=" form-control-label">Notas</label>
                             <textarea type="text"  name="Notes" placeholder="Any Notes" class="form-control"></textarea>

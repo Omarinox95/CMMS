@@ -43,7 +43,7 @@
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
             
-                    <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
+                <img src="images/LogoMedical.png" />
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
@@ -66,7 +66,7 @@
                 </li>    
                    <li class="{{#if SP }}active{{/if}} has-sub">
                     <a class="js-arrow" href="/report/equipment/spareParts/{{ code }}">
-                        <i class="fas fa-copy"></i>Repuestos</a>
+                        <i class="fas fa-copy"></i>Acc/Rep/Insum</a>
                 </li>    
                   <li class="{{#if BD }}active{{/if}} has-sub">
                     <a class="js-arrow" href="/report/equipment/breakDowns/{{ code }}">
@@ -75,7 +75,11 @@
                <li class="{{#if M }}active{{/if}} has-sub">
                     <a class="js-arrow" href="/report/equipment/maintenance/{{ code }}">
                         <i class="fas fa-copy"></i>Mantenimiento</a>
-                </li>             
+                </li>    
+                <li class="{{#if M }}active{{/if}} has-sub">
+                    <a class="js-arrow" href="/report/equipment/maintenance/{{ code }}">
+                        <i class="fas fa-copy"></i>Indicadores</a>
+                </li>          
                     </ul>
                 </nav>
             </div>

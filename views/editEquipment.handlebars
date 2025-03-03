@@ -8,7 +8,7 @@
                             <div class="login-content">
                                 <div class="login-logo">
                                    
-                                    <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>        
+                                    <img src="images/LogoMedical.png" />   
                                 </div>
                                 <div class="login-form" style="height: auto;">
                                     <form action="/equipment/add" method="POST">
@@ -67,12 +67,67 @@
                                             <div class="form-group">
                                                 <label class=" form-control-label">MP</label>
                                                 <select name="PM"required id="select" class="form-control">
-                                                        <option value="Semestral" {{#if M}} selected {{/if}} >Semestral</option>
+                                                        <option value="Semestral" {{#if S}} selected {{/if}} >Semestral</option>
                                                         <option value="Anual" {{#if A}} selected {{/if}}>Anual</option> 
-                                                        <option value="Trimestral" {{#if A}} selected {{/if}}>Trimestral</option> 
+                                                        <option value="Trimestral" {{#if T}} selected {{/if}}>Trimestral</option> 
 
                                                 </select>
-                                            </div>     
+                                            </div>    
+                                         <!añadido en 02/03/25-->
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Software</label>
+                                                <select name="Software"required id="select" class="form-control">
+                                                        <option value="Si" {{#if Si}} selected {{/if}} >Si</option>
+                                                        <option value="No" {{#if No}} selected {{/if}}>No</option> 
+                                                </select>
+                                            </div>   
+
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Versión de Software</label>
+                                                <input type="text" name="SoftwareVersion" placeholder="Ingrese versión SW" value="{{ equipment.SoftwareVersion }}" class="form-control">
+                                            </div> 
+
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Contraseña del Software</label>
+                                                <input type="text" name="SoftwarePass" placeholder="Ingrese contraseña de SW" value="{{ equipment.SoftwarePass }}" class="form-control">
+                                            </div> 
+
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Conexion IP</label>
+                                                <input type="text" name="NetworkAddress" placeholder="Ingrese IP" value="{{ equipment.NetworkAddress }}" class="form-control">
+                                            </div> 
+                                            
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Estado Activo</label>
+                                                <select name="AssetStatus"required id="select" class="form-control">
+                                                        <option value="Activo">Activo</option>
+                                                        <option value="No Activo">No Activo</option> 
+                                                        <option value="Baja">Baja</option> 
+                                                </select>
+                                            </div>   
+
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Estado del Seguro</label>
+                                                <select name="InsuranceStatus"required id="select" class="form-control">
+                                                        <option value="Activo">Activo</option>
+                                                        <option value="No Activo">No Activo</option> 
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class=" form-control-label">Estado Activo</label>
+                                                <select name="FuntionalStatus"required id="select" class="form-control">
+                                                        <option value="Funcionando">Funcionando</option>
+                                                        <option value="Reparación">Reparación</option> 
+                                                        <option value="En espera de repuesto">En espera de repuesto</option> 
+                                                        <option value="Con Proveedor">Con el Proveedor</option>
+                                                        <option value="Sin Consumible">Sin consumible</option> 
+                                                </select>
+                                            </div>
+
+                                           
+                                            <!->
+
                                             <div class="form-group">
                                                 <label class=" form-control-label">Notas</label>
                                                 <input type="text"  name="Notes" placeholder="Any Notes" value="{{ equipment.Notes}}" class="form-control">
