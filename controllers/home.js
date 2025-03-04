@@ -378,7 +378,7 @@ exports.clinicalEngineer=(req,res)=>{
 })
 }*/
 //añadido 03/03/25
-exports.sparePart = (req, res) => {
+/*exports.sparePart = (req, res) => {
     SparePart.findAll({
         include: [
             { model: AgentSupplier },
@@ -454,7 +454,86 @@ exports.sparePart = (req, res) => {
             message: 'Sorry !!! Could Not Get Spare Parts'
         });
     });
+};*/
+//ultimo cambio de 03/03/25 20:52
+exports.sparePart = (req, res) => {
+    SparePart.findAll({
+        include: [
+            { model: AgentSupplier },
+            { model: Equipment },
+            { model: Category }
+        ]
+    })
+    .then(spareparts => {
+        const sp = spareparts.map(sparepart => {
+            return {
+                Code: sparepart.Code,
+                Name: sparepart.Name,
+                Amount: sparepart.Amount,
+                Image: sparepart.Image,
+                AgentSupplierId: sparepart.AgentSupplier ? sparepart.AgentSupplier.Id : null,
+                AgentSupplierName: sparepart.AgentSupplier ? sparepart.AgentSupplier.Name : "Sin proveedor",
+                EquipmentCode: sparepart.Equipment ? sparepart.Equipment.Code : null,
+                EquipmentName: sparepart.Equipment ? sparepart.Equipment.Name : "Sin equipo",
+                CategoryName: sparepart.Category ? sparepart.Category.Name : "Sin categoría"
+            };
+        });
+
+        // Obtener Equipos
+        return Equipment.findAll({ include: [{ model: Department }] })
+        .then(equipments => {
+            const eq = equipments.map(equipment => {
+                return {
+                    Code: equipment.Code,
+                    Name: equipment.Name,
+                    DepartmentName: equipment.Department ? equipment.Department.Name : "Sin departamento"
+                };
+            });
+
+            // Obtener Proveedores
+            return AgentSupplier.findAll()
+            .then(agents => {
+                const ag = agents.map(agent => {
+                    return {
+                        Name: agent.Name,
+                        Id: agent.Id
+                    };
+                });
+
+                // Obtener Categorías
+                return Category.findAll()
+                .then(categories => {
+                    const cat = categories.map(category => {
+                        return {
+                            id: category.IdCat,
+                            name: category.Name
+                        };
+                    });
+
+                    res.render('sparePart', {
+                        pageTitle: 'SpareParts',
+                        SP: true,
+                        SpareParts: sp,
+                        hasPart: sp.length > 0,
+                        Equipments: eq,
+                        Agents: ag,
+                        categories: cat
+                    });
+                });
+            });
+        });
+    })
+    .catch(err => {
+        console.error("Error al obtener los repuestos:", err);
+        res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            href: '/home',
+            message: 'Sorry !!! Could Not Get Spare Parts'
+        });
+    });
 };
+
 
 //
 exports.agentSupplier=(req,res)=>{
@@ -478,6 +557,7 @@ exports.agentSupplier=(req,res)=>{
         res.render('error',{layout:false,pageTitle:'Error',href:'/home',message:'Sorry !!! Could Not Get Agents'})
     })
 }
+
 
 exports.workOrder=(req,res)=>{
 
@@ -562,7 +642,8 @@ exports.breakDown=(req,res)=>{
     })
 }
 
-exports.equipment=(req,res)=>{
+//comentado 03/03/25
+/*exports.equipment=(req,res)=>{
     Equipment.findAll({
         include:[{model:Department},{model:AgentSupplier}]
         }).then(equipments => {
@@ -609,10 +690,78 @@ exports.equipment=(req,res)=>{
         if(err)
          res.render('error',{layout:false,pageTitle:'Error',href:'/home',message:'Sorry !!! Could Not Get Equipments'})
         })
+}*/
+//const { Equipment, Department, AgentSupplier, SparePart } = require('../models'); // Asegúrate de importar SparePart
 
+exports.equipment = (req, res) => {
+    Equipment.findAll({
+        include: [
+            { model: Department },
+            { model: AgentSupplier },
+            { model: SparePart }  // ✅ Agregar los repuestos relacionados
+        ]
+    }).then(equipments => {
+        const eq = equipments.map(equipment => {
+            return {
+                Code: equipment.Code,
+                Name: equipment.Name,
+                Cost: equipment.Cost,
+                PM: equipment.PM,
+                Image: equipment.Image,
+                InstallationDate: equipment.InstallationDate,
+                ArrivalDate: equipment.ArrivalDate,
+                WarrantyDate: equipment.WarrantyDate,
+                Model: equipment.Model,
+                SerialNumber: equipment.SerialNumber,
+                Manufacturer: equipment.Manufacturer,
+                Location: equipment.Location,
+                Notes: equipment.Notes,
+                DepartmentCode: equipment.Department?.dataValues.Name, // Validar si existe
+                AgentSupplierId: equipment.AgentSupplier?.dataValues.Name,
+                Software: equipment.Software,
+                SoftwareVersion: equipment.SoftwareVersion,
+                SoftwarePass: equipment.SoftwarePass,
+                NetworkAddress: equipment.NetworkAddress,
+                AssetStatus: equipment.AssetStatus,
+                InsuranceStatus: equipment.InsuranceStatus,
+                FuntionalStatus: equipment.FuntionalStatus,
+                SpareParts: equipment.SpareParts?.map(sp => ({  // ✅ Mapear los repuestos
+                    Code: sp.Code,
+                    Name: sp.Name
+                }))
+            };
+        });
 
-   
-}
+        AgentSupplier.findAll().then(agents => {
+            const ag = agents.map(agent => {
+                return {
+                    Name: agent.Name,
+                    Id: agent.Id
+                };
+            });
+
+            // ✅ Obtener todos los repuestos disponibles para el formulario
+            SparePart.findAll().then(spareParts => {
+                const sp = spareParts.map(spare => ({
+                    Code: spare.Code,
+                    Name: spare.Name
+                }));
+
+                res.render('equipment', {
+                    pageTitle: 'Equipment',
+                    Equipment: true,
+                    equipments: eq,
+                    hasEquipments: eq.length > 0,
+                    Agents: ag,
+                    spareParts: sp // ✅ Enviar los repuestos a la vista
+                });
+            });
+        });
+    }).catch(err => {
+        console.error('Error al obtener los equipos:', err);
+        res.render('error', { layout: false, pageTitle: 'Error', href: '/home', message: 'Sorry !!! Could Not Get Equipments' });
+    });
+};
 
 
 exports.installation=(req,res)=>{

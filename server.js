@@ -106,8 +106,12 @@ ppm.belongsTo(clinical_engineer);
 clinical_engineer.hasMany(ppm);
 maintenance.belongsTo(clinical_engineer);
 clinical_engineer.hasMany(maintenance);
-spare_parts.belongsTo(equipment);
-equipment.hasMany(spare_parts);
+
+//spare_parts.belongsTo(equipment);
+//equipment.hasMany(spare_parts);
+equipment.belongsToMany(spare_parts, { through: 'equipmentsparepart', foreignKey: 'id_equipment' });
+spare_parts.belongsToMany(equipment, { through: 'equipmentsparepart', foreignKey: 'id_sparepart' });
+
 
 // Synchronizing with database 
 sequelize.sync()

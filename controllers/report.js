@@ -1,3 +1,6 @@
+const Agent_supplier = require('../models/agent_supplier')
+const { sparePart } = require('./home')
+
 Equipment=require('../models/equipment')
 AgentSupplier=require('../models/agent_supplier')
 ClinicalEngineer=require('../models/clinical_engineer')
@@ -8,6 +11,9 @@ BreakDown=require('../models/break_down')
 Maintenance=require('../models/maintenance')
 PPM =require('../models/ppm')
 PPMQuestions=require('../models/ppm_questions')
+EquipmentSparePart = require('../models/equipmentsparepart');
+//const { Equipment, SparePart, EquipmentSparePart, Agent_supplier } = require('../models');
+
 
 exports.departmentEquipmentsReport=(req,res) => {
 code=req.params.code
@@ -419,7 +425,8 @@ exports.equipmentMaintenaceReport=(req,res) => {
     })
 }
 
-exports.equipmentSparePartsReport=(req,res) => {
+//comentado 03/03/25
+/*exports.equipmentSparePartsReport=(req,res) => {
 code=req.params.Id
 var name=null
 var model =null
@@ -441,4 +448,46 @@ Equipment.findByPk(code).then(eq => {
             code:code,SP:true,spareParts:sps,hasSpareParts:sps.length>0,name:name,model:model,image:image })   
     })
 })
-}
+}*/
+
+exports.equipmentSparePartsReport = (req, res) => {
+    const equipmentId = req.params.Id;  // Obtén el ID del equipo desde los parámetros de la ruta
+  
+    Equipment.findOne({
+      where: { Code: equipmentId },  // Encuentra el equipo por su código (o ID)
+      include: {
+        model: SparePart,            // Incluye los repuestos
+        through: {                  // Especifica la tabla intermedia
+          model: EquipmentSparePart, // Aquí agregas explícitamente el modelo de la tabla intermedia
+          attributes: ['quantity']   // Obtén la cantidad de repuestos
+        }
+      }
+    })
+    .then(equipment => {
+      if (!equipment) {
+        return res.status(404).render('error', {
+          message: 'Equipo no encontrado',
+          pageTitle: 'Error'
+        });
+      }
+      console.log(equipment); // Verifica que las propiedades existen
+
+      console.log(equipment.SpareParts);
+      // Renderiza la vista con los datos obtenidos
+      res.render('equipmentSpareParts', {
+        layout: 'equipmentReportLayout',  // Especifica el layout si lo tienes
+        equipment: equipment.get({plain:true}),  // Equipos y sus repuestos
+        spareParts: equipment.SpareParts.map (sparePart => sparePart.get({plain:true})),
+        hasSpareParts: equipment.SpareParts && equipment.SpareParts.length > 0, 
+        pageTitle: `Repuestos de equipo ${equipmentId}`,
+      });
+    })
+    .catch(err => {
+      console.error('Error al obtener los repuestos del equipo:', err);
+      res.status(500).render('error', {
+        message: 'Error al obtener los repuestos del equipo',
+        pageTitle: 'Error'
+      });
+    });
+  };
+  

@@ -238,6 +238,7 @@ exports.addClinicalEngineer=(req,res)=>{
 }*/
 exports.addEquipment = (req, res) => {
     console.log("Datos recibidos en el backend:", req.body);
+   // console.log("Repuestos seleccionados:", req.body.spareParts);
 
     // Recuperar los datos del equipo
     const code = req.body.Code;
@@ -311,12 +312,25 @@ exports.addEquipment = (req, res) => {
                                 console.log("Nuevo equipo creado:", newEquipment);
 
                                 // Asegurarse de que spareParts sea un array, incluso si solo se selecciona un repuesto
-                                const spareParts = Array.isArray(req.body.spareParts) ? req.body.spareParts : [req.body.spareParts];
-                                
+                                //
+                                // const spareParts = Array.isArray(req.body.spareParts) ? req.body.spareParts : [req.body.spareParts];
+                                // Asegurar que spareParts sea un array antes de usarlo
+                                const spareParts = typeof req.body.spareParts === "string" ? JSON.parse(req.body.spareParts) : req.body.spareParts;
+
+                                // Validar que spareParts sea realmente un array
+                                if (!Array.isArray(spareParts)) {
+                                    console.error("Error: spareParts no es un array válido", spareParts);
+                                    return res.status(400).json({ error: "Formato incorrecto de repuestos." });
+                                }
+
+                                console.log("Repuestos seleccionados:", spareParts);
+
+                              //  console.log("Repuestos seleccionados:", req.body.spareParts);
+
                                 // Asociar los repuestos seleccionados al nuevo equipo
                                 if (spareParts && spareParts.length > 0) {
                                     // Asociar cada repuesto con el equipo
-                                    newEquipment.addSpareParts(spareParts)
+                                    newEquipment.addSpareParts(spareParts, { through: 'EquipmentSpareParts' } )
                                         .then(() => {
                                             console.log("Repuestos asociados correctamente");
                                             res.redirect('/equipment');  // Redirigir después de crear el equipo
@@ -351,9 +365,8 @@ exports.addEquipment = (req, res) => {
         });
 };
 
-
-
-exports.addSpareParts=(req,res)=>{
+//comentado 03/03/25
+/*exports.addSpareParts=(req,res)=>{
     code=req.body.Code
     name=req.body.Name
     amount=req.body.Amount
@@ -399,8 +412,110 @@ exports.addSpareParts=(req,res)=>{
         res.render('error',{layout:false,pageTitle:'Error',href:'/sparePart',message:'Sorry !!! Could Not Gey rhis page'})
         })
 
-}
+}*/
 
+exports.addSpareParts = (req, res) => {
+    console.log("Repuestos que se van a asociar:", spareParts);
+
+    const code = req.body.Code;
+    const name = req.body.Name;
+    const amount = req.body.Amount;
+    const agentId = req.body.AgentSupplierId;
+    const equipmentCode = req.body.EquipmentCode;  // Aquí se obtiene el código del equipo
+    const categoryId = req.body.CategoryId;
+
+    let image;
+    if (req.body.edit) {
+        image = req.body.Image;
+    } else {
+        image = req.file.path.split('\\').pop();
+    }
+
+    // Buscar al proveedor
+    AgentSupplier.findOne({ where: { Id: agentId } })
+        .then(agent => {
+            if (agent) {
+                // Buscar el repuesto por código
+                SpareParts.findByPk(code).then(part => {
+                    if (part) {
+                        // Si el repuesto existe, actualizamos sus detalles
+                        part.Name = name;
+                        part.Amount = amount;
+                        part.AgentSupplierId = agentId;
+                        part.CategoryId = categoryId;
+                        part.Image = image;
+                        part.save().then(p => {
+                            // Una vez actualizado el repuesto, asociamos el repuesto con el equipo
+                            Equipment.findOne({ where: { Code: equipmentCode } })
+                                .then(equipment => {
+                                    if (equipment) {
+                                        // Asociar el repuesto al equipo en la tabla intermedia EquipmentSpareParts
+                                        equipment.addSparePart(part)  // Usa 'addSparePart' (singular)
+                                            .then(() => {
+                                                console.log("Repuesto asociado correctamente con el equipo");
+                                                res.redirect('/sparePart');
+                                            })
+                                            .catch(err => {
+                                                console.log("Error al asociar repuesto:", err);
+                                                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo asociar el repuesto al equipo' });
+                                            });
+                                    } else {
+                                        res.render('error', { layout: false, pageTitle: 'Error', message: 'Equipo no encontrado' });
+                                    }
+                                })
+                                .catch(err => {
+                                    console.log("Error al encontrar el equipo:", err);
+                                    res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo encontrar el equipo' });
+                                });
+                        });
+                    } else {
+                        // Si el repuesto no existe, creamos uno nuevo
+                        SpareParts.create({
+                            Code: code,
+                            Name: name,
+                            Amount: amount,
+                            AgentSupplierId: agentId,
+                            Image: image,
+                            EquipmentCode: equipmentCode,  // Este campo ya no se actualiza directamente
+                            CategoryId: categoryId
+                        })
+                            .then(newPart => {
+                                // Asociar el repuesto recién creado con el equipo
+                                Equipment.findOne({ where: { Code: equipmentCode } })
+                                    .then(equipment => {
+                                        if (equipment) {
+                                            equipment.addSparePart(newPart)  // Usa 'addSparePart' (singular)
+                                                .then(() => {
+                                                    console.log("Nuevo repuesto asociado correctamente");
+                                                    res.redirect('/sparePart');
+                                                })
+                                                .catch(err => {
+                                                    console.log("Error al asociar nuevo repuesto:", err);
+                                                    res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo asociar el nuevo repuesto' });
+                                                });
+                                        } else {
+                                            res.render('error', { layout: false, pageTitle: 'Error', message: 'Equipo no encontrado' });
+                                        }
+                                    });
+                            })
+                            .catch(err => {
+                                console.log("Error al crear el repuesto:", err);
+                                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo crear el repuesto' });
+                            });
+                    }
+                });
+            } else {
+                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el proveedor' });
+            }
+        })
+        .catch(err => {
+            console.log("Error al encontrar el proveedor:", err);
+            res.render('error', { layout: false, pageTitle: 'Error', message: 'Error al obtener el proveedor' });
+        });
+};
+
+
+/////
 
 
 exports.addBreakDown=(req,res)=>{
@@ -432,10 +547,6 @@ exports.addBreakDown=(req,res)=>{
     })
 
 }
-
-///formato de fecha
-
-
 
 //ordenes de trabajo 
 exports.addWorkOrder=(req,res) => {

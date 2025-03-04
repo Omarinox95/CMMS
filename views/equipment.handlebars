@@ -12,6 +12,99 @@
     </style>
 </head>
 
+<!-- controlador para tablas repuestos-->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sparePartsSelect = document.getElementById("sparePartsSelect");
+        const addSparePartBtn = document.getElementById("addSparePart");
+        const sparePartsTable = document.getElementById("sparePartsTable").getElementsByTagName("tbody")[0];
+        const sparePartsInput = document.getElementById("sparePartsInput");
+        const sparePartQuantity = document.getElementById("sparePartQuantity");
+
+
+        let selectedSpareParts = []; // Array donde guardaremos los repuestos seleccionados
+
+        // Función para agregar un repuesto a la tabla
+        function addSparePart() {
+            const selectedOption = sparePartsSelect.options[sparePartsSelect.selectedIndex];
+            const quantity = parseInt(sparePartQuantity.value);
+
+
+            if (!selectedOption.value) {
+                alert("Por favor, seleccione un repuesto.");
+                return;
+            }
+
+            if (quantity <= 0 || isNaN(quantity)) {
+                alert("Ingrese una cantidad válida.");
+                return;
+            }
+
+            const sparePartCode = selectedOption.value;
+            const sparePartName = selectedOption.dataset.name;
+
+            // Verificar si el repuesto ya está agregado
+            if (selectedSpareParts.some(sp => sp.Code === sparePartCode)) {
+                alert("Este repuesto ya fue agregado.");
+                return;
+            }
+
+            // Agregar repuesto al array
+            selectedSpareParts.push({ Code: sparePartCode, Name: sparePartName, Quantity: quantity });
+
+            // Crear una fila en la tabla
+            const row = sparePartsTable.insertRow();
+            row.setAttribute("data-code", sparePartCode);
+
+            const cell1 = row.insertCell(0);
+            cell1.textContent = sparePartCode;
+
+            const cell2 = row.insertCell(1);
+            cell2.textContent = sparePartName;
+
+            const cell3 = row.insertCell(2);
+            cell3.textContent = quantity;
+
+            const cell4 = row.insertCell(3);
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "Eliminar";
+            deleteBtn.className = "btn btn-danger btn-sm";
+            deleteBtn.onclick = function () {
+                removeSparePart(sparePartCode);
+            };
+            cell4.appendChild(deleteBtn);
+
+            // Actualizar el input oculto con los códigos de repuestos seleccionados
+            updateSparePartsInput();
+        }
+
+        // Función para eliminar un repuesto de la tabla
+        function removeSparePart(code) {
+            // Eliminar del array
+            selectedSpareParts = selectedSpareParts.filter(sp => sp.Code !== code);
+
+            // Eliminar la fila de la tabla
+            const row = sparePartsTable.querySelector(`tr[data-code='${code}']`);
+            if (row) {
+                row.remove();
+            }
+
+            // Actualizar el input oculto
+            updateSparePartsInput();
+        }
+
+        // Función para actualizar el input oculto con los repuestos seleccionados
+        function updateSparePartsInput() {
+            sparePartsInput.value = JSON.stringify(selectedSpareParts.map(sp => sp.Code));
+        }
+
+        // Agregar evento al botón "Agregar Repuesto"
+        addSparePartBtn.addEventListener("click", addSparePart);
+    });
+</script>
+
+<!--fin-->
+
 <!-- controlador para tag de grabador de equipo-->
 <script type="text/javascript">
   class FunctionController {
@@ -220,14 +313,36 @@
                             </select>
                         </div>
                         <!añadido 03/03/25 ->
-                        <div class="form-group">
-                            <label class="form-control-label">Repuestos Asociados</label>
-                            <select name="spareParts" class="form-control" multiple>
-                                {{#each spareParts}} <!-- Lista de repuestos disponibles -->
-                                    <option value="{{this.Code}}">{{this.Name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
+                       <label for="spareParts">Seleccionar Rep/acc/insumo:</label>
+                        <select id="sparePartsSelect" class="form-control">
+                            <option value="">-- Selecciona un Rep/Acc/Ins --</option>
+                            {{#each spareParts}}
+                                <option value="{{this.Code}}" data-name="{{this.Name}}">{{this.Name}}</option>
+                            {{/each}}
+                        </select>
+                        <!-- Campo para ingresar cantidad -->
+                        <input type="number" id="sparePartQuantity" class="form-control" placeholder="Cantidad" min="1" value="1" style="width: 100px; display: inline-block; margin-left: 10px;">
+
+                        <button type="button" id="addSparePart" class="btn btn-primary">Agregar</button>
+
+                        <!-- Tabla donde se mostrarán los repuestos seleccionados -->
+                        <h3>Rep/Acc/ins Seleccionados:</h3>
+                        <table class="table" id="sparePartsTable">
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nombre</th>
+                                    <th>Cantidad</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Aquí se llenarán los repuestos seleccionados dinámicamente -->
+                            </tbody>
+                        </table>
+
+                        <!-- Input oculto para enviar los repuestos seleccionados -->
+                        <input type="hidden" name="spareParts" id="sparePartsInput">
                         <! ->
 
                          <div class="form-group">

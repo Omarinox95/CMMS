@@ -125,6 +125,15 @@
                                                 </select>
                                             </div>
 
+                                            <!03/03/25->
+                                            <select name="spareParts[]" class="form-control" multiple>
+                                                {{#each spareParts}}
+                                                    <option value="{{this.Code}}" 
+                                                        {{#if (isInArray this.Code ../equipment.SpareParts)}} selected {{/if}}>
+                                                        {{this.Name}}
+                                                    </option>
+                                                {{/each}}
+                                            </select>
                                            
                                             <!->
 

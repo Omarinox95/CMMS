@@ -3,8 +3,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/db.js');
 //añadido 03/03/25 03:00 am
-const SparePart = require('./spare_part'); // Asegúrate de que la ruta sea correcta
-const EquipmentSparePart = require('./equipmentsparepart'); // Asegúrate de que la ruta sea correcta
 
 
 const Equipment = sequelize.define('Equipment', {
@@ -96,14 +94,5 @@ const Equipment = sequelize.define('Equipment', {
   },
   //
 });
-// añadido 03/03/25Relación muchos a muchos entre `Equipment` y `SparePart` a través de `EquipmentSpareParts`
-// Relación muchos a muchos con la tabla intermedia `equipmentsparepart`
-// Especificamos el nombre de la tabla intermedia y las claves foráneas personalizadas
-// Relación de uno a muchos con la tabla intermedia EquipmentSparePart
-Equipment.hasMany(EquipmentSparePart, { foreignKey: 'id_equipment' });
 
-// Relación de uno a muchos con SparePart a través de la tabla intermedia
-//EquipmentSparePart.belongsTo(SparePart, { foreignKey: 'id_sparepart' });
-
-//
 module.exports = Equipment;
