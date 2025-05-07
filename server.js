@@ -28,6 +28,7 @@ const equipmentRoutes = require('./routes/equipmentRoutes');
 const equipmentsparepart = require('./models/equipmentsparepart');
 const { Equipment, Department } = require('./models'); // Importa los modelos desde index.js
 
+
 ///AUMENTADO PARA MP
 //const MPPCalendarRoutes = require('./routes/MPPCalendarRoutes');
 
@@ -111,6 +112,9 @@ clinical_engineer.hasMany(maintenance);
 //equipment.hasMany(spare_parts);
 equipment.belongsToMany(spare_parts, { through: 'equipmentsparepart', foreignKey: 'id_equipment' });
 spare_parts.belongsToMany(equipment, { through: 'equipmentsparepart', foreignKey: 'id_sparepart' });
+
+// aumentado 23/03 indicadores
+
 
 
 // Synchronizing with database 

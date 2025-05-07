@@ -1,4 +1,4 @@
-<head>
+<!--<head>
     <style>
         /* Fondo de thead */
         table thead {
@@ -25,7 +25,7 @@
         
             <div class="row">
                 <div class="col-md-12">
-                    <!-- DATA TABLE -->
+                   
                     <h3 class="title-5 m-b-35">Agents/Proveedores</h3>
                     <div class="table-data__tool">
                         
@@ -80,7 +80,7 @@
                            {{/if}} 
                         </table>
                     </div>
-                    <!-- END DATA TABLE -->
+                   
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@
 </div>
 
 
-<!-- POPUP-->
+
 <div class="modal fade" id="modalAppointment" tabindex="-1" role="dialog" aria-labelledby="modalAppointmentLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -134,3 +134,127 @@
         </div>
     </div>     
 </div>  
+
+ <!-- din -->
+<head>
+    <style>
+        /* Fondo de thead */
+        table thead {
+            background-color: #d2d6d9 !important; /* Fondo gris claro */
+        }
+
+        /* Letras de los th */
+        table thead th {
+            color: #009f48 !important; /* Letras verdes */
+        }
+
+        /* Letras de los td */
+        table tbody td {
+            color: #303655 !important; /* Letras gris oscuro */
+        }
+
+        /* Ocultar botón al imprimir */
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+        
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- DATA TABLE -->
+                    <h3 class="title-5 m-b-35">Agents/Proveedores</h3>
+                    
+                    <!-- Botón de impresión -->
+                    <button class="print-btn" onclick="printTable()" style="background-color: #009f48; color: white; border: none; padding: 10px 20px; margin-bottom: 20px; cursor: pointer; border-radius: 5px;">
+                        🖨️ Imprimir Tabla
+                    </button>
+
+                    <div class="table-data__tool">
+                        <div class="table-data__tool-right">
+                            <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                <i class="zmdi zmdi-plus"></i> Agent/Proveedores
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-responsive table-responsive-data2">
+                        <table class="table table-data2" id="agentTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Dirección</th>
+                                    <th>Celular</th>
+                                    <th>Email</th>
+                                    <th>Notas</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                           {{#if hasAgentSupplier}} 
+                             <tbody>
+                               {{#each agentSuppliers }} 
+                                    <tr class="tr-shadow">
+                                        <td>{{ this.Id }}</td>
+                                        <td>
+                                            <span>{{ this.Name }}</span>
+                                        </td>
+                                        <td>{{ this.Adress }}</td>
+                                        <td>0{{ this.Phone }}</td>
+                                        <td><span class="block-email">{{ this.Email }}</span></td>
+                                        <td>{{ this.Notes }}</td>
+                                        <td>
+                                            <div class="table-data-feature">
+                                                <a href="/agentSupplier/edit/{{ this.Id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <i class="zmdi zmdi-edit"></i>
+                                                </a>
+                                                <a href="/agentSupplier/delete/{{ this.Id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <i class="zmdi zmdi-delete"></i>
+                                                </a>        
+                                                <a href="/report/agent/spareParts/{{ this.Id }}" class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                                    <i class="zmdi zmdi-more"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="spacer"></tr>
+                               {{/each}} 
+                             </tbody>
+                           {{/if}} 
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para imprimir solo la tabla -->
+<script>
+    function printTable() {
+        var tableContent = document.getElementById('agentTable').outerHTML;
+        var printWindow = window.open('', '', 'height=600, width=800');
+        printWindow.document.write('<html><head><title>Imprimir Tabla</title>');
+        printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+        printWindow.document.write('<style>');
+        printWindow.document.write('body {font-family: Arial, sans-serif; line-height: 1.6;}');
+        printWindow.document.write('table {width: 100%; border-collapse: collapse;}');
+        printWindow.document.write('th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}');
+        printWindow.document.write('thead {background-color: #d2d6d9;}');
+        printWindow.document.write('thead th {color: #009f48;}');
+        printWindow.document.write('tbody td {color: #303655;}');
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(tableContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+

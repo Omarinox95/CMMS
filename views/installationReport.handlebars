@@ -1,4 +1,4 @@
-<head>
+<!--<head>
     <style>
         /* Fondo de thead */
         table thead {
@@ -37,7 +37,7 @@
                          <div class="card-text"><strong>Software:</strong> {{equipment.Software}}</div>
                     </div>
                     <div class="row">
-                        <!-- table 1 DATA-->
+                        
                         <div class="col-lg-6">
                             <div class="top-campaign">
                                 <h3 class="title-3 m-b-30">Detalles</h3>
@@ -77,7 +77,7 @@
                                 </div>  
                             </div>
                         </div>
-                        <!-- table 2 DATA-->
+                        
                         <div class="col-lg-6">
                             <div class="top-campaign">
                                 <h3 class="title-3 m-b-30">Información de compra</h3>
@@ -109,7 +109,7 @@
                                     </table>
                                 </div>   
                             </div>
-                            <!-- END USER DATA-->
+                        
                         </div>
 
                     </div> 
@@ -117,5 +117,153 @@
             </div> 
         </div>
         
-    </div> 
+    </div>     <!-- END USER DATA-->
+    <head>
+    <style>
+        /* Estilo para ocultar el botón durante la impresión */
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
+
+        /* Estilo del botón en pantalla */
+        .print-btn {
+            background-color: #009f48;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .print-btn:hover {
+            background-color: #007f39;
+        }
+
+        /* Otros estilos básicos para el contenido */
+        body {
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <div class="card-body card-block">
+        <div class="login-content">
+            <div class="login-logo">
+                <img src="images/LogoMedical.png" />
+            </div>
+            <h3 class="title-3 m-b-30">
+                <i class="zmdi zmdi-account-calendar"></i>Reporte de instalación</h3>
+            <div class="card-body">
+                <div class="card-text"><strong>Fecha/Hora:</strong> {{Date}} </div>
+                <div class="card-text"><strong>Equipo:</strong> {{ equipment.Name}}</div>
+                <div class="card-text"><strong>Modelo:</strong> {{equipment.Model}}</div>
+                <div class="card-text"><strong>Serie:</strong> {{equipment.SerialNumber}}</div>
+                <div class="card-text"><strong>Departmento:</strong> {{equipment.Department}}</div>
+                <div class="card-text"><strong>Localización:</strong> {{equipment.Location}}</div>
+                <div class="card-text"><strong>Software:</strong> {{equipment.Software}}</div>
+            </div>
+            <div class="row">
+                <!-- table 1 DATA-->
+                <div class="col-lg-6">
+                    <div class="top-campaign">
+                        <h3 class="title-3 m-b-30">Detalles</h3>
+                        <div class="table-responsive">
+                            <table class="table table-top-campaign">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Notas: </strong><span style="color:#0056b3">{{equipment.Notes}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Serial: </strong><span style="color:#0056b3">{{ equipment.SerialNumber}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Fabricación: </strong><span style="color:#0056b3">{{ equipment.Manufacturer}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Proveedor: </strong><span style="color:#0056b3">{{ equipment.Agent}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Estado Activo: </strong><span style="color:#0056b3">{{ equipment.AssetStatus}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Estado Seguro: </strong><span style="color:#0056b3">{{ equipment.InsuranceStatus}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Estado del equipo: </strong><span style="color:#0056b3">{{ equipment.FuntionalStatus}}</span></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- table 2 DATA-->
+                <div class="col-lg-6">
+                    <div class="top-campaign">
+                        <h3 class="title-3 m-b-30">Información de compra</h3>
+                        <div class="table-responsive">
+                            <table class="table table-top-campaign">
+                                <thead>
+                                    <tr>
+                                        <td><strong>Fecha de entrega: </strong><span style="color:#0056b3">{{ equipment.ArrivalDate}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Fecha de instalación: </strong><span style="color:#0056b3">{{ equipment.InstallationDate}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Finalización de garantía: </strong><span style="color:#0056b3">{{equipment.WarrantyDate}}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Precio de compra: </strong><span style="color:#0056b3">{{ equipment.Cost}} L.E</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Intermitencia de MP </strong><strong style="color:#0056b3">{{equipment.PM}}</strong></td>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón para imprimir (se ocultará en la impresión) -->
+        <button class="print-btn" onclick="printContent()">Imprimir Reporte</button>
+    </div>
+</div>
+
+<!-- Script para imprimir -->
+<script>
+    function printContent() {
+        var content = document.querySelector('.container').innerHTML; // Obtener todo el contenido del contenedor
+        var printWindow = window.open('', '', 'height=600, width=800'); // Crear ventana de impresión
+        printWindow.document.write('<html><head><title>Reporte de Instalación</title>');
+        printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">'); // Incluyendo Bootstrap
+        printWindow.document.write('<style>');
+        printWindow.document.write('body {font-family: Arial, sans-serif; line-height: 1.6;}');
+        printWindow.document.write('table {width: 100%; border-collapse: collapse;}');
+        printWindow.document.write('th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}');
+        printWindow.document.write('thead {background-color: #d2d6d9;}');
+        printWindow.document.write('thead th {color: #009f48;}');
+        printWindow.document.write('tbody td {color: #303655;}');
+        printWindow.document.write('img {width: 100px; margin-bottom: 20px;}');  // Ajustar tamaño del logo
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        
+        // Incluir el logo directamente dentro de la ventana de impresión
+        printWindow.document.write('<div class="login-logo">');
+        printWindow.document.write('<img src="http://tusitio.com/images/LogoMedical.png" />'); // Ruta absoluta
+        printWindow.document.write('</div>');
+        
+        printWindow.document.write(content); // Escribir el contenido en la ventana
+        printWindow.document.write('</body></html>');
+        printWindow.document.close(); // Cerrar la ventana del documento
+        printWindow.print(); // Imprimir el contenido
+    }
+</script>
+
     

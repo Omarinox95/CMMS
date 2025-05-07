@@ -12,9 +12,6 @@ const client = require('../emqx/emqx-connection');
 
 
 
-
-
-
 exports.addDepartment=(req,res)=>{
  code=req.body.Code
  name=req.body.Name
@@ -27,7 +24,6 @@ exports.addDepartment=(req,res)=>{
 
 
 }
-
 
 
 exports.addAgentSupplier=(req,res)=>{
@@ -127,115 +123,7 @@ exports.addClinicalEngineer=(req,res)=>{
 
 }
 
-//se comenta 03/03/25
-/*exports.addEquipment=(req,res) => {
-    console.log("Datos recibidos en el backend:", req.body);
-    code=req.body.Code
-    name=req.body.Name
-    cost=req.body.Cost
-    if(req.body.edit){
-        image=req.body.Image
-    }
-    else{
-        image=req.file.path.split('\\')
-        if (image.length>1)
-            image=req.file.path.split('\\').pop()
-        else    
-            image=req.file.path.split('/').pop()
-    }
-    model=req.body.Model
-    serialnumber=req.body.SerialNumber
-    installationdate=req.body.InstallationDate
-    arrivaldate=req.body.ArrivalDate
-    warrantydate=req.body.WarrantyDate
-    manufacturer=req.body.Manufacturer
-    location=req.body.Location
-    department=req.body.Department
-    agent=req.body.Agent
-    pm=req.body.PM
-    notes=req.body.Notes
-    var departmentCode=null
-    var agentCode=null
-    //añadido 2/3/25
-    software=req.body.Software
-    softwareVersion=req.body.SoftwareVersion
-    softwarePass=req.body.SoftwarePass
-    networkAddress=req.body.NetworkAddress
-    assetStatus=req.body.AssetStatus
-    insuranceStatus=req.body.InsuranceStatus
-    funtionalStatus=req.body.FuntionalStatus
-    ////
-    Department.findOne({where:{Name:department}}).then(department => { 
-        if (department){
-            departmentCode=department.Code
-            AgentSupplier.findOne({where:{Id:agent}}).then(agent =>{
-                if(agent){
-                    agentCode=agent.Id
-                    Equipment.findByPk(code).then(equipment=>{
-                        if(equipment){
-                            equipment.Code=code
-                            equipment.Name=name
-                            equipment.Cost=cost
-                            equipment.Image=image
-                            equipment.Model=model
-                            equipment.PM=pm
-                            equipment.ArrivalDate=arrivaldate
-                            equipment.WarrantyDate=warrantydate
-                            equipment.Notes=notes
-                            equipment.InstallationDate=installationdate
-                            equipment.SerialNumber=serialnumber
-                            equipment.Manufacturer=manufacturer
-                            equipment.Location=location
-                            equipment.DepartmentCode=departmentCode
-                            equipment.AgentSupplierId=agentCode
-                            //añadido 02/03/25
-                            equipment.Software=software
-                            equipment.SoftwareVersion=softwareVersion
-                            equipment.SoftwarePass=softwarePass
-                            equipment.NetworkAddress=networkAddress
-                            equipment.AssetStatus=assetStatus
-                            equipment.InsuranceStatus=insuranceStatus
-                            equipment.FuntionalStatus=funtionalStatus
-                            //
-                            
-                            equipment.save().then(equipment => res.redirect('/equipment'))
-                        }
-        
-                        else
-                        {                            
-                            //cambios en equipment.create 02/03
-                            Equipment.create({Code:code,Name:name,Image:image,ArrivalDate:arrivaldate,WarrantyDate:warrantydate,PM:pm,
-                                Cost:cost,Model:model,SerialNumber:serialnumber,AgentSupplierId:agentCode,Notes:notes,
-                                Location:location,Manufacturer:manufacturer,InstallationDate:installationdate,DepartmentCode:departmentCode, 
-                                Software:software,SoftwareVersion:softwareVersion,SoftwarePass:softwarePass,NetworkAddress:networkAddress,
-                                AssetStatus:assetStatus, InsuranceStatus:insuranceStatus, FuntionalStatus:funtionalStatus})
-                                .then(equipment => res.redirect('/equipment') )
 
-                            //
-                            console.log("Datos recibidos en el backend:",equipment);
-
-                            client.publish('equipoRegistro', code, () => {
-                                console.log('Confirmacion enviada a circuito');
-                            });
-
-                        }
-                    })
-                }
-                else
-                  res.render('error',{layout:false,pageTitle:'Error',href:'/equipment',message:'Sorry !!! Could Not Get this Agent'})                
-            })
-        }
-        else{
-            res.render('error',{layout:false,pageTitle:'Error',href:'/equipment',message:'Sorry !!! Could Not Get this Department'})
-        }
-    }).catch(err => {
-        if(err)
-         res.render('error',{layout:false,pageTitle:'Error',href:'/sparePart',message:'Sorry !!! Could Not Add This Engineer '})
-
-          
-    })
-
-}*/
 exports.addEquipment = (req, res) => {
     console.log("Datos recibidos en el backend:", req.body);
    // console.log("Repuestos seleccionados:", req.body.spareParts);
@@ -365,54 +253,6 @@ exports.addEquipment = (req, res) => {
         });
 };
 
-//comentado 03/03/25
-/*exports.addSpareParts=(req,res)=>{
-    code=req.body.Code
-    name=req.body.Name
-    amount=req.body.Amount
-    agentId=req.body.AgentSupplierId
-    equipmentCode=req.body.EquipmentCode
-    categoryId=req.body.CategoryId
-    if(req.body.edit){
-        image=req.body.Image
-    }
-    else{
-        image=req.file.path.split('\\')
-        if (image.length>1)
-            image=req.file.path.split('\\').pop()
-        else    
-            image=req.file.path.split('/').pop()
-           
-       }
-    AgentSupplier.findOne({where:{Id:agentId}}).then(agent =>{
-        if(agent){
-            agentCode=agent.Id
-            SpareParts.findByPk(code).then(part=>{
-                if(part){
-                    part.Code=code
-                    part.Name=name
-                    part.Amount=amount
-                    part.AgentSupplierId=agentId
-                    part.EquipmentCode=equipmentCode
-                    part.CategoryId=categoryId
-                    part.Image=image
-                    part.save().then(p => res.redirect('/sparePart'))
-                }
-                else{
-                    SpareParts.create({Code:code,Name:name,Amount:amount,AgentSupplierId:agentId,Image:image,EquipmentCode:equipmentCode,CategoryId:categoryId})
-                    .then(res.redirect('/sparePart'))
-                }
-        
-            })
-        }
-        else
-         return res.render('error',{layout:false,pageTitle:'Error',href:'/sparePart',message:'Sorry !!! Could Not Get this Agent'})
-        
-    }).catch(err=> {
-        res.render('error',{layout:false,pageTitle:'Error',href:'/sparePart',message:'Sorry !!! Could Not Gey rhis page'})
-        })
-
-}*/
 
 exports.addSpareParts = (req, res) => {
     console.log("Repuestos que se van a asociar:", spareParts);

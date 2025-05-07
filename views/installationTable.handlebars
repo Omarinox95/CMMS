@@ -1,4 +1,4 @@
-<head>
+<!--<head>
     <style>
         /* Fondo de thead */
         table thead {
@@ -57,3 +57,93 @@
 </div>
         <!-- END PAGE CONTAINER-->  
 
+<head>
+    <style>
+        /* Fondo de thead */
+        table thead {
+            background-color: #d2d6d9 !important; /* Fondo gris claro */
+        }
+
+        /* Letras de los th */
+        table thead th {
+            color: #009f48 !important; /* Letras verdes */
+        }
+
+        /* Letras de los td */
+        table tbody td {
+            color: #303655 !important; /* Letras gris oscuro */
+        }
+
+        /* Ocultar botón al imprimir */
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<div class="main-content">
+    <div class="section__content section__content--p30"> 
+        <div class="container-fluid">
+            <!-- Botón de impresión -->
+            <button class="print-btn" onclick="printTable()" style="background-color: #009f48; color: white; border: none; padding: 10px 20px; margin-bottom: 20px; cursor: pointer; border-radius: 5px;">
+                🖨️ Imprimir Tabla
+            </button>
+
+            <div class="table-responsive m-b-40">
+                <table class="table table-borderless table-data3" id="equipmentTable">
+                    <thead>
+                        <tr>
+                            <th>Código Equipo</th>
+                            <th>Nombre equipo</th>
+                            <th>Fecha instalación</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                   {{#if hasReports}} 
+                    <tbody>
+                     {{#each reports}}
+                        <tr>
+                            <td>{{this.Code}}</td>
+                            <td>{{this.Name}}</td>
+                            <td>{{this.InstallationDate}}</td>
+                            <td>
+                                <div class="table-data-feature">      
+                                    <a href="/report/equipment/installation/{{ this.Code }}?report=true" class="item" data-toggle="tooltip" data-placement="top" title="Detalles">
+                                        <i class="zmdi zmdi-more"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                       {{/each}} 
+                    </tbody>
+                   {{/if}} 
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script para imprimir solo la tabla -->
+<script>
+    function printTable() {
+        var tableContent = document.getElementById('equipmentTable').outerHTML;
+        var printWindow = window.open('', '', 'height=600, width=800');
+        printWindow.document.write('<html><head><title>Imprimir Tabla</title>');
+        printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+        printWindow.document.write('<style>');
+        printWindow.document.write('body {font-family: Arial, sans-serif; line-height: 1.6;}');
+        printWindow.document.write('table {width: 100%; border-collapse: collapse;}');
+        printWindow.document.write('th, td {border: 1px solid #ddd; padding: 8px; text-align: left;}');
+        printWindow.document.write('thead {background-color: #d2d6d9;}');
+        printWindow.document.write('thead th {color: #009f48;}');
+        printWindow.document.write('tbody td {color: #303655;}');
+        printWindow.document.write('</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(tableContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>

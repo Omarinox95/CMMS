@@ -10,7 +10,12 @@
             color: #303655; /* Gris oscuro para los valores */
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.19/jspdf.plugin.autotable.min.js"></script>
+
+
 </head>
+
 
 <!-- controlador para tablas repuestos-->
 <script>
@@ -138,6 +143,10 @@
                 <i class="zmdi zmdi-plus"></i>Añadir Equipo</a>
                 <a href="/equipment/search" class="au-btn au-btn-icon au-btn--blue au-btn--small">
                 <i class="zmdi zmdi-search"></i>Buscar Equipo</a>
+                 <!-- Botón para exportar a PDF -->
+                <button id="exportPDF" class="au-btn au-btn-icon au-btn--orange au-btn--small">
+                    <i class="zmdi zmdi-file-text"></i>Exportar a PDF
+                </button>
 
             </div>
         {{#if hasEquipments}}  
@@ -176,6 +185,47 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('exportPDF').addEventListener('click', function() {
+        // Crear una nueva instancia de jsPDF
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+
+        // Añadir título al PDF
+        doc.setFontSize(18);
+        doc.text("Listado de Equipos", 14, 20);
+
+        // Extraer los datos de las tarjetas de equipo
+        const rows = [];
+        document.querySelectorAll('.card-body').forEach(function(card) {
+            const row = [];
+            const cardTexts = card.querySelectorAll('.card-text span');
+
+            // Verificamos si hay al menos 7 elementos para evitar errores
+            if (cardTexts.length >= 7) {
+                row.push(cardTexts[0].innerText); // Código
+                row.push(cardTexts[1].innerText); // Nombre
+                row.push(cardTexts[2].innerText); // Modelo
+                row.push(cardTexts[3].innerText); // Número de serie
+                row.push(cardTexts[4].innerText); // Localización
+                row.push(cardTexts[5].innerText); // Departamento
+                row.push(cardTexts[6].innerText); // MP
+                rows.push(row);
+            }
+        });
+
+        // Agregar la tabla al PDF
+        doc.autoTable({
+            head: [['Código', 'Nombre', 'Modelo', 'Número de Serie', 'Localización', 'Departamento', 'MP']],
+            body: rows,
+            startY: 30 // Para dejar espacio entre el título y la tabla
+        });
+
+        // Guardar el PDF generado
+        doc.save('equipos.pdf');
+    });
+</script>
+
         <!-- END PAGE CONTAINER-->    
 <!-- POPUP-->
 <div class="modal fade" id="modalAppointment" tabindex="-1" role="dialog" aria-labelledby="modalAppointmentLabel" aria-hidden="true">

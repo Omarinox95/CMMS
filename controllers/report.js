@@ -425,30 +425,6 @@ exports.equipmentMaintenaceReport=(req,res) => {
     })
 }
 
-//comentado 03/03/25
-/*exports.equipmentSparePartsReport=(req,res) => {
-code=req.params.Id
-var name=null
-var model =null
-var image=null
-Equipment.findByPk(code).then(eq => {
-    name=eq.Name
-    model=eq.Model
-    image=eq.Image
-    SparePart.findAll({where:{EquipmentCode:code},include:[{model:AgentSupplier}]}).then(spareParts => {
-        const sps=spareParts.map(sparePart => {
-            return {
-                Code:sparePart.Code,
-                Name:sparePart.Name,
-                Amount:sparePart.Amount,
-                AgentName:sparePart.AgentSupplier.Name
-            }
-        })
-        res.render('equipmentSpareParts',{layout:'equipmentReportLayout',pageTitle:'Break Downs',
-            code:code,SP:true,spareParts:sps,hasSpareParts:sps.length>0,name:name,model:model,image:image })   
-    })
-})
-}*/
 
 exports.equipmentSparePartsReport = (req, res) => {
     const equipmentId = req.params.Id;  // Obtén el ID del equipo desde los parámetros de la ruta
