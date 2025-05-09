@@ -1,102 +1,74 @@
 <div class="container">
-            <div class="card-body card-block">
-                <div class="login-content">
+    <div class="card-body card-block">
+        <div class="login-content">
+            <div class="login-logo">
+                <img src="images/LogoMedical.png" />
+            </div>
+            <h3 class="title-3 m-b-30"><i class="zmdi zmdi-chart"></i> Dashboard de Equipos</h3>
 
-                    <div class="login-logo">
-                       
-                    <img src="images/LogoMedical.png" />
-                    </div>
-                    <h3 class="title-3 m-b-30">
-                        <i class="zmdi zmdi-account-calendar"></i>Reporte de instalación</h3>
-                    <div class="card-body">
-                        <div class="card-text"><strong>Fecha/Hora:</strong> {{Date}} </div>
-                        <div class="card-text"><strong>Equipo:</strong> {{ equipment.Name}}</div>
-                        <div class="card-text"><strong>Modelo:</strong> {{equipment.Model}}</div>
-                         <div class="card-text"><strong>Serie:</strong> {{equipment.SerialNumber}}</div>
-                         <div class="card-text"><strong>Departmento:</strong> {{equipment.Department}}</div>
-                        <div class="card-text"><strong>Localización:</strong> {{equipment.Location}}</div>
-                         <div class="card-text"><strong>Software:</strong> {{equipment.Software}}</div>
-                    </div>
-                    <div class="row">
-                        <!-- table 1 DATA-->
-                        <div class="col-lg-6">
-                            <div class="top-campaign">
-                                <h3 class="title-3 m-b-30">Detalles</h3>
-                                <div class="table-responsive">
-                                    <table class="table table-top-campaign">
-                                        <thead>
-                                            <tr>
-                                                <td><strong>Notas:  </strong><span style="color:#0056b3">{{equipment.Notes}}</span> </td>
-                                                <td hidden>//</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Serial:  </strong> <span style="color:#0056b3">{{ equipment.SerialNumber}}</span></td>
-                                                <td hidden>//</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Fabricación:  </strong><span style="color:#0056b3"> {{ equipment.Manufacturer}}</span> </td>
-                                                <td hidden>//</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Proveedor:  </strong> <span style="color:#0056b3">  {{ equipment.Agent}}</span></td>
-                                                <td hidden>//</td>
-                                            </tr>   
-                                            <tr>
-                                                <td><strong>Estado Activo:  </strong> <span style="color:#0056b3">  {{ equipment.AssetStatus}}</span></td>
-                                                <td hidden>//</td>
-                                            </tr> 
-                                             <tr>
-                                                <td><strong>Estado Seguro:  </strong> <span style="color:#0056b3">  {{ equipment.InsuranceStatus}}</span></td>
-                                                <td hidden>//</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Estado del equipo:  </strong> <span style="color:#0056b3">  {{ equipment.FuntionalStatus}}</span></td>
-                                                <td hidden>//</td>
-                                            </tr>  
-                                        </thead>
-                                    </table>
-                                </div>  
-                            </div>
-                        </div>
-                        <!-- table 2 DATA-->
-                        <div class="col-lg-6">
-                            <div class="top-campaign">
-                                <h3 class="title-3 m-b-30">Información de compra</h3>
-                                <div class="table-responsive">
-                                    <table class="table table-top-campaign">
-                                        <thead>
-                                            <tr>
-                                                <td><strong>Fecha de entrega: </strong>  <span style="color:#0056b3"> {{ equipment.ArrivalDate}}</span></td>
-                                                <td hidden> //</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Fecha de instalación: </strong> <span style="color:#0056b3"> {{ equipment.InstallationDate}}</span> </td>
-                                                <td hidden>//</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Finalización de garantía: </strong>  <span style="color:#0056b3"> {{equipment.WarrantyDate}}</span></td>
-                                                <td hidden>//</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Precio de compra: </strong> <span style="color:#0056b3"> {{ equipment.Cost}} L.E</span> </td>
-                                                <td hidden>L.E</td>
-                                            </tr>
-                                            <tr>
-                                                <td><strong>Intermitencia de MP </strong>  <strong style="color:#0056b3">{{equipment.PM}}</strong> </td>
-                                                <td hidden> //</td>
-                                                
-                                            </tr>   
-                                        </thead>
-                                    </table>
-                                </div>   
-                            </div>
-                            <!-- END USER DATA-->
-                        </div>
+            <div class="card-body">
+                <div class="card-text"><strong>Total Equipos:</strong> {{totalEquipos}}</div>
+                <div class="card-text"><strong>Costo Total:</strong> {{costoTotal}} L.E</div>
+            </div>
 
-                    </div> 
+            <div class="row">
+                <!-- Equipos por Año -->
+                <div class="col-lg-6">
+                    <canvas id="chartAnio"></canvas>
                 </div>
-            </div> 
+
+                <!-- Estado Funcional -->
+                <div class="col-lg-6">
+                    <canvas id="chartEstado"></canvas>
+                </div>
+
+                <!-- Activos vs Inactivos -->
+                <div class="col-lg-6 mt-4">
+                    <canvas id="chartActivo"></canvas>
+                </div>
+            </div>
         </div>
-        
-    </div> 
-    
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const porAnio = JSON.parse('{{{porAnio}}}');
+    const porEstado = JSON.parse('{{{porEstado}}}');
+    const porActivo = JSON.parse('{{{porActivo}}}');
+
+    new Chart(document.getElementById("chartAnio"), {
+        type: 'bar',
+        data: {
+            labels: Object.keys(porAnio),
+            datasets: [{
+                label: 'Equipos por año',
+                data: Object.values(porAnio),
+                backgroundColor: '#007bff'
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("chartEstado"), {
+        type: 'pie',
+        data: {
+            labels: Object.keys(porEstado),
+            datasets: [{
+                label: 'Estado funcional',
+                data: Object.values(porEstado),
+                backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6f42c1']
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("chartActivo"), {
+        type: 'doughnut',
+        data: {
+            labels: ['Activo', 'Inactivo'],
+            datasets: [{
+                data: [porActivo.Activo, porActivo.Inactivo],
+                backgroundColor: ['#17a2b8', '#6c757d']
+            }]
+        }
+    });
+</script>

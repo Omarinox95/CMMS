@@ -10,6 +10,43 @@ const Maintenance = require('../models/maintenance')
 const Category = require('../models/category');
 const client = require('../emqx/emqx-connection');
 
+//añadido 06/05/205
+// Añadido 06/05/2025
+const ReceptionStatus = require('../models/ReceptionStatus');
+const AcquisitionType = require('../models/AcquisitionType');
+/*
+exports.getAddEquipment = async (req, res) => {
+  try {
+    // Obtenemos las listas de los modelos
+    const [receptionStatusList, acquisitionTypeList] = await Promise.all([
+      ReceptionStatus.findAll(),
+      AcquisitionType.findAll()
+    ]);
+
+
+    // Verificar los datos en la consola
+    console.log("receptionStatusList:", receptionStatusList); // Verifica los datos de los estados de recepción
+    console.log("acquisitionTypeList:", acquisitionTypeList); // Verifica los datos de tipos de adquisición
+
+    // Pasamos los datos convertidos a la vista
+    res.render('equipment', {
+      layout: 'main-layout',
+      pageTitle: 'Agregar Equipo',
+      receptionStatusList: receptionStatusList,
+      acquisitionTypeList: acquisitionTypeList
+    });
+  } catch (err) {
+    // Manejo de errores
+    console.error('Error al cargar listas:', err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'No se pudieron cargar los datos de estado de recepción o tipo de adquisición'
+    });
+  }
+};*/
+
+
 
 
 exports.addDepartment=(req,res)=>{
@@ -123,11 +160,9 @@ exports.addClinicalEngineer=(req,res)=>{
 
 }
 
-
 exports.addEquipment = (req, res) => {
     console.log("Datos recibidos en el backend:", req.body);
-   // console.log("Repuestos seleccionados:", req.body.spareParts);
-
+    
     // Recuperar los datos del equipo
     const code = req.body.Code;
     const name = req.body.Name;
@@ -150,6 +185,10 @@ exports.addEquipment = (req, res) => {
     const assetStatus = req.body.AssetStatus;
     const insuranceStatus = req.body.InsuranceStatus;
     const funtionalStatus = req.body.FuntionalStatus;
+    const assetInitialDate = req.body.AssetInitialDate;
+    const insuranceInitialDate = req.body.InsuranceInitialDate;
+    const receptionStatus = req.body.ReceptionStatusId; // este es un ID
+    const acquisitionType = req.body.AcquisitionType; // este es un ID
 
     let image;
     if (req.body.edit) {
@@ -161,6 +200,181 @@ exports.addEquipment = (req, res) => {
     let departmentCode = null;
     let agentCode = null;
 
+    // Obtener los valores de ReceptionStatus y AcquisitionType
+    Promise.all([
+        ReceptionStatus.findAll(), 
+        AcquisitionType.findAll()
+    ])
+    .then(([receptionStatuses, acquisitionTypes]) => {
+        const plainReceptionStatuses = receptionStatuses.map(rs => ({
+            Id: rs.Id,
+            Name: rs.Name
+        }));
+    
+        const plainAcquisitionTypes = acquisitionTypes.map(at => ({
+            Id: at.Id,
+            Name: at.Name
+        }));
+    
+        res.render('equipment', {
+            receptionStatuses: plainReceptionStatuses,
+            acquisitionTypes: plainAcquisitionTypes
+        });
+    
+        // Continúa con la lógica de creación
+    
+
+        // Luego puedes continuar con el proceso de creación del equipo
+        Department.findOne({ where: { Name: department } })
+            .then(department => {
+                if (department) {
+                    departmentCode = department.Code;
+                    AgentSupplier.findOne({ where: { Id: agent } })
+                        .then(agent => {
+                            if (agent) {
+                                agentCode = agent.Id;
+                                ReceptionStatus.findOne({ where: { Id: receptionStatus } })
+                                    .then(receptionStatus => {
+                                        if (receptionStatus) {
+                                            receptionID = receptionStatus.Id;
+                                            console.log("Estados de recepcion:", receptionID);
+
+                                            // Crear el equipo
+                                            Equipment.create({
+                                                Code: code,
+                                                Name: name,
+                                                Cost: cost,
+                                                Image: image,
+                                                Model: model,
+                                                SerialNumber: serialnumber,
+                                                InstallationDate: installationdate,
+                                                ArrivalDate: arrivaldate,
+                                                WarrantyDate: warrantydate,
+                                                Manufacturer: manufacturer,
+                                                Location: location,
+                                                Notes: notes,
+                                                PM: pm,
+                                                DepartmentCode: departmentCode,
+                                                AgentSupplierId: agentCode,
+                                                Software: software,
+                                                SoftwareVersion: softwareVersion,
+                                                SoftwarePass: softwarePass,
+                                                NetworkAddress: networkAddress,
+                                                AssetStatus: assetStatus,
+                                                InsuranceStatus: insuranceStatus,
+                                                FuntionalStatus: funtionalStatus,
+                                                AssetInitialDate: assetInitialDate,
+                                                InsuranceInitialDate: insuranceInitialDate,
+                                                ReceptionStatusId: receptionID,
+                                                AcquisitionTypeId: acquisitionType
+                                            })
+                                            .then(newEquipment => {
+                                                console.log("Nuevo equipo creado:", newEquipment);
+
+                                                const spareParts = typeof req.body.spareParts === "string" ? JSON.parse(req.body.spareParts) : req.body.spareParts;
+
+                                                if (!Array.isArray(spareParts)) {
+                                                    console.error("Error: spareParts no es un array válido", spareParts);
+                                                    return res.status(400).json({ error: "Formato incorrecto de repuestos." });
+                                                }
+
+                                                console.log("Repuestos seleccionados:", spareParts);
+
+                                                if (spareParts && spareParts.length > 0) {
+                                                    newEquipment.addSpareParts(spareParts, { through: 'EquipmentSpareParts' })
+                                                        .then(() => {
+                                                            console.log("Repuestos asociados correctamente");
+                                                            res.redirect('/equipment');  // Redirigir después de crear el equipo
+                                                        })
+                                                        .catch(err => {
+                                                            console.log("Error al asociar repuestos:", err);
+                                                            res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudieron asociar los repuestos' });
+                                                        });
+                                                } else {
+                                                    res.redirect('/equipment');
+                                                }
+                                            })
+                                            .catch(err => {
+                                                console.log("Error al crear el equipo:", err);
+                                                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo crear el equipo' });
+                                            });
+                                        } else {
+                                            res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró estado de recepcion' });
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.log("Error al encontrar el estado de recepcion:", err);
+                                        res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró estado de recepcion' });
+                                    });
+                            } else {
+                                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el proveedor' });
+                            }
+                        })
+                        .catch(err => {
+                            console.log("Error al encontrar el proveedor:", err);
+                            res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el proveedor' });
+                        });
+                } else {
+                    res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el departamento' });
+                }
+            })
+            .catch(err => {
+                console.log("Error al encontrar el departamento:", err);
+                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo encontrar el departamento' });
+            });
+    })
+    .catch(err => {
+        console.log("Error al obtener datos de recepción y adquisición:", err);
+        res.render('error', { layout: false, pageTitle: 'Error', message: 'Error al obtener los datos de recepción y adquisición' });
+    });
+};
+
+/*exports.addEquipment = (req, res) => {
+    console.log("Datos recibidos en el backend:", req.body);
+    
+    // Recuperar los datos del equipo
+    const code = req.body.Code;
+    const name = req.body.Name;
+    const cost = req.body.Cost;
+    const model = req.body.Model;
+    const serialnumber = req.body.SerialNumber;
+    const installationdate = req.body.InstallationDate;
+    const arrivaldate = req.body.ArrivalDate;
+    const warrantydate = req.body.WarrantyDate;
+    const manufacturer = req.body.Manufacturer;
+    const location = req.body.Location;
+    const department = req.body.Department;
+    const agent = req.body.Agent;
+    const pm = req.body.PM;
+    const notes = req.body.Notes;
+    const software = req.body.Software;
+    const softwareVersion = req.body.SoftwareVersion;
+    const softwarePass = req.body.SoftwarePass;
+    const networkAddress = req.body.NetworkAddress;
+    const assetStatus = req.body.AssetStatus;
+    const insuranceStatus = req.body.InsuranceStatus;
+    const funtionalStatus = req.body.FuntionalStatus;
+    //añadido 06/05/25
+    const assetInitialDate = req.body.AssetInitialDate;
+    const insuranceInitialDate = req.body.InsuranceInitialDate;
+    const receptionStatus = req.body.ReceptionStatusId; // este es un ID
+    const acquisitionType = req.body.AcquisitionType; // este es un ID
+    
+
+
+    let image;
+    if (req.body.edit) {
+        image = req.body.Image;
+    } else {
+        image = req.file.path.split('\\').pop(); // Aseguramos que obtengamos el nombre del archivo
+    }
+
+    let departmentCode = null;
+    let agentCode = null;
+
+    //añadido 08/05
+    let receptionID=null;
+
     // Encontrar el departamento y el agente
     Department.findOne({ where: { Name: department } })
         .then(department => {
@@ -170,75 +384,92 @@ exports.addEquipment = (req, res) => {
                     .then(agent => {
                         if (agent) {
                             agentCode = agent.Id;
+                            ReceptionStatus.findOne({ where: { Id: receptionStatus } })
+                                .then(receptionStatus => {
+                                    if (receptionStatus) {
+                                        receptionID = receptionStatus.Id;
+                                        console.log("Estados de recepcion:", receptionID);
 
-                            // Crear el equipo
-                            Equipment.create({
-                                Code: code,
-                                Name: name,
-                                Cost: cost,
-                                Image: image,
-                                Model: model,
-                                SerialNumber: serialnumber,
-                                InstallationDate: installationdate,
-                                ArrivalDate: arrivaldate,
-                                WarrantyDate: warrantydate,
-                                Manufacturer: manufacturer,
-                                Location: location,
-                                Notes: notes,
-                                PM: pm,
-                                DepartmentCode: departmentCode,
-                                AgentSupplierId: agentCode,
-                                Software: software,
-                                SoftwareVersion: softwareVersion,
-                                SoftwarePass: softwarePass,
-                                NetworkAddress: networkAddress,
-                                AssetStatus: assetStatus,
-                                InsuranceStatus: insuranceStatus,
-                                FuntionalStatus: funtionalStatus
-                            })
-                            .then(newEquipment => {
-                                console.log("Nuevo equipo creado:", newEquipment);
+                                        // Crear el equipo
+                                        Equipment.create({
+                                            Code: code,
+                                            Name: name,
+                                            Cost: cost,
+                                            Image: image,
+                                            Model: model,
+                                            SerialNumber: serialnumber,
+                                            InstallationDate: installationdate,
+                                            ArrivalDate: arrivaldate,
+                                            WarrantyDate: warrantydate,
+                                            Manufacturer: manufacturer,
+                                            Location: location,
+                                            Notes: notes,
+                                            PM: pm,
+                                            DepartmentCode: departmentCode,
+                                            AgentSupplierId: agentCode,
+                                            Software: software,
+                                            SoftwareVersion: softwareVersion,
+                                            SoftwarePass: softwarePass,
+                                            NetworkAddress: networkAddress,
+                                            AssetStatus: assetStatus,
+                                            InsuranceStatus: insuranceStatus,
+                                            FuntionalStatus: funtionalStatus,
 
-                                // Asegurarse de que spareParts sea un array, incluso si solo se selecciona un repuesto
-                                //
-                                // const spareParts = Array.isArray(req.body.spareParts) ? req.body.spareParts : [req.body.spareParts];
-                                // Asegurar que spareParts sea un array antes de usarlo
-                                const spareParts = typeof req.body.spareParts === "string" ? JSON.parse(req.body.spareParts) : req.body.spareParts;
+                                            //añadido 06/05/25
+                                            AssetInitialDate: assetInitialDate,
+                                            InsuranceInitialDate: insuranceInitialDate,
+                                            ReceptionStatusId: receptionID,
+                                            AcquisitionTypeId: acquisitionType
+                                        })
+                                        .then(newEquipment => {
+                                            console.log("Nuevo equipo creado:", newEquipment);
 
-                                // Validar que spareParts sea realmente un array
-                                if (!Array.isArray(spareParts)) {
-                                    console.error("Error: spareParts no es un array válido", spareParts);
-                                    return res.status(400).json({ error: "Formato incorrecto de repuestos." });
-                                }
+                                            // Asegurarse de que spareParts sea un array, incluso si solo se selecciona un repuesto
+                                            //
+                                            // const spareParts = Array.isArray(req.body.spareParts) ? req.body.spareParts : [req.body.spareParts];
+                                            // Asegurar que spareParts sea un array antes de usarlo
+                                            const spareParts = typeof req.body.spareParts === "string" ? JSON.parse(req.body.spareParts) : req.body.spareParts;
 
-                                console.log("Repuestos seleccionados:", spareParts);
+                                            // Validar que spareParts sea realmente un array
+                                            if (!Array.isArray(spareParts)) {
+                                                console.error("Error: spareParts no es un array válido", spareParts);
+                                                return res.status(400).json({ error: "Formato incorrecto de repuestos." });
+                                            }
 
-                              //  console.log("Repuestos seleccionados:", req.body.spareParts);
+                                            console.log("Repuestos seleccionados:", spareParts);
 
-                                // Asociar los repuestos seleccionados al nuevo equipo
-                                if (spareParts && spareParts.length > 0) {
-                                    // Asociar cada repuesto con el equipo
-                                    newEquipment.addSpareParts(spareParts, { through: 'EquipmentSpareParts' } )
-                                        .then(() => {
-                                            console.log("Repuestos asociados correctamente");
-                                            res.redirect('/equipment');  // Redirigir después de crear el equipo
+                                            // Asociar los repuestos seleccionados al nuevo equipo
+                                            if (spareParts && spareParts.length > 0) {
+                                                // Asociar cada repuesto con el equipo
+                                                newEquipment.addSpareParts(spareParts, { through: 'EquipmentSpareParts' } )
+                                                    .then(() => {
+                                                        console.log("Repuestos asociados correctamente");
+                                                        res.redirect('/equipment');  // Redirigir después de crear el equipo
+                                                    })
+                                                    .catch(err => {
+                                                        console.log("Error al asociar repuestos:", err);
+                                                        res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudieron asociar los repuestos' });
+                                                    });
+                                            } else {
+                                                res.redirect('/equipment');  // Si no se seleccionaron repuestos, redirigir igualmente
+                                            }
                                         })
                                         .catch(err => {
-                                            console.log("Error al asociar repuestos:", err);
-                                            res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudieron asociar los repuestos' });
+                                            console.log("Error al crear el equipo:", err);
+                                            res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo crear el equipo' });
                                         });
+                                    } else {
+                                        res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró estado de recepcion' });
+                                    }
+                                            })
+                                    .catch(err => {
+                                        console.log("Error al encontrar el estado de recepcion:", err);
+                                        res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró estado de recepcion' });
+                                    });    
                                 } else {
-                                    res.redirect('/equipment');  // Si no se seleccionaron repuestos, redirigir igualmente
+                                    res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el proveedor' });
                                 }
                             })
-                            .catch(err => {
-                                console.log("Error al crear el equipo:", err);
-                                res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo crear el equipo' });
-                            });
-                        } else {
-                            res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el proveedor' });
-                        }
-                    })
                     .catch(err => {
                         console.log("Error al encontrar el proveedor:", err);
                         res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el proveedor' });
@@ -252,7 +483,7 @@ exports.addEquipment = (req, res) => {
             res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo encontrar el departamento' });
         });
 };
-
+*/
 
 exports.addSpareParts = (req, res) => {
     console.log("Repuestos que se van a asociar:", spareParts);

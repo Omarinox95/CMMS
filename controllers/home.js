@@ -12,6 +12,8 @@ const PpmQuestions =require('../models/ppm_questions')
 const PPM =require('../models/ppm')
 const moment=require('moment')
 const Category = require('../models/category');
+const ReceptionStatus = require('../models/ReceptionStatus');  // Agrega esta línea
+const AcquisitionType = require('../models/AcquisitionType');  // Y esta línea
 
 
 exports.homeSignIn=(req,res) => {
@@ -522,8 +524,102 @@ exports.breakDown=(req,res)=>{
     })
 }
 
-
 exports.equipment = (req, res) => {
+    Equipment.findAll({
+        include: [
+            { model: Department },
+            { model: AgentSupplier },
+            { model: SparePart }
+        ]
+    }).then(equipments => {
+        const eq = equipments.map(equipment => {
+            return {
+                Code: equipment.Code,
+                Name: equipment.Name,
+                Cost: equipment.Cost,
+                PM: equipment.PM,
+                Image: equipment.Image,
+                InstallationDate: equipment.InstallationDate,
+                ArrivalDate: equipment.ArrivalDate,
+                WarrantyDate: equipment.WarrantyDate,
+                Model: equipment.Model,
+                SerialNumber: equipment.SerialNumber,
+                Manufacturer: equipment.Manufacturer,
+                Location: equipment.Location,
+                Notes: equipment.Notes,
+                DepartmentCode: equipment.Department?.dataValues.Name,
+                AgentSupplierId: equipment.AgentSupplier?.dataValues.Name,
+                Software: equipment.Software,
+                SoftwareVersion: equipment.SoftwareVersion,
+                SoftwarePass: equipment.SoftwarePass,
+                NetworkAddress: equipment.NetworkAddress,
+                AssetStatus: equipment.AssetStatus,
+                InsuranceStatus: equipment.InsuranceStatus,
+                FuntionalStatus: equipment.FuntionalStatus,
+                SpareParts: equipment.SpareParts?.map(sp => ({
+                    Code: sp.Code,
+                    Name: sp.Name
+                }))
+            };
+        });
+
+        AgentSupplier.findAll().then(agents => {
+            const ag = agents.map(agent => {
+                return {
+                    Name: agent.Name,
+                    Id: agent.Id
+                };
+            });
+
+            // Obtener los repuestos
+            SparePart.findAll().then(spareParts => {
+                const sp = spareParts.map(spare => ({
+                    Code: spare.Code,
+                    Name: spare.Name
+                }));
+
+                // Obtener receptionStatuses y acquisitionTypes
+                Promise.all([
+                    ReceptionStatus.findAll(),  // Obtener los estados de recepción
+                    AcquisitionType.findAll()   // Obtener los tipos de adquisición
+                    
+                ])
+                .then(([receptionStatuses, acquisitionTypes]) => {
+                    const plainReceptionStatuses = receptionStatuses.map(rs => ({
+                        Id: rs.Id,
+                        Name: rs.Name
+                    }));
+                
+                    const plainAcquisitionTypes = acquisitionTypes.map(at => ({
+                        Id: at.Id,
+                        Name: at.Name
+                    }));
+                
+                    res.render('equipment', {
+                        pageTitle: 'Equipment',
+                        Equipment: true,
+                        equipments: eq,
+                        hasEquipments: eq.length > 0,
+                        Agents: ag,
+                        spareParts: sp,
+                        receptionStatuses: plainReceptionStatuses,
+                        acquisitionTypes: plainAcquisitionTypes
+                    });
+                })
+                
+                .catch(err => {
+                    console.error('Error al obtener receptionStatuses o acquisitionTypes:', err);
+                    res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudieron obtener los estados de recepción o tipos de adquisición' });
+                });
+            });
+        });
+    }).catch(err => {
+        console.error('Error al obtener los equipos:', err);
+        res.render('error', { layout: false, pageTitle: 'Error', href: '/home', message: 'Sorry !!! Could Not Get Equipments' });
+    });
+};
+
+/*exports.equipment = (req, res) => {
     Equipment.findAll({
         include: [
             { model: Department },
@@ -591,7 +687,7 @@ exports.equipment = (req, res) => {
         console.error('Error al obtener los equipos:', err);
         res.render('error', { layout: false, pageTitle: 'Error', href: '/home', message: 'Sorry !!! Could Not Get Equipments' });
     });
-};
+};*/
 
 
 exports.installation=(req,res)=>{
@@ -753,6 +849,113 @@ exports.workorderDescription=(req,res)=>{
 }
 
 
+//añadido 09/05/25
+/*
+exports.dashboard = async (req, res) => {
+    try {
+        const { year, department } = req.query;
 
+        const where = {};
+        if (year) where.InstallationDate = { [Op.between]: [`${year}-01-01`, `${year}-12-31`] };
+        if (department) where.DepartmentCode = department;
 
+        const equipments = await Equipment.findAll({ where });
+
+        const totalEquipos = equipments.length;
+        const costoTotal = equipments.reduce((sum, eq) => sum + (eq.Cost || 0), 0);
+
+        const porAnio = {};
+        const porEstado = {};
+        const porActivo = { Activo: 0, Inactivo: 0 };
+
+        equipments.forEach(eq => {
+            const year = eq.InstallationDate.getFullYear();
+            porAnio[year] = (porAnio[year] || 0) + 1;
+
+            const status = eq.FuntionalStatus || 'Desconocido';
+            porEstado[status] = (porEstado[status] || 0) + 1;
+
+            eq.Active ? porActivo.Activo++ : porActivo.Inactivo++;
+        });
+
+        const anios = await Equipment.findAll({
+            attributes: [[Sequelize.fn('DISTINCT', Sequelize.fn('YEAR', Sequelize.col('InstallationDate'))), 'year']],
+            order: [[Sequelize.fn('YEAR', Sequelize.col('InstallationDate')), 'DESC']]
+        });
+
+        const departamentos = await Department.findAll();
+
+        res.render('dashboard', {
+            totalEquipos,
+            costoTotal,
+            porAnio: JSON.stringify(porAnio),
+            porEstado: JSON.stringify(porEstado),
+            porActivo: JSON.stringify(porActivo),
+            anios: anios.map(a => a.dataValues.year),
+            departamentos,
+            selectedYear: year || '',
+            selectedDept: department || '',
+            pageTitle: 'Dashboard',
+        });
+    } catch (err) {
+        console.error(err);
+        res.render('error', { message: 'Error al cargar el dashboard' });
+    }
+};
+
+*/
+exports.getDashboard = async (req, res) => {
+    const selectedYear = req.query.year;  // Año seleccionado
+    const selectedDept = req.query.department;  // Departamento seleccionado
+
+    // Construir filtros de búsqueda
+    const where = {};
+    if (selectedYear) {
+        where.InstallationDate = {
+            [Op.between]: [`${selectedYear}-01-01`, `${selectedYear}-12-31`]
+        };
+    }
+    if (selectedDept) {
+        where.DepartmentCode = selectedDept;
+    }
+
+    try {
+        // Obtener los equipos filtrados
+        const equipos = await Equipment.findAll({
+            where,
+            attributes: ['FuntionalStatus', 'InstallationDate', 'Cost']
+        });
+
+        // Obtener todos los departamentos disponibles
+        const departamentos = await Department.findAll();
+
+        // Obtener todos los años disponibles desde la fecha de instalación
+        const anios = [...new Set(equipos.map(e => new Date(e.InstallationDate).getFullYear()))].sort();
+
+        // Crear indicadores de cantidad de equipos por estado funcional
+        const indicadores = equipos.reduce((acc, equipo) => {
+            const estado = equipo.FuntionalStatus || 'Desconocido';
+            acc[estado] = (acc[estado] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Preparar los datos para el gráfico
+        const chartData = {
+            labels: Object.keys(indicadores),  // Estados funcionales
+            values: Object.values(indicadores)  // Cantidad de equipos por estado
+        };
+
+        // Renderizar la vista con los datos
+        res.render('dashboard', {
+            departamentos,
+            anios,
+            selectedYear,
+            selectedDept,
+            chartData
+        });
+    } catch (err) {
+        console.error('Error al obtener datos para el dashboard:', err);
+        res.status(500).send('Error al obtener datos');
+    }
+};
 

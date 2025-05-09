@@ -344,12 +344,43 @@
                             </select>
                         </div>   
 
+                        <!añadido en 06/05/25->
+
+                        <div class="form-group">
+                            <label class="form-control-label">Fecha Inicial del Activo:</label>
+                            <input type="date" class="form-control" name="AssetInitialDate" required>
+                        </div>
+
+                       <!-- Estado de Recepción -->
+                        <label for="ReceptionStatus">Estado de Recepción:</label>
+                        <select name="ReceptionStatusId" id="ReceptionStatus" class="form-control">
+                        {{#each receptionStatuses}}
+                            <option value="{{this.Id}}">{{this.Name}}</option>
+                        {{/each}}
+                        </select>
+
+                        <!-- Tipo de Adquisición -->
+                        <label for="AcquisitionType">Tipo de Adquisición:</label>
+                        <select name="AcquisitionType" id="AcquisitionType" class="form-control">
+                        {{#each acquisitionTypes}}
+                            <option value="{{this.Id}}">{{this.Name}}</option>
+                        {{/each}}
+                        </select>
+
+                        
+
+
                         <div class="form-group">
                             <label class=" form-control-label">Estado del Seguro</label>
                             <select name="InsuranceStatus" id="select" class="form-control">
                                     <option value="Activo">Activo</option>
                                     <option value="No Activo">No Activo</option> 
                             </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="InsuranceInitialDate">Fecha Inicial del Seguro:</label>
+                            <input type="date" class="form-control" name="InsuranceInitialDate" required>
                         </div>
 
                         <div class="form-group">

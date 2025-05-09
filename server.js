@@ -28,6 +28,9 @@ const equipmentRoutes = require('./routes/equipmentRoutes');
 const equipmentsparepart = require('./models/equipmentsparepart');
 const { Equipment, Department } = require('./models'); // Importa los modelos desde index.js
 
+//añadido 06/05/25
+const ReceptionStatus = require('./models/ReceptionStatus');
+const AcquisitionType = require('./models/AcquisitionType');
 
 ///AUMENTADO PARA MP
 //const MPPCalendarRoutes = require('./routes/MPPCalendarRoutes');
@@ -61,6 +64,11 @@ app.engine('handlebars', exphbs({ layoutsDir: 'views/layouts/', defaultLayout: '
 app.set('view engine', 'handlebars');
 app.set('views', 'views');
 
+// aumentado 09/05 indicadores
+
+///
+
+app.set('view engine', 'handlebars');
 // Controllers
 app.use(reportController);
 app.use(editController);
@@ -113,7 +121,14 @@ clinical_engineer.hasMany(maintenance);
 equipment.belongsToMany(spare_parts, { through: 'equipmentsparepart', foreignKey: 'id_equipment' });
 spare_parts.belongsToMany(equipment, { through: 'equipmentsparepart', foreignKey: 'id_sparepart' });
 
-// aumentado 23/03 indicadores
+
+//aumentado 06/05/25
+equipment.belongsTo(ReceptionStatus, { foreignKey: 'ReceptionStatusId' });
+ReceptionStatus.hasMany(equipment, { foreignKey: 'ReceptionStatusId' });
+
+equipment.belongsTo(AcquisitionType, { foreignKey: 'AcquisitionTypeId' });
+AcquisitionType.hasMany(equipment, { foreignKey: 'AcquisitionTypeId' });
+
 
 
 
