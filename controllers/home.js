@@ -904,6 +904,7 @@ exports.dashboard = async (req, res) => {
 };
 
 */
+/*
 exports.getDashboard = async (req, res) => {
     const selectedYear = req.query.year;  // Año seleccionado
     const selectedDept = req.query.department;  // Departamento seleccionado
@@ -957,5 +958,35 @@ exports.getDashboard = async (req, res) => {
         console.error('Error al obtener datos para el dashboard:', err);
         res.status(500).send('Error al obtener datos');
     }
+};*/
+
+const { Sequelize } = require('sequelize');
+
+exports.home = async (req, res) => {
+  try {
+    // Indicadores principales
+    const totalEquipos = await Equipment.count();
+    const costoTotal = await Equipment.sum('Cost');
+
+    // Costos por año de instalación
+    const costosPorAnio = await Equipment.findAll({
+      attributes: [
+        [Sequelize.fn('YEAR', Sequelize.col('InstallationDate')), 'anio'],
+        [Sequelize.fn('SUM', Sequelize.col('Cost')), 'total']
+      ],
+      group: [Sequelize.fn('YEAR', Sequelize.col('InstallationDate'))],
+      raw: true
+    });
+
+    res.render('home', {
+      totalEquipos,
+      costoTotal,
+      costosPorAnio
+    });
+  } catch (error) {
+    console.error('Error en controlador home:', error);
+    res.status(500).send('Error interno del servidor');
+  }
 };
+
 

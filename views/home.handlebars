@@ -1,74 +1,43 @@
-<div class="main-content">
-    <div class="section__content section__content--p30">
-        <div class="container-fluid">
-            <h1>Dashboard de Indicadores</h1>
-            
-            <!-- Selector de Tipo de Indicador -->
-            <div class="form-group">
-                <label for="indicatorType">Selecciona el tipo de indicador:</label>
-                <select id="indicatorType" class="form-control">
-                    <option value="equipos">Equipos</option>
-                    <option value="personalInterno">Personal Interno</option>
-                    <option value="personalExterno">Personal Externo</option>
-                </select>
-            </div>
+<style>
+.tarjeta {
+  width: 300px;
+  height: 200px;
+  background-color: #009f48; /* Color de fondo del contenedor */
+}
+</style>
 
-            <!-- Formulario de Equipos -->
-            <div id="equipmentForm" class="indicator-section">
-                <h3>Datos del Equipo</h3>
-                <input type="text" class="form-control" placeholder="Equipo">
-                <input type="text" class="form-control" placeholder="Marca">
-                <input type="text" class="form-control" placeholder="Modelo">
-                <input type="text" class="form-control" placeholder="Número de Serie">
-                <input type="text" class="form-control" placeholder="Área">
-                <button class="btn btn-primary mt-3">Guardar</button>
-            </div>
-            
-            <!-- Selector de Tipo de Gráfico -->
-            <div class="form-group">
-                <label for="chartType">Selecciona el tipo de gráfico:</label>
-                <select id="chartType" class="form-control">
-                    <option value="bar">Barras</option>
-                    <option value="line">Líneas</option>
-                    <option value="pie">Pastel</option>
-                </select>
-            </div>
-
-            <!-- Gráfico -->
-            <canvas id="indicatorChart"></canvas>
+<div class="container mt-5">
+  <div class="row">
+    <!-- Tarjeta de cantidad de equipos -->
+    <div class="col-md-4">
+      <div class="tarjeta text-white mb-3">
+        <div class="card-header">Cantidad total de equipos</div>
+        <div class="card-body">
+          <h5 class="card-title">{{totalEquipos}}</h5>
         </div>
+      </div>
     </div>
+
+    <!-- Tarjeta de costo total -->
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-header">Costo total</div>
+        <div class="card-body">
+          <h5 class="card-title">${{costoTotal}}</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta con distribución por año -->
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-header">Costo total por año</div>
+        <div class="card-body">
+          {{#each costosPorAnio}}
+            <p><strong>{{this.anio}}:</strong> ${{this.total}}</p>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var ctx = document.getElementById('indicatorChart').getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Indicador 1', 'Indicador 2', 'Indicador 3'],
-                datasets: [{
-                    label: 'Valor',
-                    data: [10, 20, 30],
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-
-        document.getElementById('chartType').addEventListener('change', function () {
-            chart.config.type = this.value;
-            chart.update();
-        });
-    });
-</script>
-
-
