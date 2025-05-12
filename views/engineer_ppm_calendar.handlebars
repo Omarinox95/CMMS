@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario de Mantenimiento Preventivo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <style>
+    #calendar {
+      max-width: 90%;
+      margin: 30px auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    }
+    .fc-event {
+      cursor: pointer;
+    }
+    .generate-btn {
+      display: block;
+      margin: 0 auto 20px auto;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .generate-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="login-logo">
+      <img src="/images/LogoMedical.png" alt="Logo" />
+    </div>
+    <h3 class="title-3 m-b-30 text-center">
+      <i class="zmdi zmdi-calendar"></i> Calendario de Mantenimiento Preventivo
+    </h3>
+
+    <button class="generate-btn" id="generateTasks">Generar Tareas MP</button>
+
+    <div id="calendar"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async function () {
+      const calendarEl = document.getElementById('calendar');
+
+      const res = await fetch('/api/ppm-events');
+      const events = await res.json();
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'es',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,listMonth'
+        },
+        events: events,
+        eventClick: function (info) {
+          if (info.event.url) {
+            window.location.href = info.event.url;
+            info.jsEvent.preventDefault();
+          }
+        }
+      });
+
+      calendar.render();
+
+      // Acción del botón para generar tareas
+      document.getElementById('generateTasks').addEventListener('click', async () => {
+        const res = await fetch('/api/ppm-events/generate', { method: 'POST' });
+        const data = await res.json();
+        alert(data.message || 'Tareas generadas');
+        window.location.reload(); // Recarga el calendario
+      });
+    });
+  </script>
+</body>
+</html>

@@ -118,12 +118,21 @@
                                 </tr>
                                 
                             </thead>
-                                <tr>
+                              <!--  <tr>
                                     <td>
 
                                         <button class="au-btn au-btn-load " style="margin-left: 0%;">Guardar</button>
                                     </td>
+                                </tr> -->
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="au-btn au-btn-load" style="margin-left: 0%;">Guardar</button>
+                                        <button formaction="/preventive/complete/{{Code}}" formmethod="POST" class="au-btn au-btn-success" style="margin-left: 10px;">
+                                             Finalizar Mantenimiento
+                                        </button>
+                                    </td>
                                 </tr>
+
 
                         </table>
                     </div>

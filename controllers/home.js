@@ -127,7 +127,6 @@ exports.dialyInspectionEngineerPost=(req,res) =>{
 }
 
 
-
 exports.ppmEngineer=(req,res) =>{
     engineerId=req.session.DSSN
     PpmQuestions.findAll({include:[{model:Equipment,include:[{model:Department}]}]}).then(reports=>{
@@ -155,6 +154,7 @@ exports.ppmEngineerPost=(req,res) =>{
     res.redirect('/engineer/ppm/'+code);
 }
 
+//MANTENIMIENTO PREVENTIVO
 exports.ppmEngineerEquipment =(req,res) => {
     code=req.params.code
     engineerId=req.session.DSSN
@@ -220,10 +220,6 @@ exports.ppmEngineerEquipmentPost=(req,res) =>{
         }
           
     })
-   
-
-
-
 }
 
 exports.department=(req,res)=>{

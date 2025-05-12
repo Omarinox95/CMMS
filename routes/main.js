@@ -3,6 +3,12 @@ const express = require('express');
 const router = express.Router();
 const homeController=require('../controllers/home')
 
+//añadido 11/05
+const preventiveController = require('../controllers/preventive');
+
+// Ver calendario preventivo
+router.get('/engineer/ppm/calendar', preventiveController.renderCalendar);
+
 
 
 

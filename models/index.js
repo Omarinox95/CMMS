@@ -6,6 +6,9 @@ const Department = require('./department');
 const AcquisitionType = require('./AcquisitionType');
 const ReceptionStatus = require('./ReceptionStatus');
 
+//añadido 11/05/25
+const PreventiveTask = require('./preventiveTask');
+
 // Configurar la asociación entre Equipment y Department
 Equipment.belongsTo(Department, {
   foreignKey: 'DepartmentCode',
@@ -14,6 +17,12 @@ Equipment.belongsTo(Department, {
 Department.hasMany(Equipment, {
   foreignKey: 'DepartmentCode',
   as: 'Equipments'
+});
+
+//añadido 11/05
+PreventiveTask.belongsTo(Equipment, {
+  foreignKey: 'EquipmentCode',
+  as: 'equipmentTask',
 });
 
 // añadido 06/05/25
@@ -35,6 +44,7 @@ module.exports = {
     Department,
     AcquisitionType,
     ReceptionStatus,
+    PreventiveTask,
     //Clinical_enginner,
     //Ppm_questions,
 };

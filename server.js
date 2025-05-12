@@ -33,7 +33,7 @@ const ReceptionStatus = require('./models/ReceptionStatus');
 const AcquisitionType = require('./models/AcquisitionType');
 
 ///AUMENTADO PARA MP
-//const MPPCalendarRoutes = require('./routes/MPPCalendarRoutes');
+const preventiveRoutes = require('./routes/preventive');
 
 
 const app = express();
@@ -67,6 +67,11 @@ app.set('views', 'views');
 // aumentado 09/05 indicadores
 
 ///
+
+//aumentado para PM
+app.use('/api', preventiveRoutes); // Las rutas se usarán con /api/ppm-events
+
+//
 
 app.set('view engine', 'handlebars');
 // Controllers
