@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 25, 2020 at 01:17 PM
--- Server version: 8.0.18
--- PHP Version: 7.3.11
+-- Servidor: localhost
+-- Tiempo de generación: 17-05-2025 a las 15:24:44
+-- Versión del servidor: 8.0.39
+-- Versión de PHP: 8.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,20 +18,41 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cmms`
+-- Base de datos: `cmms`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `agentsuppliers`
+-- Estructura de tabla para la tabla `acquisitiontype`
+--
+
+CREATE TABLE `acquisitiontype` (
+  `ID` int NOT NULL,
+  `Name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `acquisitiontype`
+--
+
+INSERT INTO `acquisitiontype` (`ID`, `Name`) VALUES
+(1, 'Nuevo'),
+(2, 'Comodato'),
+(3, 'Préstamo'),
+(4, 'Restaurado');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `agentsuppliers`
 --
 
 CREATE TABLE `agentsuppliers` (
-  `Id` int(11) NOT NULL,
+  `Id` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Phone` bigint(20) NOT NULL,
+  `Phone` bigint NOT NULL,
   `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Notes` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
@@ -40,13 +60,13 @@ CREATE TABLE `agentsuppliers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `agentsuppliers`
+-- Volcado de datos para la tabla `agentsuppliers`
 --
 
 INSERT INTO `agentsuppliers` (`Id`, `Name`, `Adress`, `Phone`, `Email`, `Notes`, `createdAt`, `updatedAt`) VALUES
-(11111, 'El Flwa', '10 El Kasr Al Eainy ,El syda zeinab ,Cairo', 2235651272, 'Fal_med@elfalwa.com', '', '2020-05-21 18:12:28', '2020-05-21 18:12:28'),
-(11112, 'The Egyption Group ', '19 Abd El Rahman st,Masr El Gdeda ,Cairo', 222687712, 'null@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11'),
-(11113, 'Gesca', '45 Abd El Kahlek tharwat st,Cairo', 223919696, 'info@gesca.com', '', '2020-05-21 18:16:55', '2020-05-21 18:16:55'),
+(11111, 'El Flwa', 'junin ecuador', 2235651272, 'Fal_med@elfalwa.com', '', '2020-05-21 18:12:28', '2020-05-21 18:12:28'),
+(11112, 'HP Medical', 'roca y coronado 2do y 3er anillo, SCZ', 222687712, 'null@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11'),
+(11113, 'Gesca', '45 la salle, SCZ', 223919696, 'info@gesca.com', '', '2020-05-21 18:16:55', '2020-05-21 18:16:55'),
 (11114, 'Medical Techology for Trading', '16 El Khartom st,Masr El Gdeda,Cairo', 1001908922, 'null@gmail.com', '', '2020-05-21 18:20:12', '2020-05-21 18:20:12'),
 (11115, 'Servomed', 'Sheraton El Matar , Cairo', 222680940, 'servomed@link.net', '', '2020-05-21 18:21:44', '2020-05-21 18:21:44'),
 (11116, 'Ghalioungui', 'El Kods Mosque , El Ebagya ,Cairo', 1001703154, 'mail@ghalioungui.com', '', '2020-05-21 18:23:56', '2020-05-21 18:23:56'),
@@ -68,96 +88,147 @@ INSERT INTO `agentsuppliers` (`Id`, `Name`, `Adress`, `Phone`, `Email`, `Notes`,
 -- --------------------------------------------------------
 
 --
--- Table structure for table `breakdowns`
+-- Estructura de tabla para la tabla `brand`
 --
 
-CREATE TABLE `breakdowns` (
-  `Code` int(11) NOT NULL,
-  `Reason` text COLLATE utf8mb4_general_ci NOT NULL,
-  `DATE` text COLLATE utf8mb4_general_ci NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+CREATE TABLE `brand` (
+  `id_brand` int NOT NULL,
+  `Brand` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `breakdowns`
+-- Volcado de datos para la tabla `brand`
 --
 
-INSERT INTO `breakdowns` (`Code`, `Reason`, `DATE`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
-(1, ' MRI helium level is low', '2020-02-15', '2020-05-21 20:08:26', '2020-05-21 20:08:26', 781396),
-(2, 'cracks/cuts on the probe lens or on the TEE probe tube.', '2020-05-04', '2020-05-21 20:09:36', '2020-05-21 20:09:45', 4573397),
-(3, 'cut on the probe lens or on the TEE probe tube.', '2020-04-06', '2020-05-21 20:10:45', '2020-05-21 20:10:45', 991415561),
-(4, 'X-ray tube failure ', '2019-12-28', '2020-05-21 20:11:28', '2020-05-21 20:11:28', 69690),
-(5, 'Tube need changes', '2020-04-12', '2020-05-21 20:12:23', '2020-05-21 20:12:23', 12220),
-(6, 'Some audible and visual alarms are not working properly.', '2019-05-02', '2020-05-23 03:46:22', '2020-05-23 04:16:10', 201923),
-(7, ' The cooling fan filter is not working', '2019-04-02', '2020-05-23 03:47:25', '2020-05-23 04:16:18', 405055),
-(8, 'There are cracks on the probe lens (Damaged Transducer)', '2019-03-02', '2020-05-23 03:48:28', '2020-05-23 04:16:26', 582997),
-(9, ' The bed wheels are corrupted', '2018-12-02', '2020-05-23 03:50:49', '2020-05-23 04:16:38', 108237),
-(10, 'The sound alarm of patient critical state is not working', '2020-05-02', '2020-05-23 03:51:49', '2020-05-23 04:17:01', 109683),
-(11, ' The infusion pump fails to generate an audible alarm for an occlusion in clamped tubing', '2018-01-02', '2020-05-23 03:53:00', '2020-05-23 11:27:59', 20370613),
-(12, '( “key bounce”)When programs an infusion rate of 10 mL/hour, but the device registers an infusion rate of 100 mL/hour.', '2020-04-02', '2020-05-23 03:53:45', '2020-05-23 11:29:50', 958488),
-(13, ' Leads wires are damaged ', '2019-05-05', '2020-05-23 03:57:30', '2020-05-23 04:17:34', 122663),
-(14, 'Printing not clear or not uniform', '2019-09-05', '2020-05-23 03:58:06', '2020-05-23 04:17:43', 122663),
-(15, ' Inacurrate measurement of heart rate', '2020-05-05', '2020-05-23 04:02:00', '2020-05-23 04:17:51', 414121),
-(16, ' The collimator lamp timer is not working', '2019-05-15', '2020-05-23 04:19:03', '2020-05-23 04:19:03', 670523),
-(17, ' Automatic clot detection failure', '2019-08-02', '2020-05-23 04:20:15', '2020-05-23 04:20:15', 140374),
-(18, ' The device for engaging and disengaging the motor drive mechanism is broken down', '2019-04-06', '2020-05-23 04:20:54', '2020-05-23 04:20:54', 199215),
-(19, ' There are tears in the cable (broken wires inside the transducer)', '2019-08-05', '2020-05-23 04:21:24', '2020-05-23 04:21:24', 100060),
-(20, 'Unexpected readings of SpO2', '2019-01-04', '2020-05-23 04:22:07', '2020-05-23 04:22:07', 501698),
-(21, 'Damaged Transducer', '2019-05-02', '2020-05-23 04:27:59', '2020-05-23 04:27:59', 444502),
-(22, 'The door is not closing well (leakage happens)', '2020-05-23', '2020-05-22 23:57:11', '2020-05-22 23:57:11', 318310),
-(23, 'Air filter problems', '2020-05-23', '2020-05-22 23:57:55', '2020-05-22 23:57:55', 361310),
-(24, 'The HEPA filter must be replaced', '2020-05-23', '2020-05-22 23:58:24', '2020-05-22 23:58:24', 210310),
-(25, 'Mineral deposits formed ', '2020-05-23', '2020-05-22 23:58:52', '2020-05-22 23:58:52', 11310),
-(26, ' The device for engaging and disengaging the motor drive mechanism is broken down', '2019-11-12', '2020-05-23 01:58:51', '2020-05-23 01:58:51', 9019),
-(27, 'Poor C-Arm cleaning habits', '2019-04-15', '2020-05-23 02:24:29', '2020-05-23 02:24:29', 680),
-(28, 'Poor electrical connections', '2019-10-03', '2020-05-23 02:26:42', '2020-05-23 02:26:42', 201),
-(29, 'Not cleaning dust of the inside of the equipment', '2020-05-23', '2020-05-23 02:29:27', '2020-05-23 02:29:27', 3223),
-(30, 'Accumulate dust from the air on the surface of the microscope slide', '2019-09-09', '2020-05-23 02:35:11', '2020-05-23 02:35:11', 5005),
-(31, 'Accumulate dust and debris from the air on the surface of the upper lens of the condenser', '2019-12-02', '2020-05-23 02:36:57', '2020-05-23 02:36:57', 9258),
-(32, 'Poor electrical connections', '2019-08-12', '2020-05-23 02:38:17', '2020-05-23 02:38:17', 2904),
-(33, 'Oxygenator breakdown  ', '2020-04-22', '2020-05-23 02:51:15', '2020-05-23 02:51:15', 2694),
-(34, 'The expiration of electrode pads', '2019-06-09', '2020-05-23 02:54:54', '2020-05-23 02:54:54', 4832),
-(35, 'Low Pressure', '2020-05-06', '2020-05-23 13:16:23', '2020-05-23 13:16:23', 2024),
-(36, 'Misaligned tighteners', '2019-03-13', '2020-05-23 13:17:50', '2020-05-23 13:17:50', 183006),
-(37, 'Not reading the operator\'s manual.', '2020-01-15', '2020-05-23 13:18:27', '2020-05-23 13:18:27', 183006),
-(38, 'Not replacing worn parts', '2017-06-21', '2020-05-23 13:19:12', '2020-05-23 13:19:12', 331003),
-(39, 'fluids are contained within the canister and have worked their way up into the vacuum line', '2020-03-11', '2020-05-23 13:20:27', '2020-05-23 13:20:27', 123235),
-(40, 'connect the unit from any power source prior while cleaning', '2014-10-23', '2020-05-23 13:20:59', '2020-05-23 13:20:59', 123235),
-(41, 'no lubrication for caster bearings', '2020-04-17', '2020-05-23 13:22:19', '2020-05-23 13:22:19', 157629),
-(42, 'Clean casters with a wrong solution.', '2018-11-08', '2020-05-23 13:23:22', '2020-05-23 13:23:22', 267857),
-(43, 'Clean casters with a wrong solution.', '2019-12-19', '2020-05-23 13:24:00', '2020-05-23 13:24:00', 210807);
+INSERT INTO `brand` (`id_brand`, `Brand`) VALUES
+(1, '3M'),
+(2, 'ACTIVATEV FLOWTRON'),
+(3, 'AGFA'),
+(4, 'AIRPUMP'),
+(5, 'Acon laboratories'),
+(6, 'APEX'),
+(7, 'Awareness technology inc'),
+(8, 'BARRFAB'),
+(9, 'BAXTER'),
+(10, 'BAYER'),
+(11, 'Boeco'),
+(12, 'CA MI'),
+(13, 'CONTEC'),
+(14, 'CODONICS'),
+(15, 'CORPULS'),
+(16, 'DOMUS'),
+(17, 'DLAB'),
+(18, 'Eppendorf'),
+(19, 'FANEM'),
+(20, 'FRESENIUS'),
+(21, 'GE'),
+(22, 'Human'),
+(23, 'Imax MV'),
+(24, 'Instramed'),
+(25, 'Jhag Tecnologia Y Laboratorio'),
+(26, 'KONIKA MINOLTA'),
+(27, 'Leica'),
+(28, 'LEISTUNG'),
+(29, 'MATACHANA'),
+(30, 'Medical device technology'),
+(31, 'Memmer'),
+(32, 'MINDRAY'),
+(33, 'Neuation'),
+(34, 'Nihon Khoden'),
+(35, 'OPTONEX'),
+(36, 'PENLON'),
+(37, 'Phillips'),
+(38, 'Planmed'),
+(39, 'PURITAN BENETT'),
+(40, 'SISMATEC'),
+(41, 'Siemens'),
+(42, 'Spectris'),
+(43, 'SPACELABS'),
+(44, 'Stryker'),
+(45, 'SURGIRS'),
+(46, 'sysmex'),
+(47, 'TERUMO'),
+(48, 'WELCH ALLYN'),
+(49, 'YELLOWPACK'),
+(50, 'Yco-010 Ism Srl'),
+(51, 'Zehnder'),
+(52, 'ZIMMER'),
+(132, 'HWATIME'),
+(133, 'JHAG TECNOLOGIA Y LABORATORIO'),
+(134, 'LEICA');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `clinicalenginners`
+-- Estructura de tabla para la tabla `breakdowns`
 --
 
-CREATE TABLE `clinicalenginners` (
-  `DSSN` bigint(20) NOT NULL,
-  `FName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `LName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Phone` bigint(20) NOT NULL,
-  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Age` int(11) NOT NULL,
-  `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `WorkHours` int(11) DEFAULT NULL,
-  `Password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `breakdowns` (
+  `Code` int NOT NULL,
+  `Reason` text COLLATE utf8mb4_general_ci NOT NULL,
+  `DATE` text COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `DepartmentCode` int(11) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `clinicalenginners`
+-- Volcado de datos para la tabla `breakdowns`
+--
+
+INSERT INTO `breakdowns` (`Code`, `Reason`, `DATE`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
+(44, 'Fallo canal 1 ', '2024-10-30', '2024-10-31 03:31:07', '2024-10-31 03:31:07', 531);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `categories`
+--
+
+CREATE TABLE `categories` (
+  `IdCat` int NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `categories`
+--
+
+INSERT INTO `categories` (`IdCat`, `Name`) VALUES
+(1, 'Accesorio'),
+(2, 'Repuesto'),
+(3, 'Insumo');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clinicalenginners`
+--
+
+CREATE TABLE `clinicalenginners` (
+  `DSSN` bigint NOT NULL,
+  `FName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `LName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Phone` bigint NOT NULL,
+  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Age` int NOT NULL,
+  `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `WorkHours` int DEFAULT NULL,
+  `Password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `DepartmentCode` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `clinicalenginners`
 --
 
 INSERT INTO `clinicalenginners` (`DSSN`, `FName`, `LName`, `Phone`, `Image`, `Age`, `Email`, `Adress`, `WorkHours`, `Password`, `createdAt`, `updatedAt`, `DepartmentCode`) VALUES
-(24697, 'Omar', 'Abdelzaher', 1125414586, 'Omar.jpeg', 22, 'omarzaher787@gmail.com', '24 Soliman Badwy', 7, '$2a$10$o9/wxciC2gi1oLzTe.LCtegbaP8aRR8reY702WJrUbmc9b3dIxI66', '2020-05-23 02:59:14', '2020-05-23 13:49:14', 3456),
+(24697, 'Omar', 'Garrido', 1125414586, 'Omar.jpeg', 22, 'omarzaher787@gmail.com', 'medical center', 7, '$2a$10$o9/wxciC2gi1oLzTe.LCtegbaP8aRR8reY702WJrUbmc9b3dIxI66', '2020-05-23 02:59:14', '2020-05-23 13:49:14', 3456),
 (31098, 'Sara', 'Adel', 1120592405, 'image_sara.jpeg', 21, 'sarahadel540@gmail.com', '15 May City', 8, '$2a$10$n9BqUSxMIs.uiQLP2Bhp3OJJ2e2JPfa0W6CIrKIF4XB2.d98igTs6', '2020-05-23 05:19:11', '2020-05-25 13:17:01', 7686),
+(6458161, 'Valeria', 'Toro', 77431131, 'image_DSC_9463 (Copiar).jpg', 26, 'valeriatorovargas531@gmail.com', 'sevilla2', 8, '$2a$10$eBru2lMXYeitp/MTdrNUM.7SVZYtHCHpf7hubZFzMU5RZxTGvvhlW', '2024-08-09 20:57:24', '2024-08-09 20:57:24', 7686),
 (29151719, 'Rawan', 'Sayed', 1210004644, 'image_Rawan.jpeg', 21, 'rawansayed2021@gmail.com', '6 October Street  Zahraa Nasr City', 8, '$2a$10$SEUBJeUSrX47p0e7fUxMBek46h1YINuMPlhotVthSZO0NliFMi2wm', '2020-05-23 02:15:56', '2020-05-23 02:15:56', 9119),
 (9921050746980, 'Remon', 'Albear', 1121963376, 'image_remon profile.jpg', 21, 'remonalbear522@gmail.com', '5 marzok shokry st giza', 8, '$2a$10$SqBzUGUAz1fLF.rsiU09N.b08FhgIJaLMtA78op8s/tZePEGEXUk.', '2020-05-21 18:03:56', '2020-05-25 13:17:11', 1010),
 (29809090102359, 'Salma', 'Ayman', 1120448157, 'image_IMG_20190318_154724_250.JPG', 21, 'soayman9@gmail.com', '15 Azam Mosque', 9, '$2a$10$Q1iScIY0CUR2OMTV2VZFX.v37oSZ2K023v8iSKL6vgfBuxk0c2NEK', '2020-05-23 13:33:26', '2020-05-23 13:33:26', 9119);
@@ -165,11 +236,11 @@ INSERT INTO `clinicalenginners` (`DSSN`, `FName`, `LName`, `Phone`, `Image`, `Ag
 -- --------------------------------------------------------
 
 --
--- Table structure for table `departments`
+-- Estructura de tabla para la tabla `departments`
 --
 
 CREATE TABLE `departments` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
@@ -177,23 +248,23 @@ CREATE TABLE `departments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `departments`
+-- Volcado de datos para la tabla `departments`
 --
 
 INSERT INTO `departments` (`Code`, `Name`, `Location`, `createdAt`, `updatedAt`) VALUES
-(1010, 'CSSD', 'Ground floor', '2020-05-21 18:01:44', '2020-05-21 18:01:44'),
+(1010, 'CSSD', 'First floor', '2020-05-21 18:01:44', '2020-05-21 18:01:44'),
 (3456, 'ICU', 'Second Floor', '2020-05-21 18:00:06', '2020-05-21 18:00:06'),
-(7686, 'Radiology', 'First floor', '2020-05-21 18:01:04', '2020-05-21 18:01:04'),
+(7686, 'Radiology', 'Ground floor', '2020-05-21 18:01:04', '2020-05-21 18:01:04'),
 (9119, 'OR', 'Third Floor', '2020-05-21 18:00:25', '2020-05-21 18:00:25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dialyinspections`
+-- Estructura de tabla para la tabla `dialyinspections`
 --
 
 CREATE TABLE `dialyinspections` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `DATE` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -205,143 +276,309 @@ CREATE TABLE `dialyinspections` (
   `Q8` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `dialyinspections`
+-- Volcado de datos para la tabla `dialyinspections`
 --
 
 INSERT INTO `dialyinspections` (`Code`, `DATE`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `Q6`, `Q7`, `Q8`, `createdAt`, `updatedAt`, `EquipmentCode`, `ClinicalEnginnerDSSN`) VALUES
-(2, '2020-02-04', 'on', 'on', 'on', 'on', 'on', 'on', 'on', 'on', '2020-05-23 18:52:57', '2020-05-23 18:52:57', 781396, 9921050746980);
+(2, '2020-02-04', 'on', 'on', 'on', 'on', 'on', 'on', 'on', 'on', '2020-05-23 18:52:57', '2020-05-23 18:52:57', 781396, 9921050746980),
+(3, '2024-08-10', 'on', 'off', 'on', 'off', 'on', 'off', 'on', 'off', '2024-08-10 14:25:11', '2024-08-10 14:25:11', 12220, 6458161),
+(4, '2024-08-23', 'on', 'on', 'off', 'on', 'on', 'on', 'off', 'off', '2024-08-23 14:38:20', '2024-08-23 14:38:20', 61242056, 6458161),
+(5, '2024-10-18', 'on', 'on', 'on', 'off', 'on', 'off', 'on', 'on', '2024-10-18 14:47:39', '2024-10-18 14:47:39', 1050023, 6458161),
+(6, '2024-10-29', 'on', 'on', 'off', 'on', 'off', 'on', 'off', 'on', '2024-10-30 03:36:24', '2024-10-30 03:36:24', 531, 6458161),
+(7, '2024-11-23', 'on', 'on', 'off', 'off', 'off', 'off', 'on', 'on', '2024-11-23 14:44:45', '2024-11-23 14:44:45', 1222222, 6458161),
+(8, '2024-11-23', 'on', 'on', 'on', 'on', 'on', 'on', 'off', 'off', '2024-11-23 16:06:48', '2024-11-23 16:06:48', 12269856, 6458161),
+(9, '2024-11-23', 'on', 'off', 'on', 'on', 'off', 'off', 'off', 'off', '2024-11-23 17:11:08', '2024-11-23 17:11:08', 531, 6458161);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `equipment`
+-- Estructura de tabla para la tabla `equipment`
 --
 
 CREATE TABLE `equipment` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Cost` bigint(12) NOT NULL,
+  `Cost` bigint NOT NULL,
   `Model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `SerialNumber` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `InstallationDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `ArrivalDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `WarrantyDate` text COLLATE utf8mb4_general_ci NOT NULL,
+  `InstallationDate` date NOT NULL,
+  `ArrivalDate` date NOT NULL,
+  `WarrantyTime` int DEFAULT NULL,
+  `AssetInitialDate` date DEFAULT NULL,
+  `InsuranceInitialDate` date DEFAULT NULL,
   `Manufacturer` text COLLATE utf8mb4_general_ci,
   `Location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `PM` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Notes` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `AgentSupplierId` int(11) DEFAULT NULL,
-  `DepartmentCode` int(11) DEFAULT NULL
+  `AgentSupplierId` int DEFAULT NULL,
+  `DepartmentCode` int DEFAULT NULL,
+  `Software` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `SoftwareVersion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `SoftwarePass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NetworkAddress` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `AssetStatus` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `InsuranceStatus` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `FuntionalStatus` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ReceptionStatusId` int DEFAULT NULL,
+  `Active` tinyint(1) DEFAULT '1',
+  `GE` int DEFAULT '0',
+  `AcquisitionTypeID` int DEFAULT NULL,
+  `WarrantyDate` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `equipment`
+-- Volcado de datos para la tabla `equipment`
 --
 
-INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `Model`, `SerialNumber`, `InstallationDate`, `ArrivalDate`, `WarrantyDate`, `Manufacturer`, `Location`, `PM`, `Notes`, `createdAt`, `updatedAt`, `AgentSupplierId`, `DepartmentCode`) VALUES
-(201, 'C-ARM Monitor', 'image_carm monitor.jpg', 60000, 'BV-25 GOLD', '1004917.201', '2018-11-05', '2018-11-01', '2021-11-01', 'PHILIPS', 'Room 1', 'Monthly', '', '2020-05-22 21:45:32', '2020-05-22 21:45:32', 11122, 9119),
-(375, 'Lithotrispy', 'image_Lithotripsy SPHINIX 30 LITHO.jpg', 236823, '30 Litho', '375', '2020-02-21', '2020-02-21', '2025-01-07', 'SPHINIX', 'Room 25', 'Annualy', '', '2020-05-21 19:42:58', '2020-05-22 09:18:13', 11118, 7686),
-(680, 'C-ARM', 'image_carm1.jpg', 1000000, 'ZIEHM VISION R', '10680', '2018-03-15', '2018-03-01', '2023-03-01', 'ZIEHM IMAGUNG', 'Room 1', 'Monthly', '', '2020-05-22 21:38:06', '2020-05-22 21:38:06', 11121, 9119),
-(1280, 'Diathermy', 'image_diathermy2.jpg', 130000, 'ValleyLab LS10', 'L1512807GX', '2018-11-12', '2018-11-04', '2022-11-04', 'COVIDIEN', 'Room 2', 'Monthly', '', '2020-05-22 22:02:06', '2020-05-22 22:02:06', 11123, 9119),
-(2024, 'Anesthesia', 'image_aneathesia.jpg', 52000, 'AVANCE CS2', 'ANBQ02024', '2015-02-10', '2015-02-02', '2021-02-02', 'GE', 'Room 1', 'Monthly', '', '2020-05-22 14:24:30', '2020-05-22 14:24:30', 11118, 9119),
-(2694, 'Heart Lung Machine', 'image_HeartLungMachine.jpg', 5000000, 'Medtronic Biomedicus 560 Centrifugal Pump', 'HL2694', '2019-10-03', '2019-09-27', '2024-09-27', 'Medatronic', 'Room 2', 'Monthly', '', '2020-05-22 22:21:49', '2020-05-22 22:21:49', 11126, 9119),
-(2904, 'Drill', 'image_drill.jpg', 12500, 'D3000', 'BBB92904', '2019-04-23', '2022-04-20', '2025-04-20', 'CONMED', 'Room 1', 'Monthly', '', '2020-05-22 22:14:33', '2020-05-22 22:14:33', 11125, 9119),
-(3223, 'Diathermy', 'image_diathermy1.jpg', 125000, 'Force FX-8C', 'F4F73223AX', '2018-07-26', '2018-07-20', '2021-07-20', 'COVIDIEN', 'Room 1', 'Monthly', '', '2020-05-22 21:59:01', '2020-05-22 21:59:01', 11123, 9119),
-(4832, 'DC-Shock', 'image_dc shock.jpg', 40000, 'Reanibex 700', '2013/20024832', '2013-06-12', '2013-06-03', '2018-06-03', 'BEXEN', 'Room 1', 'Monthly', '', '2020-05-22 21:51:04', '2020-05-22 21:51:04', 11112, 9119),
-(5005, 'ENT Microscope', 'image_ENTmicroscope.jpg', 14000, 'OPMI1-H', '205005', '2019-02-15', '2019-02-10', '2024-02-10', 'CARL ZEISS', 'Room 1', 'Monthly', '', '2020-05-22 22:06:37', '2020-05-22 22:06:37', 11124, 9119),
-(9019, 'Syringe Pump', 'image_syringe.jpg', 6000, 'KH171', 'N7309019', '2019-01-12', '2019-01-09', '2023-01-09', 'K-MED', 'Room 1', 'Monthly', '', '2020-05-22 21:29:39', '2020-05-22 21:29:39', 11112, 9119),
-(9258, 'Microscope (Surgical)', 'image_surgicalmicroscope.jpg', 60000, 'VM 900', '258', '2019-08-17', '2019-08-12', '2024-08-12', 'Moller-Wedel', 'Room 2', 'Monthly', '', '2020-05-22 22:11:39', '2020-05-22 22:11:39', 11124, 9119),
-(11310, 'Steam Sterilizer', 'image_Steam Sterilizer AMSCO Eagle 3000 SERIES.jpg', 338600, 'Eagle 3000 SERIES', '0111690-03', '2020-04-27', '2020-05-22', '2025-04-01', 'AMSCO', 'Room1', 'Monthly', '', '2020-05-22 15:03:22', '2020-05-22 15:03:22', 11128, 1010),
-(12220, 'Mammography', 'image_Mammography GE Performa.jpg', 85650, 'Performa M Gf 110', '12220', '2019-06-19', '2019-05-28', '2024-05-28', 'GE', 'Room 9', 'Annualy', '', '2020-05-21 19:40:14', '2020-05-21 19:40:14', 11118, 7686),
-(69690, 'Desitometry', 'image_Densitometry GE Prodigy.jpg', 205170, 'Prodigy', '69690', '2019-11-05', '2019-10-04', '2024-11-05', 'GE', 'Room 16A', 'Annualy', '', '2020-05-21 19:32:47', '2020-05-21 19:32:47', 11127, 7686),
-(69891, 'CT-Scan', 'image_CT-scan GE Lightspeed Ultra advantage.png', 1578820, 'Lightspeed Ultra advantage', '69891HMO', '2019-06-16', '2019-06-16', '2024-05-01', 'GE', 'Room 15', 'Annualy', '', '2020-05-21 19:35:32', '2020-05-22 09:18:43', 11118, 7686),
-(100060, 'Ultrasound (Heart)', 'image_Ultrasound.jpg', 1300000, 'vivid55', 'FN000060', '2020-05-10', '2020-05-10', '2026-05-10', 'GE', 'Room4', 'Annualy', '', '2020-05-22 16:44:27', '2020-05-22 18:48:31', 11116, 3456),
-(108237, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-05', '2020-01-29', '2025-02-05', 'Malvestio', 'Room1', 'Annualy', '', '2020-05-22 18:38:27', '2020-05-22 18:38:27', 11113, 3456),
-(109683, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-05-02', '2020-04-28', '2025-05-02', 'Space labs', 'Room1', 'Annualy', '', '2020-05-22 18:47:57', '2020-05-22 18:47:57', 11113, 3456),
-(122663, 'ECG', 'image_ECG.jpg', 19950, 'Cardio Vit AT-102', '070-12266', '2020-05-05', '2020-05-05', '2023-05-05', 'Schiller', 'Room4', 'Monthly', '', '2020-05-22 18:04:56', '2020-05-22 18:48:58', 11116, 3456),
-(123235, 'Suction Unit', 'image_suction.jpg', 13000, 'HOSPIVAC 350', '12323', '2017-09-15', '2017-09-09', '2023-09-09', 'CA-MI', 'Room 9B', 'Annualy', '', '2020-05-22 14:46:10', '2020-05-22 14:46:10', 11119, 9119),
-(138723, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-02-02', '2020-01-28', '2025-02-02', 'Space labs', 'Room2', 'Annualy', '', '2020-05-22 18:57:21', '2020-05-22 18:57:21', 11113, 3456),
-(140374, 'Blood Gas Analyzer', 'image_Blood Gas Analyzer.jpg', 63250, 'Premier 4000', '14037474', '2020-04-02', '2020-03-28', '2023-04-02', 'GEM', 'lab1', 'Monthly', '', '2020-05-22 17:54:19', '2020-05-22 17:54:19', 11129, 3456),
-(157629, 'Table', 'image_table1.jpg', 473646, 'EASY220', '15762', '2012-12-10', '2012-12-04', '2017-12-04', 'STERIS', 'Room 4', 'Annualy', '', '2020-05-22 15:37:57', '2020-05-22 15:37:57', 11113, 9119),
-(160579, 'Portable Light', 'image_light1.jpg', 21000, 'X2C', 'H.16.05.1790', '2015-09-15', '2015-09-09', '2020-09-09', 'SURGIRIS', 'Room 10A', 'Annualy', '', '2020-05-22 15:47:58', '2020-05-22 15:47:58', 11120, 9119),
-(183006, 'Monitor', 'image_Monitor.jpg', 1000, 'CARESCAPE V100', 'SH61830060SA', '2016-06-09', '2016-06-05', '2021-06-05', 'GE', 'Room 9A', 'Monthly', '', '2020-05-22 14:42:00', '2020-05-22 14:42:00', 11113, 9119),
-(199215, 'Syringe Pump', 'image_Syringe Pump.jpg', 6000, 'INJECTOMAT AGILIA IS', '199215a1', '2020-05-06', '2020-05-01', '2023-05-06', 'Fresenius Kabi', 'Room1', 'Monthly', '', '2020-05-22 17:50:08', '2020-05-22 17:50:08', 11112, 3456),
-(201923, 'Ventilator', 'image_Ventilator.jpg', 145000, 'Extend XT', '2019', '2020-03-05', '2020-03-05', '2026-03-05', 'Airliquide', 'Room1', 'Annualy', '', '2020-05-22 18:07:37', '2020-05-22 18:30:09', 11112, 3456),
-(210310, 'Sterilization with Plasma', 'image_Sterilization with Plasma.jpg', 995000, 'STERRAD 100S', '21097130188', '2020-05-01', '2020-05-22', '2025-04-29', 'Johnson & Johnson', 'Room2', 'Monthly', '', '2020-05-22 15:01:39', '2020-05-22 15:01:39', 11128, 1010),
-(210807, 'Portable Light', 'image_light2.png', 21000, 'Hanaulux 2004 OP Lampe', '2108024', '2015-09-16', '2015-09-09', '2020-09-09', 'HERAEUS', 'Room 10A', 'Annualy', '', '2020-05-22 15:45:00', '2020-05-22 15:45:00', 11120, 9119),
-(233300, 'Infusion Pump', 'image_Infusion Pump.jpg', 37000, '3300', 'FN60-7265', '2020-05-02', '2020-04-29', '2025-05-02', 'TOP-3300', 'Room3', 'Monthly', '', '2020-05-22 19:10:53', '2020-05-22 19:10:53', 11111, 3456),
-(237346, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-02', '2020-01-29', '2025-02-02', 'Malvestio', 'Room3', 'Annualy', '', '2020-05-22 18:43:14', '2020-05-22 18:43:14', 11113, 3456),
-(237676, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-02', '2020-02-02', '2025-02-02', 'Malvestio', 'Room4', 'Annualy', '', '2020-05-22 18:44:38', '2020-05-22 18:49:25', 11113, 3456),
-(237760, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-02', '2020-01-28', '2025-02-02', 'Malvestio', 'Room2', 'Annualy', '', '2020-05-22 18:41:23', '2020-05-22 18:41:23', 11113, 3456),
-(267857, 'Table', 'image_table2.jpg', 473646, '1132.02A1', '267', '2014-06-17', '2014-06-15', '2021-06-15', 'MAQUET-ALPHASTAR', 'Room 5', 'Monthly', '', '2020-05-22 15:41:02', '2020-05-22 15:41:02', 11113, 9119),
-(270023, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-02-02', '2020-01-28', '2025-02-02', 'Space labs', 'Room3', 'Annualy', '', '2020-05-22 18:59:02', '2020-05-22 18:59:02', 11113, 3456),
-(318310, 'Machine Washer', 'image_Machine Washer AMSCO 570.jpg', 145125, '570', '3618890251', '2020-04-04', '2020-05-22', '2025-04-01', 'AMSCO', 'Room1', 'Monthly', '', '2020-05-22 14:59:27', '2020-05-22 14:59:27', 11128, 1010),
-(331003, 'Monitor', 'image_monitor2.jpg', 9400, 'B850', 'DTL331J0031', '2020-01-03', '2020-01-01', '2025-01-01', 'GE', 'Room 3B', 'Monthly', '', '2020-05-22 14:36:53', '2020-05-22 14:36:53', 11113, 9119),
-(361310, 'Dryer', 'image_Dryer AMSCO 575.png', 20000, '575', '3618890281', '2020-03-02', '2020-05-22', '2025-03-01', 'AMSCO', 'Room2', 'Monthly', '', '2020-05-22 14:27:35', '2020-05-22 14:55:56', 11128, 1010),
-(405055, 'Portable Ventilator', 'image_Portable Ventilator.jpg', 85000, 'Trilogy 202', 'TV014050556', '2020-04-03', '2020-04-03', '2024-04-03', 'Philips RESPIRONICS', 'Room4', 'Annualy', '', '2020-05-22 18:14:27', '2020-05-22 18:51:49', 11115, 3456),
-(414121, 'DC-Shock', 'image_DC-Shock.jpg', 44500, 'heart start XL', 'US41412123', '2020-03-02', '2020-02-27', '2025-03-02', 'Philips ', 'Room3', 'Monthly', '', '2020-05-22 18:01:12', '2020-05-22 18:01:12', 11112, 3456),
-(444502, 'Echocardiogram', 'image_Echocardiogram.jpg', 982000, 'Vivid E9', '28042140400517', '2020-05-23', '2020-06-18', '2025-05-01', 'GE', 'Room1', 'Monthly', '', '2020-05-23 04:06:28', '2020-05-23 04:06:28', 11130, 3456),
-(501698, 'Pulse Oximeter', 'image_Pulse Oximeter.jpg', 7000, '7500', '501698347', '2020-04-28', '2020-04-28', '2022-04-28', 'Nonim', 'Room4', 'Monthly', '', '2020-05-22 16:42:09', '2020-05-22 18:52:53', 11115, 3456),
-(582997, 'Ultrasound (Abdominal & Heart)', 'image_Ultrasound.jpg', 269000, 'Aplio', 'DU582997', '2020-06-02', '2020-05-28', '2025-06-02', 'To-Shiba', 'Room1', 'Annualy', '', '2020-05-22 18:28:36', '2020-05-22 18:28:36', 11114, 3456),
-(670523, 'Portable X-ray', 'image_Portable X-Ray.jpg', 1973000, 'MR300', '6705CS142', '2020-05-15', '2020-05-15', '2026-05-15', 'APIK', 'Room2', 'Annualy', '', '2020-05-22 17:57:56', '2020-05-22 18:32:36', 11117, 3456),
-(712345, 'Infusion Pump', 'image_top-3300.jpg', 37000, '3300', 'FN60-7265', '2019-12-06', '2019-05-04', '2024-05-04', 'Top-3300', 'Room 12', 'Annualy', '', '2020-05-21 18:38:56', '2020-05-21 18:38:56', 11111, 3456),
-(781396, 'MRI', 'image_MRI philips INGENIA.jpg', 92002000, 'IGENIA', '781396', '2019-04-26', '2019-03-05', '2025-01-01', 'Philips', 'Room 1A', 'Annualy', '', '2020-05-21 19:23:16', '2020-05-21 19:23:16', 11122, 7686),
-(871023, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-02-02', '2020-02-27', '2025-02-02', 'Space labs', 'Room4', 'Annualy', '', '2020-05-22 19:00:00', '2020-05-22 19:00:00', 11113, 3456),
-(924540, 'Operating Light', 'image_light3.jpg', 24000, 'ZW- 500E NEW', 'N/A', '2018-05-14', '2018-05-02', '2023-05-02', 'Mplent', 'Room 9A', 'Annualy', '', '2020-05-22 15:51:26', '2020-05-22 15:51:26', 11120, 9119),
-(958488, 'Infusion Pump', 'image_Infusion Pump.jpg', 37000, '3300', 'FN60-7265', '2020-05-28', '2020-05-20', '2025-05-28', 'TOP-3300', 'Room4', 'Monthly', '', '2020-05-22 19:12:48', '2020-05-22 19:12:48', 11111, 3456),
-(4573397, 'Ultrasound', 'image_Ultrasound Toshiba NEMIO SSA.550A.jpg', 227900, 'NEMIO_SSA.550A', 'L4573397', '2019-01-05', '2018-12-05', '2024-01-05', 'Toshiba', 'Room 22', 'Annualy', '', '2020-05-21 19:26:34', '2020-05-21 19:28:42', 11114, 7686),
-(20370613, 'Infusion Pump', 'image_Infusion Pump.jpg', 37000, 'OPTIMA PT IS', '20370613', '2020-06-05', '2020-05-28', '2025-06-05', 'Fresenius Kabi', 'Room2', 'Monthly', '', '2020-05-22 19:07:04', '2020-05-22 19:07:04', 11112, 3456),
-(61242056, 'CT-Scan', 'image_CT-scan Toshiba Aquilion one.jpg', 8784240, 'AquillionOne', '6AA1242056', '2019-07-01', '2019-05-29', '2024-07-01', 'Toshiba', 'Room 18', 'Annualy', '', '2020-05-21 19:38:23', '2020-05-21 19:38:23', 11114, 7686),
-(991415561, 'Ultrasound', 'image_Ultrasound Toshiba Nemio MX.jpg', 227900, 'NEMIO MX', '99A1415561', '2019-05-06', '2018-11-26', '2024-05-06', 'Toshiba', 'Room 23', 'Annualy', '', '2020-05-21 19:30:33', '2020-05-21 19:30:33', 11114, 7686);
+INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `Model`, `SerialNumber`, `InstallationDate`, `ArrivalDate`, `WarrantyTime`, `AssetInitialDate`, `InsuranceInitialDate`, `Manufacturer`, `Location`, `PM`, `Notes`, `createdAt`, `updatedAt`, `AgentSupplierId`, `DepartmentCode`, `Software`, `SoftwareVersion`, `SoftwarePass`, `NetworkAddress`, `AssetStatus`, `InsuranceStatus`, `FuntionalStatus`, `ReceptionStatusId`, `Active`, `GE`, `AcquisitionTypeID`, `WarrantyDate`) VALUES
+(375, 'Lithotrispy', 'image_Lithotripsy SPHINIX 30 LITHO.jpg', 236823, '30 Litho', '375', '2020-02-21', '2020-02-21', NULL, NULL, NULL, 'SPHINIX', 'Room 25', 'Anual', '', '2020-05-21 19:42:58', '2024-08-09 21:06:25', 11118, 9119, '0', '', '', '', '', '', '', NULL, 1, 5, NULL, NULL),
+(531, 'holter', 'image_YR02197-YR02062-YR02063-IMG.jpg', 6000, 'eccosur', '53-5236-24', '2024-04-20', '2024-04-20', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Semestral', '', '2024-09-24 02:42:18', '2024-11-07 18:53:21', 11124, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(12220, 'Mammography', 'image_Mammography GE Performa.jpg', 85650, 'Performa M Gf 110', '12220', '2019-06-19', '2019-05-28', NULL, NULL, NULL, 'GE', 'Room 9', 'Anual', '', '2020-05-21 19:40:14', '2020-05-21 19:40:14', 11118, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(69690, 'Desitometry', 'image_Densitometry GE Prodigy.jpg', 205170, 'Prodigy', '69690', '2019-11-05', '2019-11-05', NULL, NULL, NULL, 'GE', 'Room 16A', 'Anual', '', '2020-05-21 19:32:47', '2024-11-07 18:53:33', 11127, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(69891, 'CT-Scan', 'image_CT-scan GE Lightspeed Ultra advantage.png', 1578820, 'Lightspeed Ultra advantage', '69891HMO', '2019-06-16', '2019-06-16', NULL, NULL, NULL, 'GE', 'Room 15', 'Anual', '', '2020-05-21 19:35:32', '2024-11-07 18:53:42', 11118, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(656565, 'Maquina de anestesia', 'image_qrcode-generado.png', 35000, 'Spacelabs', 'gdfgrdgdrg', '2025-03-07', '2025-03-01', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Trimestral', '', '2025-03-03 22:06:05', '2025-03-03 22:06:05', 11111, 9119, 'No', '', '', '', 'Activo', 'Activo', 'Reparación', NULL, 1, 0, NULL, NULL),
+(712345, 'Infusion Pump', 'image_top-3300.jpg', 37000, '3300', 'FN60-7265', '2019-12-06', '2019-12-06', NULL, NULL, NULL, 'Top-3300', 'Room 12', 'Anual', '', '2020-05-21 18:38:56', '2024-11-07 18:53:52', 11111, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(781396, 'MRI', 'image_MRI philips INGENIA.jpg', 92002000, 'IGENIA', '781396', '2019-04-26', '2019-04-26', NULL, NULL, NULL, 'Philips', 'Room 1A', 'Semestral', '', '2020-05-21 19:23:16', '2024-11-07 18:54:15', 11122, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(1050023, 'holter', 'image_HolterHT103P_03-600x600-1.jpg', 7500, 'eccosur', '53-5236-26', '2023-02-07', '2023-02-07', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Anual', '', '2024-10-08 00:38:19', '2024-11-07 18:54:04', 11113, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(1222222, 'Maquina de anestesia', 'image_YR02197-YR02062-YR02063-IMG.jpg', 520000, 'Spacelabs', '1222222', '2024-09-18', '2024-09-18', NULL, NULL, NULL, 'Spacelabs', 'Qx2', 'Semestral', '', '2024-09-24 02:20:08', '2024-11-07 18:54:46', 11114, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(4573397, 'Ultrasound', 'image_Ultrasound Toshiba NEMIO SSA.550A.jpg', 227900, 'NEMIO_SSA.550A', 'L4573397', '2019-01-05', '2019-01-05', NULL, NULL, NULL, 'Toshiba', 'Room 22', 'Anual', '', '2020-05-21 19:26:34', '2024-11-07 18:54:57', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(8545678, 'holter', 'image_qrcode-generado.png', 36000, '4008s', '65465jgtfhh', '2025-03-14', '2025-03-07', NULL, NULL, NULL, 'Fresenius', 'Qx1', 'Semestral', '', '2025-03-07 22:08:55', '2025-03-07 22:08:55', 11111, 9119, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', NULL, 1, 0, NULL, NULL),
+(12269856, 'monitor de signos vitales', 'image_monitor spacelabs.jpeg', 12000, 'qube', 'M65226-6556', '2024-11-08', '2024-10-18', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Anual', '', '2024-11-23 03:42:55', '2024-11-23 03:42:55', 11125, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(20202025, 'ELECTROCARDIOGRAFO', 'image_images.jpeg', 12000, 'Spacelabs', '215256165151131', '2024-11-06', '2024-11-06', NULL, NULL, NULL, 'Spacelabs', 'cardiologia', 'Anual', '', '2024-11-06 21:46:31', '2024-11-07 18:56:07', 11120, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(61242056, 'CT-Scan', 'image_CT-scan Toshiba Aquilion one.jpg', 8784240, 'AquillionOne', '6AA1242056', '2019-07-01', '2019-07-01', NULL, NULL, NULL, 'Toshiba', 'Room 18', 'Anual', '', '2020-05-21 19:38:23', '2024-11-07 18:55:57', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(66666555, 'prueba', 'image_HolterHT103P_03-600x600-1.jpg', 650000, 'prueba', '65efsfwef', '2024-10-11', '2024-10-11', NULL, NULL, NULL, 'franeus', 'cardiologia', 'Semestral', '', '2024-10-11 14:24:37', '2024-11-07 18:55:43', 11111, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(82532024, 'Maquina de anestesia', 'image_YR02197-YR02062-YR02063-IMG.jpg', 0, 'Spacelabs', '82532024', '2024-09-23', '2024-09-23', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Semestral', '', '2024-09-24 00:45:37', '2024-11-07 18:55:22', 11123, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(98995566, 'prueba13', 'image_WhatsApp Image 2024-06-11 at 23.32.40 (1).jpeg', 65666, 'mayo', '2025', '2025-05-13', '2025-05-12', NULL, NULL, NULL, 'Amer', 'cardiologia', 'Trimestral', '', '2025-05-13 20:44:56', '2025-05-13 20:44:56', 11112, 3456, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 1, '2028-11-24'),
+(105002366, 'maquina de aferesis', 'image_aferesis_equipo.jpeg', 98000, 'z20', '5434364sef', '2024-10-11', '2024-10-11', NULL, NULL, NULL, 'franeus', 'Qx1', 'Semestral', '', '2024-10-11 14:17:19', '2024-11-07 18:55:32', 11111, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
+(564298763, 'holter', 'image_DiagramasActividades-Orden de trabajo.drawio (2).png', 96000, 'eccosur', '23-65899-366', '2025-03-07', '2025-03-01', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Anual', '', '2025-03-04 02:37:28', '2025-03-04 02:37:28', 11111, 3456, 'Si', '1.236.3', 'eccosur', '', 'Activo', 'Activo', 'Sin Consumible', NULL, 1, 2, NULL, NULL),
+(991415561, 'Ultrasound', 'image_Ultrasound Toshiba Nemio MX.jpg', 227900, 'NEMIO MX', '99A1415561', '2019-05-06', '2019-05-06', NULL, NULL, NULL, 'Toshiba', 'Room 23', 'Anual', '', '2020-05-21 19:30:33', '2024-11-07 18:55:13', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 4, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `maintenances`
+-- Estructura de tabla para la tabla `equipmentspareparts`
+--
+
+CREATE TABLE `equipmentspareparts` (
+  `id_equipment` int NOT NULL,
+  `id_sparepart` int NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `quantity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `equipmentspareparts`
+--
+
+INSERT INTO `equipmentspareparts` (`id_equipment`, `id_sparepart`, `createdAt`, `updatedAt`, `quantity`) VALUES
+(656565, 78155, '2025-03-03 22:06:05', '2025-03-03 22:06:05', 2),
+(656565, 78226, '2025-03-03 22:06:05', '2025-03-03 22:06:05', 2),
+(8545678, 5942, '2025-03-07 22:08:56', '2025-03-07 22:08:56', 1),
+(8545678, 15541, '2025-03-07 22:08:56', '2025-03-07 22:08:56', 1),
+(98995566, 15541, '2025-05-13 20:44:57', '2025-05-13 20:44:57', 1),
+(564298763, 44582, '2025-03-04 02:37:28', '2025-03-04 02:37:28', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `equipment_brand_model`
+--
+
+CREATE TABLE `equipment_brand_model` (
+  `id_equipment` int NOT NULL,
+  `id_brand` int NOT NULL,
+  `id_model` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `insuranceequipment`
+--
+
+CREATE TABLE `insuranceequipment` (
+  `id_Insurance` int NOT NULL,
+  `id_equipment` int DEFAULT NULL,
+  `updateDate` date DEFAULT NULL,
+  `endInsurance` date DEFAULT NULL,
+  `insuranceStatus` int DEFAULT NULL,
+  `descripcion_actualizacion` text COLLATE utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `maintenances`
 --
 
 CREATE TABLE `maintenances` (
-  `Id` int(11) NOT NULL,
+  `Id` int NOT NULL,
   `StartDate` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `EndDate` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Description` text COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `BreakDownCode` int(11) DEFAULT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL
+  `BreakDownCode` int DEFAULT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `maintenances`
+-- Volcado de datos para la tabla `maintenances`
 --
 
 INSERT INTO `maintenances` (`Id`, `StartDate`, `EndDate`, `Description`, `createdAt`, `updatedAt`, `BreakDownCode`, `ClinicalEnginnerDSSN`) VALUES
-(4, '2019-10-25', '2019-10-28', 'The problem solved', '2020-05-23 18:40:44', '2020-05-23 18:40:44', 12, 24697),
-(5, '2019-05-04', '2019-05-05', 'changing lead wires', '2020-05-23 18:41:18', '2020-05-23 18:41:18', 13, 31098),
-(6, '2019-06-17', '2019-06-18', 'Helium level adjusted', '2020-05-23 18:41:58', '2020-05-23 18:41:58', 1, 24697),
-(7, '2019-07-12', '2019-07-14', 'changing tube', '2020-05-23 18:42:27', '2020-05-23 18:42:27', 5, 31098),
-(8, '2019-04-12', '2019-04-15', 'change tube', '2020-05-23 18:43:33', '2020-05-23 18:43:33', 4, 29151719),
-(9, '2019-12-06', '2019-12-07', 'change probes', '2020-05-23 18:44:30', '2020-05-23 18:44:30', 8, 29809090102359),
-(10, '2019-06-12', '2019-06-13', 'Calibrate Spo2 level', '2020-05-23 18:45:11', '2020-05-23 18:45:11', 20, 9921050746980),
-(11, '2019-07-24', '2019-07-25', 'fix the fan (change capacitor)', '2020-05-23 18:46:07', '2020-05-23 18:46:07', 7, 29151719),
-(12, '2019-11-01', '2019-11-02', 'Calibrate the device', '2020-05-23 18:46:55', '2020-05-23 18:46:55', 15, 29809090102359);
+(13, '2024-10-30', '2024-10-30', 'fall pm', '2024-10-31 03:31:49', '2024-10-31 03:31:49', 44, 6458161);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ppmquestions`
+-- Estructura de tabla para la tabla `models`
+--
+
+CREATE TABLE `models` (
+  `id` int NOT NULL,
+  `Model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_brand` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `nameequipment`
+--
+
+CREATE TABLE `nameequipment` (
+  `id_nameE` int NOT NULL,
+  `Name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `nameequipment`
+--
+
+INSERT INTO `nameequipment` (`id_nameE`, `Name`) VALUES
+(1, 'MONITOR MULTIPARAMETRICO'),
+(2, 'DESFIBRILADOR DEA'),
+(3, 'MONITOR + IMPRESORA'),
+(4, 'LAMPARA DE EXAMEN'),
+(5, 'MONITOR SPOTCHECK'),
+(6, 'ASPIRADOR PORTATIL'),
+(7, 'BALANZA DIGITAL CON TALLIMETRO'),
+(8, 'BALANZA NEONATAL CON INFANTOMETRO'),
+(9, 'MONITOR DESFIBRILADOR'),
+(10, 'SISTEMA DE COMPRESIÓN TORAXICA'),
+(11, 'LAMPARA CIALITICA MOVIL'),
+(12, 'ELECTROCARDIOGRAFO'),
+(13, 'ECOGRAFO MULTIFUNCIONAL'),
+(14, 'MONITOR CONNEX NIBP / SPO2 / TEMP'),
+(15, 'ECG'),
+(16, 'Equipo De Rayos X Movil'),
+(17, 'digitalizado RX'),
+(18, 'Arco En C'),
+(19, 'Mamografo'),
+(20, 'Densitometro'),
+(21, 'Desfibrilador Corplus Aed'),
+(22, 'Rayos X Portatil de mano'),
+(23, 'Disfibrilador Bifasico'),
+(24, 'Resonador Magnetico 1.5T'),
+(25, 'Resonador Magnetico 3T'),
+(26, 'Equipo Tomografo Act16C'),
+(27, 'Inyector de contraste'),
+(28, 'Equipos rayos X'),
+(29, 'Impresora de placas'),
+(30, 'Ecografo Multifuncional'),
+(31, 'Termociclador Accurate + Computador Pc Alta Generacion'),
+(32, 'Centrifuga De Alta Velocidad'),
+(33, 'Baño Seco C/Bloque Calefactor P/1.5Ml 40 Orificios'),
+(34, 'Macrocentrífuga'),
+(35, 'Mini centrifugadora'),
+(36, 'Agitador'),
+(37, 'Cabina flujo laminar con filtro HEPA'),
+(38, 'Cabina flujo laminar'),
+(39, 'Termocilcador'),
+(40, 'Cuagulómetro Siemens Bft Ii Medlab'),
+(41, 'Macrocentrifuga 24 Tubos A Induccion'),
+(42, 'Contador Hermatologico Dif 6 Partes'),
+(43, 'Agitador Vortex'),
+(44, 'Disco rotador de tubo'),
+(45, 'Agitador plataforma'),
+(46, 'Baño Maria De 10 Lt.'),
+(47, 'Microcentifuga'),
+(48, 'Microscopio'),
+(49, 'Analizador Quimico Manual'),
+(50, 'Esterilizador De 75 Lts'),
+(51, 'MacroCentrifuga'),
+(52, 'Analizador De Electrolitros'),
+(53, 'Medidor Hemoglobina glicosilada'),
+(54, 'Analizador de orina'),
+(55, 'BOMBA DE INFUSION'),
+(56, 'RACK SYST. P/BOMBA D/INFUSION. INTELIGEN'),
+(57, 'EEG Nihon Kode'),
+(58, 'EEG Nikon Koden'),
+(59, 'EEG Nikon Koden - Dr. Arias'),
+(60, 'MESA QUIRURGICA'),
+(61, 'MAQUINA D/ANESTESIA'),
+(62, 'ELECTROBISTURI SMART 4'),
+(63, 'MONITOR MODULAR'),
+(64, 'LAMPARA CIALITICA DOS SATELITES'),
+(65, 'SERVOCUNA'),
+(66, 'INCUBADORA DE TRANSPORTE'),
+(67, 'MICROSCOPIO QUIRURGICO'),
+(68, 'TORRE LAPAROSCOPICA'),
+(69, 'BOMBA TIVA'),
+(70, 'MANGUERA AGUA- AIRE'),
+(71, 'SELLADORA  PAPEL'),
+(72, 'CUNA'),
+(73, 'CENTRAL DE MONITOREO'),
+(74, 'VENTILADOR MECANICO'),
+(75, 'COLCHON ANTIESCARRA'),
+(76, 'COMPRESOR DE MIENBROS'),
+(77, 'MODULO DE CAPNOGRAFIA SIDESTREAM'),
+(78, 'ASPIRADOR QUIRURGICO'),
+(79, 'TORNIQUETE NEUMATICO'),
+(80, 'MANTA TERMICA'),
+(81, 'PUPINEL DE 30 LTS'),
+(82, 'PUPINEL DE 20 LTS');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ordertype`
+--
+
+CREATE TABLE `ordertype` (
+  `id_typeW` int NOT NULL,
+  `work` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ordertype`
+--
+
+INSERT INTO `ordertype` (`id_typeW`, `work`) VALUES
+(1, 'Correctivo'),
+(2, 'Capacitación'),
+(3, 'Traslado de área'),
+(4, 'Compra insumo'),
+(5, 'Compra accesorio');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ppmquestions`
 --
 
 CREATE TABLE `ppmquestions` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Q1` text COLLATE utf8mb4_general_ci,
   `Q2` text COLLATE utf8mb4_general_ci,
   `Q3` text COLLATE utf8mb4_general_ci,
@@ -349,38 +586,32 @@ CREATE TABLE `ppmquestions` (
   `Q5` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ppmquestions`
+-- Volcado de datos para la tabla `ppmquestions`
 --
 
 INSERT INTO `ppmquestions` (`Code`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
-(1, 'All connections of the components for tightness examine.\r\n\r\n\r\n', 'Surfaces of the units on damages of lacquer and scrapes examine.', 'All parts on transport damages, depressions, tears, or breaks examine.', 'All cable and connectors on outward damages examine.', 'Control whether all mechanical safety devices are in the prescribed position.\r\n', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 680),
-(2, 'Make sure that the connectors, patient cables, and paddles are not damaged nor\r\nexpired.\r\n\r\n', 'Make sure that the memory card is inserted into the device and that it has a sufficient\r\nmemory capacity.', 'Connect the device to an external power supply and check that the corresponding\r\nindicator on the front panel is illuminated.\r\n', 'Check that the recorder has paper and that it prints correctly.\r\n', 'Check that the battery is charged and that it does not present any signs of damage.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 4832),
-(3, 'Make sure that the connectors, patient cables, and paddles are not damaged nor\r\nexpired.\r\n\r\n', 'Make sure that the memory card is inserted into the device and that it has a sufficient\r\nmemory capacity.', 'Connect the device to an external power supply and check that the corresponding\r\nindicator on the front panel is illuminated.\r\n', 'Check that the recorder has paper and that it prints correctly.\r\n', 'Check that the battery is charged and that it does not present any signs of damage.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 414121),
-(4, 'Check the power cord each time the generator is used.\r\n', 'Check the monopolar and bipolar high-frequency leakage current.\r\n', 'Check the output of the cut modes.\r\n', 'Check the output of the coag modes.\r\n', 'Check the fuses to be replaced if the generator stopped functioning.', '2019-12-22 07:44:22', '2019-12-22 06:27:36', 1280),
-(5, 'Check the power cord each time the generator is used.\r\n', 'Check the monopolar and bipolar high-frequency leakage current.\r\n', 'Check the output of the cut modes.\r\n', 'Check the output of the coag modes.\r\n', 'Check the fuses to be replaced if the generator stopped functioning.', '2019-12-22 07:44:22', '2019-12-22 06:27:36', 3223),
-(6, 'Gantry ceiling fan operational check.\r\n', 'Checking that the rotating unit is firmly secured.\r\n', 'Console DC power-supply voltage check.\r\n', 'Checking for interference to cables inside the couch.\r\n', 'Lubrication of vertical motion gear of the couch.', '2019-12-22 06:27:36', '2019-12-22 07:44:22', 61242056),
-(7, 'Gantry ceiling fan operational check.\r\n', 'Checking that the rotating unit is firmly secured.\r\n', 'Console DC power-supply voltage check.\r\n', 'Checking for interference to cables inside the couch.\r\n', 'Lubrication of vertical motion gear of the couch.', '2019-12-22 06:27:36', '2019-12-22 07:44:22', 69891),
-(8, 'Check Half Value Layer (HVL) of the tube.\r\n', 'Check Breast Thickness Measurement of the gantry.\r\n', 'Check for correct collimation.\r\n', 'Check Gantry emergency stop buttons.\r\n', 'Check DICOM Printer.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 12220),
-(9, 'Inspecting and adjusting the radiofrequency (RF) power output\r\n', 'Inspecting the gradient calibration\r\n', 'Performing a rotational surface coil test\r\n', 'Checking the operation of the workspace fans, intakes, and monitor\r\n', 'Performing head signal-to-noise ratio (SNR)', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 781396),
-(10, 'Check the oxygen mixer function.\r\n', 'Check leakage absence.\r\n', 'Check the low pressure/apnea alarm.\r\n', 'Check the gas supply alarm.\r\n', 'Check the power supply failure alarm.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 201923),
-(11, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 20370613),
-(12, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 958488),
-(13, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 712345),
-(14, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 233300),
-(15, 'Check the electrodes for dirt and rust.\r\n', 'Check the power cord and lead cable for damage.\r\n', 'Check the AC operation and battery operation.\r\n', 'Check the recorder test.\r\n', 'Check the power fuses for a breakdown.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 122663);
+(1, 'Examine todas las conexiones de los componentes para verificar su ajuste.', 'Examine las superficies de las unidades en busca de daños en el barniz y raspaduras.', 'Examine todas las partes en busca de daños de transporte, depresiones, desgarros o roturas.', 'Examine todos los cables y conectores en busca de daños externos.', 'Controle que todos los dispositivos de seguridad mecánicos estén en la posición prescrita.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 375),
+(2, 'Asegúrese de que los conectores, cables del paciente y palas no estén dañados ni vencidos.', 'Asegúrese de que la tarjeta de memoria esté insertada en el dispositivo y tenga suficiente capacidad de almacenamiento.', 'Conecte el dispositivo a una fuente de alimentación externa y verifique que el indicador correspondiente en el panel frontal esté iluminado.', 'Verifique que el grabador tenga papel y que imprima correctamente.', 'Verifique que la batería esté cargada y que no presente signos de daño.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 531),
+(3, 'Verifique el cable de alimentación cada vez que se use el generador.', 'Verifique la corriente de fuga de alta frecuencia monopolar y bipolar.', 'Verifique la salida de los modos de corte.', 'Verifique la salida de los modos de coagulación.', 'Verifique los fusibles a reemplazar si el generador dejó de funcionar.', '2019-12-22 07:44:22', '2019-12-22 06:27:36', 12220),
+(4, 'Verificación operativa del ventilador del techo del gantry.', 'Comprobación de que la unidad giratoria esté firmemente asegurada.', 'Verificación de voltaje de la fuente de alimentación de CC de la consola.', 'Comprobación de interferencias en los cables dentro de la camilla.', 'Lubricación del engranaje de movimiento vertical de la camilla.', '2019-12-22 06:27:36', '2019-12-22 07:44:22', 69891),
+(5, 'Verifique la Capa de Media Valor (HVL) del tubo.', 'Verifique la medición del grosor del seno del gantry.', 'Verifique la colimación correcta.', 'Verifique los botones de parada de emergencia del gantry.', 'Verifique la impresora DICOM.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 1222222),
+(6, 'Inspección y ajuste de la potencia de salida de radiofrecuencia (RF).', 'Inspección de la calibración del gradiente.', 'Realización de una prueba de bobina de superficie rotacional.', 'Comprobación del funcionamiento de los ventiladores del área de trabajo, entradas y monitor.', 'Realización de la prueba de relación señal-ruido (SNR) en la cabeza.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 781396),
+(7, 'Verifique la función del mezclador de oxígeno.', 'Verifique la ausencia de fugas.', 'Verifique la alarma de baja presión/apnea.', 'Verifique la alarma de suministro de gas.', 'Verifique la alarma de fallo de alimentación.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 4573397),
+(8, 'Verifique la velocidad de infusión.', 'Verifique la alarma de puerta abierta.', 'Verifique la alarma de oclusión.', 'Verifique la alarma de aire en línea.', 'Verifique el sensor de tasa de flujo.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 712345),
+(9, 'Verifique los electrodos en busca de suciedad y óxido.', 'Verifique que el cable de alimentación y el cable de conexión no estén dañados.', 'Verifique el funcionamiento en corriente alterna y batería.', 'Verifique la prueba del grabador.', 'Verifique los fusibles de alimentación para evitar averías.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 991415561);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ppms`
+-- Estructura de tabla para la tabla `ppms`
 --
 
 CREATE TABLE `ppms` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `DATE` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -394,216 +625,288 @@ CREATE TABLE `ppms` (
   `N5` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ppms`
+-- Volcado de datos para la tabla `ppms`
 --
 
 INSERT INTO `ppms` (`Code`, `DATE`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `N1`, `N2`, `N3`, `N4`, `N5`, `createdAt`, `updatedAt`, `EquipmentCode`, `ClinicalEnginnerDSSN`) VALUES
-(1, '2020-05-22', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2020-05-23 18:53:29', '2020-05-23 18:53:29', 781396, 9921050746980);
+(1, '2020-05-22', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2020-05-23 18:53:29', '2020-05-23 18:53:29', 781396, 9921050746980),
+(2, '2024-11-06', 'on', 'on', 'on', 'on', 'on', '', '', '', '', 'BATERIA VENCIDA', '2024-11-07 18:27:32', '2024-11-07 18:27:32', 531, 6458161),
+(4, '2025-05-11', 'on', 'on', 'on', 'on', 'on', '', 'calibrado en 2 meses', '', '', '', '2025-05-12 02:52:18', '2025-05-12 02:52:18', 781396, 6458161),
+(8, '2025-05-11', 'on', 'on', 'on', 'on', 'on', '', '', '', 'no funciono', '', '2025-05-12 04:04:25', '2025-05-12 04:04:25', 991415561, 6458161),
+(9, '2025-05-11', 'on', 'on', 'on', 'on', 'on', '', '', '', 'no funciono', '', '2025-05-12 04:13:46', '2025-05-12 04:13:46', 991415561, 6458161);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `spareparts`
+-- Estructura de tabla para la tabla `preventivetasks`
+--
+
+CREATE TABLE `preventivetasks` (
+  `id` int NOT NULL,
+  `EquipmentCode` int NOT NULL,
+  `ScheduledDate` date NOT NULL,
+  `Status` varchar(20) COLLATE utf8mb4_general_ci DEFAULT 'Programada',
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `preventivetasks`
+--
+
+INSERT INTO `preventivetasks` (`id`, `EquipmentCode`, `ScheduledDate`, `Status`, `createdAt`, `updatedAt`) VALUES
+(1, 375, '2025-02-21', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(2, 531, '2025-04-21', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(3, 12220, '2025-06-19', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(4, 69690, '2025-11-05', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(5, 69891, '2025-06-16', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(6, 656565, '2025-03-07', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(7, 712345, '2025-12-08', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(8, 781396, '2025-04-28', 'Finalizada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(9, 1050023, '2025-02-07', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(10, 1222222, '2025-09-18', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(11, 4573397, '2025-01-06', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(12, 8545678, '2025-03-14', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(13, 12269856, '2025-11-10', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(14, 20202025, '2025-11-06', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(15, 61242056, '2025-07-01', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(16, 66666555, '2025-10-13', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(17, 82532024, '2025-09-23', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(18, 105002366, '2025-10-13', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(19, 564298763, '2025-03-07', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(20, 991415561, '2025-05-06', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
+(21, 98995566, '2025-05-13', 'Programada', '2025-05-13 20:48:13', '2025-05-13 20:48:13');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `receptionstatus`
+--
+
+CREATE TABLE `receptionstatus` (
+  `ID` int NOT NULL,
+  `Name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `receptionstatus`
+--
+
+INSERT INTO `receptionstatus` (`ID`, `Name`) VALUES
+(1, 'Pendiente de recepción'),
+(2, 'Recibido'),
+(3, 'En almacén'),
+(4, 'En tránsito'),
+(5, 'Rechazado'),
+(6, 'En evaluación técnica'),
+(7, 'Recibido con observaciones');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `repairstage`
+--
+
+CREATE TABLE `repairstage` (
+  `id_Stage` int NOT NULL,
+  `Status` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `FuntionalStatus` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `repairstage`
+--
+
+INSERT INTO `repairstage` (`id_Stage`, `Status`, `FuntionalStatus`) VALUES
+(1, 'Solicitud nueva', 0),
+(2, 'En reparación', 0),
+(3, 'En espera de repuesto', 0),
+(4, 'Espera de proveedor', 0),
+(5, 'Baja', 0),
+(6, 'Reparado', 1),
+(7, 'Funcional pero con limitación', 1),
+(8, 'Equipo OK', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `spareparts`
 --
 
 CREATE TABLE `spareparts` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Amount` int(11) NOT NULL,
+  `Amount` int NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `AgentSupplierId` int(11) DEFAULT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+  `AgentSupplierId` int DEFAULT NULL,
+  `EquipmentCode` int DEFAULT NULL,
+  `CodeManufacter` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `CategoryId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `spareparts`
+-- Volcado de datos para la tabla `spareparts`
 --
 
-INSERT INTO `spareparts` (`Code`, `Name`, `Image`, `Amount`, `createdAt`, `updatedAt`, `AgentSupplierId`, `EquipmentCode`) VALUES
-(942, 'X-ray tubes', 'image_X-ray tubes.jpg', 1, '2020-05-21 21:25:12', '2020-05-21 21:25:12', 11114, 61242056),
-(1465, 'Perfusion System Components', 'image_images_Perfusion.jpg', 2, '2020-05-23 01:30:24', '2020-05-23 01:30:24', 11126, 2694),
-(1555, 'Beam Splitter dual port ', 'image_beamsplitterdual.jpg', 1, '2020-05-23 00:38:28', '2020-05-23 00:38:28', 11124, 9258),
-(1599, 'Replacement Battery', 'image_Replacement Battery.jpg', 2, '2020-05-22 23:45:06', '2020-05-22 23:45:06', 11112, 9019),
-(1929, 'AC Plug Holder', 'image_AC plug holder.jpg', 1, '2020-05-23 00:02:11', '2020-05-23 00:02:11', 11122, 201),
-(2588, 'Carl Zeiss Light guide 1,5m', 'image_carlzeisslightguide.jpg', 1, '2020-05-23 00:39:20', '2020-05-23 00:39:20', 11124, 9258),
-(2629, '5 Leads ECG Cable', 'image_5 Lead ECG Cable, IEC.jpg', 5, '2020-05-23 00:19:02', '2020-05-23 00:19:02', 11112, 4832),
-(2995, 'Zeiss Fiber Optic Cable', 'image_zeiss-fiber-optic-cable.jpg', 1, '2020-05-23 00:34:48', '2020-05-23 00:34:48', 11124, 5005),
-(3218, 'AC Adaptor', 'image_AC adaptor.jpg', 1, '2020-05-23 00:00:44', '2020-05-23 00:00:44', 11122, 201),
-(3563, 'Canister', 'image_Canister .jpg', 2, '2020-05-22 23:48:05', '2020-05-22 23:48:05', 11119, 123235),
-(3574, 'CCD Camera', 'image_CCD-camera.png', 2, '2020-05-22 23:54:11', '2020-05-22 23:54:11', 11121, 680),
-(3578, 'Halogen Lamp 12V 100W', 'image_halogenlamp.jpg', 1, '2020-05-23 00:39:49', '2020-05-23 00:39:49', 11124, 9258),
-(3684, 'External Paddles water resistant', 'image_External Paddles water resistant.jpg', 2, '2020-05-23 00:19:36', '2020-05-23 00:19:36', 11112, 4832),
-(4198, 'Isoflurane Vaporiser', 'image_isofluranevaporiser.jpg', 5, '2020-05-22 23:30:38', '2020-05-22 23:30:38', 11118, 2024),
-(4199, 'Fogger Machine', 'image_fogger-machine.jpg', 3, '2020-05-22 23:30:09', '2020-05-22 23:30:09', 11118, 2024),
-(4472, 'Welch Allyn LumiView Portable Binocular', 'image_welch-allyn-lumiview-portable-binocular-microscope.jpg', 1, '2020-05-23 00:33:15', '2020-05-23 00:33:15', 11124, 5005),
-(4595, 'X-Ray Tubes', 'image_X-ray tubes.png', 1, '2020-05-22 23:49:48', '2020-05-22 23:49:48', 11121, 680),
-(4637, 'Bacterial Filter', 'image_Bacterial Filter, Reusable.jpg', 4, '2020-05-22 23:46:31', '2020-05-22 23:46:31', 11119, 123235),
-(5312, 'Roller Pump Blood Analyzer ', 'images_Roller Pump.jpg', 3, '2020-05-23 01:06:29', '2020-05-23 01:06:29', 11126, 2694),
-(5441, 'Water Hose Assembly ', 'image_Water Hose Assembly .jpg', 1, '2020-05-21 21:32:27', '2020-05-21 21:32:27', 11114, 12220),
-(5511, 'POWER FACTOR 5000 P.F', 'image_POWER FACTOR 5000 P.F 5kv-DC.W..jpg', 3, '2020-05-23 00:27:25', '2020-05-23 00:27:25', 11123, 1280),
-(5626, 'Pediatric Pads', 'image_Pediatric Pads HS-4000, 5 sets-case.jpg', 5, '2020-05-23 00:17:24', '2020-05-23 00:17:24', 11112, 4832),
-(5655, 'Surgical Drill Stand', 'image_Surgical Drill Stand.jpg', 2, '2020-05-23 00:42:49', '2020-05-23 00:42:49', 11125, 2904),
-(5725, 'Trephine Bur 3.0/2.0mm', 'image_Trephine Bur 3.0-2.0mm.jpg', 2, '2020-05-23 00:42:10', '2020-05-23 00:42:10', 11125, 2904),
-(5891, 'Valve Base for 250 Watt (S.W.D)', 'image_VALVE BASE FOR 250 WATT S.W.D (shot wave diathermy unit).jpg', 1, '2020-05-23 00:25:58', '2020-05-23 00:25:58', 11123, 1280),
-(5942, 'condor power supply', 'image_condor power supply .jpg', 1, '2020-05-21 21:12:07', '2020-05-21 21:12:07', 11127, 69690),
-(5984, 'Capacitors 110 P.F', 'image_CAPECITORS.jpg', 2, '2020-05-23 00:08:20', '2020-05-23 00:26:48', 11123, 1280),
-(6195, 'DC Cable', 'image_DC cable.jpg', 1, '2020-05-23 00:01:28', '2020-05-23 00:01:28', 11122, 201),
-(6461, 'Seiler 10X Lockable Eyepiece', 'image_seiler-10x-lockable-eyepiece.jpg', 1, '2020-05-23 00:34:18', '2020-05-23 00:34:18', 11124, 5005),
-(6578, 'Oxygen Flow meter', 'image_oxygenflowmeter.jpg', 3, '2020-05-22 23:29:31', '2020-05-22 23:29:31', 11118, 2024),
-(6586, 'Image Intensifier', 'image_image-intensifier.png', 1, '2020-05-22 23:52:32', '2020-05-22 23:52:32', 11121, 680),
-(6687, 'Electro-surgical Diathermy Pencil', 'image_electrosurgical diathermy pencil.jpg', 2, '2020-05-23 00:27:59', '2020-05-23 00:27:59', 11123, 1280),
-(6698, 'Zumax 250 mm Objective Lens with Fine Focusing', 'image_zumax-250-mm-objective-lens-with-fine-focusing.jpg', 1, '2020-05-23 00:33:48', '2020-05-23 00:33:48', 11124, 5005),
-(7521, 'Lindeman Drill 2.6mm - Short', 'image_Lindeman Drill 2.6mm - Short.jpg', 1, '2020-05-23 00:40:49', '2020-05-23 00:40:49', 11125, 2904),
-(7758, 'Operating Theatre Table Cords', 'image_Operating Theatre Table Cords.jpg', 6, '2020-05-22 23:52:48', '2020-05-22 23:52:48', 11113, 157629),
-(7842, 'Mammography Lamp Set  ', 'image_Mammography Lamp Set.jpg', 1, '2020-05-21 21:31:03', '2020-05-21 21:31:03', 11118, 12220),
-(8457, 'Suction Liner', 'Suction Liner.jpg', 3, '2020-05-22 23:43:07', '2020-05-22 23:43:07', 11119, 123235),
-(8486, 'Patient Adhesives', 'image_Patient Adhesives (pkg. 10 x 3).jpg', 20, '2020-05-23 00:10:16', '2020-05-23 00:10:16', 11112, 4832),
-(8489, 'Adult Electrode Pads', 'image_Adult Electrode Pads 5 pairs.jpg', 5, '2020-05-23 00:16:16', '2020-05-23 00:16:16', 11112, 4832),
-(9385, 'Operating Theatre Table Foot Controls', 'image_Operating Theatre Table Foot Controls.jpg', 6, '2020-05-22 23:51:55', '2020-05-22 23:51:55', 11113, 157629),
-(9492, 'High Voltage Cables', 'image_high-voltages-cables.png', 2, '2020-05-22 23:57:48', '2020-05-22 23:57:48', 11121, 680),
-(9998, 'Ac PlugHolder', 'AC plug holder.jpg', 5, '2020-05-22 23:35:48', '2020-05-22 23:35:48', 11113, 183006),
-(15541, 'Programmed PL 103 CPU Board ', 'image_Programmed PL 103 CPU Board.jpg', 1, '2020-05-21 21:32:00', '2020-05-21 21:32:00', 11114, 12220),
-(18122, 'Single Gas Spring 450mm 2550 Newtons', 'image_Single Gas Spring 450mm 2550 Newtons.jpg', 1, '2020-05-21 21:29:50', '2020-05-21 21:29:50', 11114, 12220),
-(23798, 'Ac Adapter ', 'AC adaptor.jpg', 5, '2020-05-22 23:34:16', '2020-05-22 23:34:16', 11113, 183006),
-(31098, 'DC Cable ', 'DC cable.jpg', 5, '2020-05-22 23:35:09', '2020-05-22 23:35:09', 11113, 183006),
-(34123, 'Hand Control', 'image_handcontrol.jpg', 2, '2020-05-22 23:50:58', '2020-05-22 23:50:58', 11113, 157629),
-(44547, 'Power Supply', 'image_Power supply.jpg', 3, '2020-05-21 21:08:07', '2020-05-21 21:10:45', 11114, 4573397),
-(44582, 'Monitor', 'image_Monitor.jpg', 2, '2020-05-21 21:09:48', '2020-05-21 21:10:52', 11114, 4573397),
-(58912, 'CCA board', 'image_CCA board .jpg', 1, '2020-05-21 21:17:53', '2020-05-21 21:17:53', 11127, 69690),
-(76648, 'Suction Jar', 'image_suction jar.jpg', 1, '2020-05-22 23:48:49', '2020-05-22 23:48:49', 11119, 123235),
-(78155, 'X-ray Generator', 'image_X-ray Generator.png', 1, '2020-05-21 21:22:29', '2020-05-21 21:22:29', 11118, 69891),
-(78226, 'Tube head', 'image_Tube head .jpg', 1, '2020-05-21 21:18:24', '2020-05-21 21:18:24', 11127, 69690),
-(79189, 'Monitor', 'image_Monitor.jpg', 1, '2020-05-21 21:21:35', '2020-05-21 21:21:35', 11118, 69891),
-(87812, 'Probes', 'image_Probes.png', 2, '2020-05-21 21:38:43', '2020-05-21 21:38:43', 11114, 375),
-(87942, 'Power cord', 'image_Power cord.jpg', 2, '2020-05-21 21:38:17', '2020-05-21 21:38:17', 11118, 375),
-(95553, 'collimator', 'image_collimator .jpg', 1, '2020-05-21 21:17:16', '2020-05-21 21:17:16', 11127, 69690),
-(98412, ' acquisition computer ', 'image_acquisition computer.jpg', 1, '2020-05-21 21:18:57', '2020-05-21 21:18:57', 11127, 69690),
-(145557, 'Footswitch', 'image_Footswitch.jpg', 2, '2020-05-21 21:37:38', '2020-05-21 21:37:38', 11114, 375),
-(181588, 'high voltage tank', 'image_High voltage tank.jpg', 2, '2020-05-21 21:24:12', '2020-05-21 21:24:12', 11114, 61242056),
-(291501, 'Drop Sensor', 'image_Drop Sensor.jpg', 50, '2020-05-22 23:16:29', '2020-05-22 23:16:29', 11111, 233300),
-(291502, 'AC power cable', 'image_AC power cable.png', 50, '2020-05-22 23:29:23', '2020-05-22 23:29:23', 11111, 233300),
-(291503, 'AC adaptor ', 'image_AC adaptor.jpg', 50, '2020-05-22 23:31:40', '2020-05-22 23:31:40', 11113, 138723),
-(291504, 'DC cable', 'image_DC cable.jpg', 50, '2020-05-22 23:37:51', '2020-05-22 23:37:51', 11113, 138723),
-(291505, 'AC plug holder', 'image_AC plug holder.jpg', 50, '2020-05-22 23:38:26', '2020-05-22 23:38:26', 11113, 138723),
-(291506, 'Traction frame support', 'image_Traction frame support.jpg', 5, '2020-05-22 23:40:00', '2020-05-22 23:40:00', 11113, 108237),
-(291507, 'Patient helper support', 'image_Patient helper support.jpg', 6, '2020-05-22 23:40:55', '2020-05-22 23:40:55', 11113, 108237),
-(291508, 'IV pole', 'image_IV pole.jpg', 5, '2020-05-22 23:41:57', '2020-05-22 23:41:57', 11113, 108237),
-(291509, 'Rectangular Probe', 'image_Rectangular Probe.jpg', 5, '2020-05-22 23:43:56', '2020-05-22 23:43:56', 11114, 582997),
-(291510, 'Curved Probe', 'image_Curved Probe.jpg', 5, '2020-05-22 23:46:00', '2020-05-22 23:46:00', 11114, 582997),
-(291511, 'Scan Ultrasound Gel', 'image_Scan Ultrasound Gel.jpg', 5, '2020-05-22 23:46:30', '2020-05-22 23:46:30', 11114, 582997),
-(291512, 'Exhalation flow sensor', 'image_Exhalation flow sensor.png', 6, '2020-05-22 23:48:11', '2020-05-22 23:48:11', 11115, 405055),
-(291513, ' Air and Oxygen hoses ', 'image_Air and Oxygen hoses .jpg', 3, '2020-05-22 23:49:01', '2020-05-22 23:49:01', 11115, 405055),
-(291514, 'Air and Oxygen inlet water traps', 'image_Air and Oxygen inlet water traps.jpg', 3, '2020-05-22 23:49:48', '2020-05-22 23:49:48', 11115, 405055),
-(291515, 'Disposable bacteria filters', 'image_Disposable bacteria filters.jpg', 5, '2020-05-22 23:50:38', '2020-05-22 23:50:38', 11115, 405055),
-(291516, 'Air compressor', 'image_Air compressor.jpg', 3, '2020-05-22 23:51:13', '2020-05-22 23:51:13', 11115, 405055),
-(291517, 'Battery', 'image_Battery.jpg', 5, '2020-05-22 23:51:52', '2020-05-22 23:51:52', 11115, 405055),
-(291518, ' Mains cable', 'image_Main cables.jpg', 10, '2020-05-22 23:58:07', '2020-05-22 23:58:07', 11116, 122663),
-(291519, 'Limb electrodes', 'image_Limb electrodes.jpg', 10, '2020-05-22 23:58:59', '2020-05-22 23:58:59', 11116, 122663),
-(291520, 'Chest electrodes', 'image_Chest electrodes.jpg', 6, '2020-05-23 00:00:14', '2020-05-23 00:00:14', 11116, 122663),
-(291521, 'Self-Adhesive electrodes', 'image_Self-Adhesive electrodes.jpg', 10, '2020-05-23 00:00:50', '2020-05-23 00:00:50', 11116, 122663),
-(291522, ' BTL patient cable', 'image_BTL patient cable.jpg', 6, '2020-05-23 00:01:23', '2020-05-23 00:01:23', 11116, 122663),
-(291523, 'Adult/Pediatrics External Reusable Paddles', 'image_External Resuable Paddles.jpg', 3, '2020-05-23 00:03:08', '2020-05-23 00:03:08', 11112, 414121),
-(291524, 'Internal Resuable Paddles', 'image_Internal Resuable Paddles.jpg', 3, '2020-05-23 00:04:38', '2020-05-23 00:04:38', 11112, 414121),
-(291525, '4 Lead Patient Cable', 'image_4 Lead Patient Cable.jpg', 3, '2020-05-23 00:05:38', '2020-05-23 00:05:38', 11112, 414121),
-(291526, 'Single-Use monitoring electrodes', 'image_Single-Use monitoring electrodes.jpg', 3, '2020-05-23 00:06:19', '2020-05-23 00:08:46', 11112, 414121),
-(291527, 'collimator', 'image_Collimator.jpg', 2, '2020-05-23 00:11:30', '2020-05-23 00:11:30', 11117, 670523),
-(291528, 'Power Supply', 'image_Power Supply .jpg', 3, '2020-05-23 00:12:26', '2020-05-23 00:12:58', 11117, 670523),
-(291529, 'pCO2 Electrode', 'image_pCO2 Electrode.jpg', 2, '2020-05-23 02:35:59', '2020-05-23 03:27:13', 11129, 140374),
-(291530, 'pO2 Electrode', 'image_pO2 Electrode.jpg', 2, '2020-05-23 03:32:07', '2020-05-23 03:32:07', 11129, 140374),
-(291531, 'pH Electrode', 'image_PH Electrode.jpg', 2, '2020-05-23 03:32:37', '2020-05-23 03:32:37', 11129, 140374),
-(291532, 'Replacement Battery', 'image_Replacement Battery.jpg', 1, '2020-05-23 03:41:39', '2020-05-23 03:41:39', 11112, 199215),
-(291533, 'Rectangular Probe', 'image_Rectangular Probe.jpg', 1, '2020-05-23 03:46:09', '2020-05-23 03:46:09', 11116, 100060),
-(291534, 'Curved Probe', 'image_Curved Probe.jpg', 1, '2020-05-23 03:47:18', '2020-05-23 03:47:18', 11116, 100060),
-(291535, 'Scan Ultrasound Gel', 'image_Scan Ultrasound Gel.jpg', 2, '2020-05-23 03:48:04', '2020-05-23 03:48:04', 11116, 100060),
-(291536, 'Extension Cable', 'image_Extension Cable.jpg', 2, '2020-05-23 03:52:13', '2020-05-23 03:52:13', 11115, 501698),
-(291537, 'Sticky Tapes', 'image_Sticky Tapes.jpg', 2, '2020-05-23 03:53:49', '2020-05-23 03:53:49', 11115, 501698),
-(291538, 'Earlobe Clip', 'image_Earlobe Clip.jpg', 3, '2020-05-23 03:54:32', '2020-05-23 03:54:32', 11115, 501698),
-(291539, 'Rectangular probe', 'image_Rectangular Probe.jpg', 2, '2020-05-23 04:09:13', '2020-05-23 04:09:13', 11130, 444502),
-(291540, 'Curved probe', 'image_Curved Probe.jpg', 1, '2020-05-23 04:09:57', '2020-05-23 04:09:57', 11130, 444502),
-(310123, 'Relay Solid State ', 'image_Relay Solid State.jpg', 2, '2020-05-22 23:29:26', '2020-05-22 23:29:26', 11128, 318310),
-(310321, 'KIT Valve Repair ', 'image_KIT VALVE REPAIR.jpg', 3, '2020-05-22 23:34:12', '2020-05-22 23:34:12', 11128, 318310),
-(310456, 'Fuse 20A 250V', 'image_Fuse 20A 250V.jpg', 2, '2020-05-22 23:38:49', '2020-05-22 23:38:49', 11128, 361310),
-(310546, 'Delay Timer ', 'image_Delay Timer.jpg', 1, '2020-05-22 23:40:30', '2020-05-22 23:40:30', 11128, 361310),
-(310654, 'Element heater ', 'image_Element heater.jpg', 1, '2020-05-22 23:39:47', '2020-05-22 23:39:47', 11128, 361310),
-(310789, 'Tray', 'image_Tray.jpg', 2, '2020-05-22 23:44:11', '2020-05-22 23:44:11', 11128, 210310),
-(310879, 'Valve Check', 'image_Valve Check.jpg', 2, '2020-05-22 23:48:53', '2020-05-22 23:48:53', 11128, 11310),
-(310897, 'Repair KIT', 'image_Repair KIT.jpg', 1, '2020-05-22 23:49:28', '2020-05-22 23:49:28', 11128, 11310),
-(310987, 'Door Gasket', 'image_Door Gasket.jpg', 1, '2020-05-22 23:47:36', '2020-05-22 23:47:36', 11128, 11310),
-(742189, 'Rotation Potentiometer ', 'image_Rotation Potentiometer .jpg', 1, '2020-05-21 21:29:04', '2020-05-21 21:29:04', 11118, 12220),
-(781229, 'Transducer probe', 'image_Transducer probe.jpg', 4, '2020-05-21 21:07:26', '2020-05-21 21:10:59', 11114, 4573397),
-(785632, 'Power Supply', 'image_Power Supply.jpg', 1, '2020-05-21 21:01:06', '2020-05-21 21:01:06', 11122, 781396),
-(845316, ' RF Amplifier', 'image_RF Amplifier.jpg', 2, '2020-05-21 21:00:26', '2020-05-21 21:00:26', 11122, 781396),
-(941389, 'UPS Battery', 'image_UPS Battery.jpg', 1, '2020-05-21 21:31:33', '2020-05-21 21:31:33', 11114, 12220),
-(968946, 'Gradient Amplifier', 'image_Gradient Amplifier.jpg', 2, '2020-05-21 20:59:49', '2020-05-21 20:59:49', 11122, 781396),
-(1234458, 'Keyboard', 'image_Keyboard.jpg', 1, '2020-05-21 21:10:21', '2020-05-21 21:10:21', 11114, 4573397),
-(4573397, 'Breast Coil', 'image_Breast Coil.jpg', 2, '2020-05-21 20:34:38', '2020-05-21 20:49:12', 11122, 781396),
-(7801255, 'Face Shield Assembly', 'image_Face Shield Assembly.jpg', 1, '2020-05-21 21:30:28', '2020-05-21 21:30:28', 11114, 12220),
-(7919411, 'KA connecting cable', 'image_KA connecting cable.jpg', 1, '2020-05-21 21:37:12', '2020-05-21 21:37:12', 11118, 375),
-(991415561, 'Head Coil', 'image_Head Coil.jpg', 1, '2020-05-21 20:59:11', '2020-05-21 20:59:11', 11122, 781396);
+INSERT INTO `spareparts` (`Code`, `Name`, `Image`, `Amount`, `createdAt`, `updatedAt`, `AgentSupplierId`, `EquipmentCode`, `CodeManufacter`, `CategoryId`) VALUES
+(942, 'X-ray tubes', 'image_X-ray tubes.jpg', 2, '2020-05-21 21:25:12', '2025-03-03 21:03:18', 11114, NULL, '', 2),
+(5441, 'Water Hose Assembly ', 'image_Water Hose Assembly .jpg', 1, '2020-05-21 21:32:27', '2025-03-03 21:29:47', 11114, NULL, '', 2),
+(5942, 'condor power supply', 'image_condor power supply .jpg', 1, '2020-05-21 21:12:07', '2025-03-03 21:03:18', 11127, NULL, '', 2),
+(7842, 'Mammography Lamp Set  ', 'image_Mammography Lamp Set.jpg', 1, '2020-05-21 21:31:03', '2025-03-03 20:16:26', 11118, NULL, '', 2),
+(15541, 'Programmed PL 103 CPU Board ', 'image_Programmed PL 103 CPU Board.jpg', 1, '2020-05-21 21:32:00', '2020-05-21 21:32:00', 11114, 12220, '', 2),
+(18122, 'Single Gas Spring 450mm 2550 Newtons', 'image_Single Gas Spring 450mm 2550 Newtons.jpg', 1, '2020-05-21 21:29:50', '2020-05-21 21:29:50', 11114, 12220, '', 2),
+(44547, 'Power Supply', 'image_Power supply.jpg', 3, '2020-05-21 21:08:07', '2020-05-21 21:10:45', 11114, 4573397, '', 2),
+(44582, 'Monitor', 'image_Monitor.jpg', 2, '2020-05-21 21:09:48', '2025-03-03 21:39:51', 11114, NULL, '', 2),
+(58912, 'CCA board', 'image_CCA board .jpg', 1, '2020-05-21 21:17:53', '2020-05-21 21:17:53', 11127, 69690, '', 2),
+(78155, 'X-ray Generator', 'image_X-ray Generator.png', 1, '2020-05-21 21:22:29', '2025-03-03 21:39:51', 11118, NULL, '', 2),
+(78226, 'Tube head', 'image_Tube head .jpg', 1, '2020-05-21 21:18:24', '2020-05-21 21:18:24', 11127, 69690, '', 2),
+(79189, 'Monitor', 'image_Monitor.jpg', 1, '2020-05-21 21:21:35', '2025-03-03 21:29:47', 11118, NULL, '', 2),
+(87812, 'Probes', 'image_Probes.png', 2, '2020-05-21 21:38:43', '2020-05-21 21:38:43', 11114, 375, '', 2),
+(87942, 'Power cord', 'image_Power cord.jpg', 2, '2020-05-21 21:38:17', '2020-05-21 21:38:17', 11118, 375, '', 2),
+(95553, 'collimator', 'image_collimator .jpg', 1, '2020-05-21 21:17:16', '2020-05-21 21:17:16', 11127, 69690, '', 2),
+(98412, ' acquisition computer ', 'image_acquisition computer.jpg', 1, '2020-05-21 21:18:57', '2020-05-21 21:18:57', 11127, 69690, '', 2),
+(145557, 'Footswitch', 'image_Footswitch.jpg', 2, '2020-05-21 21:37:38', '2020-05-21 21:37:38', 11114, 375, '', 2),
+(181588, 'high voltage tank', 'image_High voltage tank.jpg', 2, '2020-05-21 21:24:12', '2025-03-03 20:10:42', 11114, NULL, '', 2),
+(742189, 'Rotation Potentiometer ', 'image_Rotation Potentiometer .jpg', 1, '2020-05-21 21:29:04', '2020-05-21 21:29:04', 11118, 12220, '', 2),
+(781229, 'Transducer probe', 'image_Transducer probe.jpg', 4, '2020-05-21 21:07:26', '2020-05-21 21:10:59', 11114, 4573397, '', 2),
+(785632, 'Power Supply', 'image_Power Supply.jpg', 1, '2020-05-21 21:01:06', '2020-05-21 21:01:06', 11122, 781396, '', 2),
+(845316, ' RF Amplifier', 'image_RF Amplifier.jpg', 2, '2020-05-21 21:00:26', '2020-05-21 21:00:26', 11122, 781396, '', 2),
+(941389, 'UPS Battery', 'image_UPS Battery.jpg', 1, '2020-05-21 21:31:33', '2020-05-21 21:31:33', 11114, 12220, '', 2),
+(968946, 'Gradient Amplifier', 'image_Gradient Amplifier.jpg', 2, '2020-05-21 20:59:49', '2020-05-21 20:59:49', 11122, 781396, '', 2),
+(1234458, 'Keyboard', 'image_Keyboard.jpg', 1, '2020-05-21 21:10:21', '2020-05-21 21:10:21', 11114, 4573397, '', 2),
+(4573397, 'Breast Coil', 'image_Breast Coil.jpg', 2, '2020-05-21 20:34:38', '2025-03-03 20:10:42', 11122, NULL, '', 2),
+(7801255, 'Face Shield Assembly', 'image_Face Shield Assembly.jpg', 1, '2020-05-21 21:30:28', '2020-05-21 21:30:28', 11114, 12220, '', 2),
+(7919411, 'KA connecting cable', 'image_KA connecting cable.jpg', 1, '2020-05-21 21:37:12', '2020-05-21 21:37:12', 11118, 375, '', 2),
+(991415561, 'Head Coil', 'image_Head Coil.jpg', 1, '2020-05-21 20:59:11', '2020-05-21 20:59:11', 11122, 781396, '', 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `workorders`
+-- Estructura de tabla para la tabla `stopreason`
 --
 
-CREATE TABLE `workorders` (
-  `Code` int(11) NOT NULL,
-  `StartDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `EndDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `Description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `Cost` int(11) NOT NULL,
-  `Priority` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+CREATE TABLE `stopreason` (
+  `id_Reason` int NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `punctuation` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `workorders`
+-- Volcado de datos para la tabla `stopreason`
 --
 
-INSERT INTO `workorders` (`Code`, `StartDate`, `EndDate`, `Description`, `Cost`, `Priority`, `createdAt`, `updatedAt`, `ClinicalEnginnerDSSN`, `EquipmentCode`) VALUES
-(5, '2020-05-23', '2020-05-25', 'Urgent', 1500, 'High', '2020-05-23 18:48:05', '2020-05-23 18:48:05', 24697, 2694),
-(6, '2020-05-22', '2020-05-26', 'claibration', 500, 'Low', '2020-05-23 18:49:26', '2020-05-23 18:49:26', 31098, 122663),
-(7, '2019-05-22', '2019-05-26', 'Calibrate the device', 500, 'Medium', '2020-05-23 18:50:05', '2020-05-23 18:52:01', 29151719, 4832),
-(8, '2020-05-24', '2020-05-27', 'Urgent', 15000, 'High', '2020-05-23 18:50:36', '2020-05-23 18:50:36', 29809090102359, 1280),
-(9, '2020-05-24', '2020-05-26', 'UnKnown', 15000, 'High', '2020-05-23 18:51:52', '2020-05-23 18:51:52', 9921050746980, 781396);
+INSERT INTO `stopreason` (`id_Reason`, `Description`, `punctuation`) VALUES
+(1, 'Mal uso', 0),
+(2, 'Falla equipo', 1);
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Estructura de tabla para la tabla `tagnotifications`
+--
+
+CREATE TABLE `tagnotifications` (
+  `id_tagn` int NOT NULL,
+  `user` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tagnotifications`
+--
+
+INSERT INTO `tagnotifications` (`id_tagn`, `user`, `message`, `createdAt`, `updatedAt`) VALUES
+(2, '1', '020202025', '2024-09-24 02:03:32', '2025-02-03 22:30:02'),
+(3, '6458161', '', '2024-11-12 18:08:56', '2024-11-12 18:08:56');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `workorders`
+--
+
+CREATE TABLE `workorders` (
+  `Code` int NOT NULL,
+  `StartDate` text COLLATE utf8mb4_general_ci NOT NULL,
+  `EndDate` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Cost` int NOT NULL,
+  `Priority` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL,
+  `EquipmentCode` int DEFAULT NULL,
+  `Solution` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Workdate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id_typeW` int DEFAULT NULL,
+  `id_StopReason` int DEFAULT NULL,
+  `id_RepairStage` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `workorders`
+--
+
+INSERT INTO `workorders` (`Code`, `StartDate`, `EndDate`, `Description`, `Cost`, `Priority`, `createdAt`, `updatedAt`, `ClinicalEnginnerDSSN`, `EquipmentCode`, `Solution`, `Workdate`, `id_typeW`, `id_StopReason`, `id_RepairStage`) VALUES
+(10, '2024-08-09', '2024-08-09', 'FALLO 131', 0, 'High', '2024-08-09 20:58:00', '2024-08-10 15:07:22', 6458161, 12220, 'aun', '', NULL, NULL, NULL),
+(11, '2024-10-29', '2024-10-30', 'Falla 110', 0, 'Low', '2024-08-10 15:06:10', '2024-08-16 14:51:59', 6458161, 4573397, 'si', '2024-08-10', NULL, NULL, NULL),
+(12, '2024-08-16', '2024-08-30', 'fall pp', 0, 'Medium', '2024-08-16 15:21:23', '2024-08-17 14:15:20', 6458161, 61242056, 'si, se cambio...', '', NULL, NULL, NULL),
+(13, '2024-10-29', '2024-10-29', 'PRUEBA DE ERRROR DEL EQUIPO, SOLO ES UNA PRUEBA', 0, 'Low', '2024-10-30 02:53:03', '2024-10-30 02:53:03', 6458161, 375, '', '', NULL, NULL, NULL),
+(14, '2024-11-23', '2024-11-23', 'limpieza de cabezales', 0, 'High', '2024-11-23 17:08:47', '2024-11-23 17:08:47', 6458161, 375, '', '', NULL, NULL, NULL);
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `agentsuppliers`
+-- Indices de la tabla `acquisitiontype`
+--
+ALTER TABLE `acquisitiontype`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `agentsuppliers`
 --
 ALTER TABLE `agentsuppliers`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `breakdowns`
+-- Indices de la tabla `brand`
+--
+ALTER TABLE `brand`
+  ADD PRIMARY KEY (`id_brand`);
+
+--
+-- Indices de la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `EquipmentCode` (`EquipmentCode`);
 
 --
--- Indexes for table `clinicalenginners`
+-- Indices de la tabla `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`IdCat`);
+
+--
+-- Indices de la tabla `clinicalenginners`
 --
 ALTER TABLE `clinicalenginners`
   ADD PRIMARY KEY (`DSSN`),
   ADD KEY `DepartmentCode` (`DepartmentCode`);
 
 --
--- Indexes for table `departments`
+-- Indices de la tabla `departments`
 --
 ALTER TABLE `departments`
   ADD PRIMARY KEY (`Code`),
@@ -611,7 +914,7 @@ ALTER TABLE `departments`
   ADD UNIQUE KEY `Name` (`Name`);
 
 --
--- Indexes for table `dialyinspections`
+-- Indices de la tabla `dialyinspections`
 --
 ALTER TABLE `dialyinspections`
   ADD PRIMARY KEY (`Code`),
@@ -619,15 +922,39 @@ ALTER TABLE `dialyinspections`
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`);
 
 --
--- Indexes for table `equipment`
+-- Indices de la tabla `equipment`
 --
 ALTER TABLE `equipment`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `AgentSupplierId` (`AgentSupplierId`),
-  ADD KEY `DepartmentCode` (`DepartmentCode`);
+  ADD KEY `DepartmentCode` (`DepartmentCode`),
+  ADD KEY `fk_equipment_acquisitiontype` (`AcquisitionTypeID`),
+  ADD KEY `fk_equipment_reception_status` (`ReceptionStatusId`);
 
 --
--- Indexes for table `maintenances`
+-- Indices de la tabla `equipmentspareparts`
+--
+ALTER TABLE `equipmentspareparts`
+  ADD PRIMARY KEY (`id_equipment`,`id_sparepart`),
+  ADD KEY `id_sparepart` (`id_sparepart`);
+
+--
+-- Indices de la tabla `equipment_brand_model`
+--
+ALTER TABLE `equipment_brand_model`
+  ADD PRIMARY KEY (`id_equipment`,`id_brand`,`id_model`),
+  ADD KEY `id_brand` (`id_brand`),
+  ADD KEY `id_model` (`id_model`);
+
+--
+-- Indices de la tabla `insuranceequipment`
+--
+ALTER TABLE `insuranceequipment`
+  ADD PRIMARY KEY (`id_Insurance`),
+  ADD KEY `id_equipment` (`id_equipment`);
+
+--
+-- Indices de la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
   ADD PRIMARY KEY (`Id`),
@@ -635,14 +962,33 @@ ALTER TABLE `maintenances`
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`);
 
 --
--- Indexes for table `ppmquestions`
+-- Indices de la tabla `models`
+--
+ALTER TABLE `models`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_brand` (`id_brand`);
+
+--
+-- Indices de la tabla `nameequipment`
+--
+ALTER TABLE `nameequipment`
+  ADD PRIMARY KEY (`id_nameE`);
+
+--
+-- Indices de la tabla `ordertype`
+--
+ALTER TABLE `ordertype`
+  ADD PRIMARY KEY (`id_typeW`);
+
+--
+-- Indices de la tabla `ppmquestions`
 --
 ALTER TABLE `ppmquestions`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `EquipmentCode` (`EquipmentCode`);
 
 --
--- Indexes for table `ppms`
+-- Indices de la tabla `ppms`
 --
 ALTER TABLE `ppms`
   ADD PRIMARY KEY (`Code`),
@@ -650,128 +996,274 @@ ALTER TABLE `ppms`
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`);
 
 --
--- Indexes for table `spareparts`
+-- Indices de la tabla `preventivetasks`
+--
+ALTER TABLE `preventivetasks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `EquipmentCode` (`EquipmentCode`);
+
+--
+-- Indices de la tabla `receptionstatus`
+--
+ALTER TABLE `receptionstatus`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `repairstage`
+--
+ALTER TABLE `repairstage`
+  ADD PRIMARY KEY (`id_Stage`);
+
+--
+-- Indices de la tabla `spareparts`
 --
 ALTER TABLE `spareparts`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `AgentSupplierId` (`AgentSupplierId`),
-  ADD KEY `EquipmentCode` (`EquipmentCode`);
+  ADD KEY `EquipmentCode` (`EquipmentCode`),
+  ADD KEY `fk_category` (`CategoryId`);
 
 --
--- Indexes for table `workorders`
+-- Indices de la tabla `stopreason`
+--
+ALTER TABLE `stopreason`
+  ADD PRIMARY KEY (`id_Reason`);
+
+--
+-- Indices de la tabla `tagnotifications`
+--
+ALTER TABLE `tagnotifications`
+  ADD PRIMARY KEY (`id_tagn`);
+
+--
+-- Indices de la tabla `workorders`
 --
 ALTER TABLE `workorders`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`),
-  ADD KEY `EquipmentCode` (`EquipmentCode`);
+  ADD KEY `EquipmentCode` (`EquipmentCode`),
+  ADD KEY `fk_workorders_ordertype` (`id_typeW`),
+  ADD KEY `fk_workorders_stopreason` (`id_StopReason`),
+  ADD KEY `fk_workorders_repairstage` (`id_RepairStage`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `agentsuppliers`
+-- AUTO_INCREMENT de la tabla `acquisitiontype`
+--
+ALTER TABLE `acquisitiontype`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `agentsuppliers`
 --
 ALTER TABLE `agentsuppliers`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11131;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11131;
 
 --
--- AUTO_INCREMENT for table `breakdowns`
+-- AUTO_INCREMENT de la tabla `brand`
+--
+ALTER TABLE `brand`
+  MODIFY `id_brand` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=135;
+
+--
+-- AUTO_INCREMENT de la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
--- AUTO_INCREMENT for table `dialyinspections`
+-- AUTO_INCREMENT de la tabla `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `IdCat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `dialyinspections`
 --
 ALTER TABLE `dialyinspections`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `maintenances`
+-- AUTO_INCREMENT de la tabla `insuranceequipment`
+--
+ALTER TABLE `insuranceequipment`
+  MODIFY `id_Insurance` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- AUTO_INCREMENT for table `ppmquestions`
+-- AUTO_INCREMENT de la tabla `models`
+--
+ALTER TABLE `models`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT de la tabla `nameequipment`
+--
+ALTER TABLE `nameequipment`
+  MODIFY `id_nameE` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=239;
+
+--
+-- AUTO_INCREMENT de la tabla `ordertype`
+--
+ALTER TABLE `ordertype`
+  MODIFY `id_typeW` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de la tabla `ppmquestions`
 --
 ALTER TABLE `ppmquestions`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
--- AUTO_INCREMENT for table `ppms`
+-- AUTO_INCREMENT de la tabla `ppms`
 --
 ALTER TABLE `ppms`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `workorders`
+-- AUTO_INCREMENT de la tabla `preventivetasks`
+--
+ALTER TABLE `preventivetasks`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+
+--
+-- AUTO_INCREMENT de la tabla `receptionstatus`
+--
+ALTER TABLE `receptionstatus`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `repairstage`
+--
+ALTER TABLE `repairstage`
+  MODIFY `id_Stage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `stopreason`
+--
+ALTER TABLE `stopreason`
+  MODIFY `id_Reason` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de la tabla `tagnotifications`
+--
+ALTER TABLE `tagnotifications`
+  MODIFY `id_tagn` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `workorders`
 --
 ALTER TABLE `workorders`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `breakdowns`
+-- Filtros para la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
   ADD CONSTRAINT `breakdowns_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `clinicalenginners`
+-- Filtros para la tabla `clinicalenginners`
 --
 ALTER TABLE `clinicalenginners`
   ADD CONSTRAINT `clinicalenginners_ibfk_1` FOREIGN KEY (`DepartmentCode`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `dialyinspections`
+-- Filtros para la tabla `dialyinspections`
 --
 ALTER TABLE `dialyinspections`
   ADD CONSTRAINT `dialyinspections_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `dialyinspections_ibfk_2` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `equipment`
+-- Filtros para la tabla `equipment`
 --
 ALTER TABLE `equipment`
   ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`AgentSupplierId`) REFERENCES `agentsuppliers` (`Id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `equipment_ibfk_2` FOREIGN KEY (`DepartmentCode`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `equipment_ibfk_2` FOREIGN KEY (`DepartmentCode`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_equipment_acquisitiontype` FOREIGN KEY (`AcquisitionTypeID`) REFERENCES `acquisitiontype` (`ID`),
+  ADD CONSTRAINT `fk_equipment_reception_status` FOREIGN KEY (`ReceptionStatusId`) REFERENCES `receptionstatus` (`ID`);
 
 --
--- Constraints for table `maintenances`
+-- Filtros para la tabla `equipmentspareparts`
+--
+ALTER TABLE `equipmentspareparts`
+  ADD CONSTRAINT `equipmentspareparts_ibfk_1` FOREIGN KEY (`id_equipment`) REFERENCES `equipment` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `equipmentspareparts_ibfk_2` FOREIGN KEY (`id_sparepart`) REFERENCES `spareparts` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `equipment_brand_model`
+--
+ALTER TABLE `equipment_brand_model`
+  ADD CONSTRAINT `equipment_brand_model_ibfk_1` FOREIGN KEY (`id_equipment`) REFERENCES `nameequipment` (`id_nameE`),
+  ADD CONSTRAINT `equipment_brand_model_ibfk_2` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id_brand`),
+  ADD CONSTRAINT `equipment_brand_model_ibfk_3` FOREIGN KEY (`id_model`) REFERENCES `models` (`id`);
+
+--
+-- Filtros para la tabla `insuranceequipment`
+--
+ALTER TABLE `insuranceequipment`
+  ADD CONSTRAINT `insuranceequipment_ibfk_1` FOREIGN KEY (`id_equipment`) REFERENCES `equipment` (`Code`);
+
+--
+-- Filtros para la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
   ADD CONSTRAINT `maintenances_ibfk_1` FOREIGN KEY (`BreakDownCode`) REFERENCES `breakdowns` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `maintenances_ibfk_2` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `ppmquestions`
+-- Filtros para la tabla `models`
+--
+ALTER TABLE `models`
+  ADD CONSTRAINT `models_ibfk_1` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id_brand`);
+
+--
+-- Filtros para la tabla `ppmquestions`
 --
 ALTER TABLE `ppmquestions`
   ADD CONSTRAINT `ppmquestions_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `ppms`
+-- Filtros para la tabla `ppms`
 --
 ALTER TABLE `ppms`
   ADD CONSTRAINT `ppms_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `ppms_ibfk_2` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `spareparts`
+-- Filtros para la tabla `preventivetasks`
+--
+ALTER TABLE `preventivetasks`
+  ADD CONSTRAINT `preventivetasks_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`);
+
+--
+-- Filtros para la tabla `spareparts`
 --
 ALTER TABLE `spareparts`
+  ADD CONSTRAINT `fk_category` FOREIGN KEY (`CategoryId`) REFERENCES `categories` (`IdCat`),
   ADD CONSTRAINT `spareparts_ibfk_1` FOREIGN KEY (`AgentSupplierId`) REFERENCES `agentsuppliers` (`Id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `spareparts_ibfk_2` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `workorders`
+-- Filtros para la tabla `workorders`
 --
 ALTER TABLE `workorders`
+  ADD CONSTRAINT `fk_workorders_ordertype` FOREIGN KEY (`id_typeW`) REFERENCES `ordertype` (`id_typeW`),
+  ADD CONSTRAINT `fk_workorders_repairstage` FOREIGN KEY (`id_RepairStage`) REFERENCES `repairstage` (`id_Stage`),
+  ADD CONSTRAINT `fk_workorders_stopreason` FOREIGN KEY (`id_StopReason`) REFERENCES `stopreason` (`id_Reason`),
   ADD CONSTRAINT `workorders_ibfk_1` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `workorders_ibfk_2` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
