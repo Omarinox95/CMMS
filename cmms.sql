@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 17-05-2025 a las 15:24:44
+-- Tiempo de generación: 24-05-2025 a las 06:16:00
 -- Versión del servidor: 8.0.39
 -- Versión de PHP: 8.2.22
 
@@ -102,60 +102,61 @@ CREATE TABLE `brand` (
 
 INSERT INTO `brand` (`id_brand`, `Brand`) VALUES
 (1, '3M'),
-(2, 'ACTIVATEV FLOWTRON'),
-(3, 'AGFA'),
-(4, 'AIRPUMP'),
-(5, 'Acon laboratories'),
-(6, 'APEX'),
-(7, 'Awareness technology inc'),
-(8, 'BARRFAB'),
-(9, 'BAXTER'),
-(10, 'BAYER'),
-(11, 'Boeco'),
-(12, 'CA MI'),
-(13, 'CONTEC'),
-(14, 'CODONICS'),
-(15, 'CORPULS'),
-(16, 'DOMUS'),
-(17, 'DLAB'),
-(18, 'Eppendorf'),
-(19, 'FANEM'),
-(20, 'FRESENIUS'),
-(21, 'GE'),
-(22, 'Human'),
-(23, 'Imax MV'),
-(24, 'Instramed'),
-(25, 'Jhag Tecnologia Y Laboratorio'),
-(26, 'KONIKA MINOLTA'),
-(27, 'Leica'),
-(28, 'LEISTUNG'),
-(29, 'MATACHANA'),
-(30, 'Medical device technology'),
-(31, 'Memmer'),
-(32, 'MINDRAY'),
-(33, 'Neuation'),
-(34, 'Nihon Khoden'),
-(35, 'OPTONEX'),
-(36, 'PENLON'),
-(37, 'Phillips'),
-(38, 'Planmed'),
-(39, 'PURITAN BENETT'),
-(40, 'SISMATEC'),
-(41, 'Siemens'),
-(42, 'Spectris'),
-(43, 'SPACELABS'),
-(44, 'Stryker'),
-(45, 'SURGIRS'),
-(46, 'sysmex'),
-(47, 'TERUMO'),
-(48, 'WELCH ALLYN'),
-(49, 'YELLOWPACK'),
-(50, 'Yco-010 Ism Srl'),
-(51, 'Zehnder'),
-(52, 'ZIMMER'),
-(132, 'HWATIME'),
-(133, 'JHAG TECNOLOGIA Y LABORATORIO'),
-(134, 'LEICA');
+(2, 'Acon Laboratories'),
+(3, 'Activated Flowtron'),
+(4, 'AGFA'),
+(5, 'Airpumb'),
+(6, 'Apex'),
+(7, 'Avanteb'),
+(8, 'Awareness technology inc.'),
+(9, 'Barrfab'),
+(10, 'Baxter'),
+(11, 'Bayer'),
+(12, 'Boeco'),
+(13, 'Ca mi'),
+(14, 'Co-diagnostic inc.'),
+(15, 'Codonics'),
+(16, 'Contec'),
+(17, 'Corpuls'),
+(18, 'Dlab'),
+(19, 'Domus'),
+(20, 'Eppendorf'),
+(21, 'Fanem'),
+(22, 'Fresenius'),
+(23, 'GE'),
+(24, 'Human'),
+(25, 'Hwatime'),
+(26, 'Imax MV'),
+(27, 'Instramed'),
+(28, 'Jhang tecnologia y laboratorio'),
+(29, 'konika minolka'),
+(30, 'Leica'),
+(31, 'Leistug'),
+(32, 'Matachana'),
+(33, 'Medical device technology'),
+(34, 'Memer'),
+(35, 'Mindray'),
+(36, 'Neuation'),
+(37, 'Nihon khoden'),
+(38, 'Optonex'),
+(39, 'Penlon'),
+(40, 'Philips'),
+(41, 'Planmed'),
+(42, 'Puritan benett'),
+(43, 'Seca'),
+(44, 'Siemens'),
+(45, 'Sismatec'),
+(46, 'Spacelabs'),
+(47, 'Spectris'),
+(48, 'Stryker'),
+(49, 'Surgirs'),
+(50, 'Sysmex'),
+(51, 'Terumo'),
+(52, 'Welch Allyn'),
+(53, 'Yco-010 lsm'),
+(54, 'Yellowpack'),
+(55, 'Zehnder'),
+(56, 'Zimmer');
 
 -- --------------------------------------------------------
 
@@ -177,7 +178,8 @@ CREATE TABLE `breakdowns` (
 --
 
 INSERT INTO `breakdowns` (`Code`, `Reason`, `DATE`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
-(44, 'Fallo canal 1 ', '2024-10-30', '2024-10-31 03:31:07', '2024-10-31 03:31:07', 531);
+(44, 'Fallo canal 1 ', '2024-10-30', '2024-10-31 03:31:07', '2024-10-31 03:31:07', 531),
+(45, 'Pantalla: Err 25-5-48 touchscreen fail', '2025-05-18', '2025-05-18 19:05:59', '2025-05-18 19:05:59', 23454321);
 
 -- --------------------------------------------------------
 
@@ -329,6 +331,8 @@ CREATE TABLE `equipment` (
   `FuntionalStatus` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ReceptionStatusId` int DEFAULT NULL,
   `Active` tinyint(1) DEFAULT '1',
+  `F_record` int NOT NULL,
+  `Maintenance_Req` int NOT NULL,
   `GE` int DEFAULT '0',
   `AcquisitionTypeID` int DEFAULT NULL,
   `WarrantyDate` date DEFAULT NULL
@@ -338,28 +342,29 @@ CREATE TABLE `equipment` (
 -- Volcado de datos para la tabla `equipment`
 --
 
-INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `Model`, `SerialNumber`, `InstallationDate`, `ArrivalDate`, `WarrantyTime`, `AssetInitialDate`, `InsuranceInitialDate`, `Manufacturer`, `Location`, `PM`, `Notes`, `createdAt`, `updatedAt`, `AgentSupplierId`, `DepartmentCode`, `Software`, `SoftwareVersion`, `SoftwarePass`, `NetworkAddress`, `AssetStatus`, `InsuranceStatus`, `FuntionalStatus`, `ReceptionStatusId`, `Active`, `GE`, `AcquisitionTypeID`, `WarrantyDate`) VALUES
-(375, 'Lithotrispy', 'image_Lithotripsy SPHINIX 30 LITHO.jpg', 236823, '30 Litho', '375', '2020-02-21', '2020-02-21', NULL, NULL, NULL, 'SPHINIX', 'Room 25', 'Anual', '', '2020-05-21 19:42:58', '2024-08-09 21:06:25', 11118, 9119, '0', '', '', '', '', '', '', NULL, 1, 5, NULL, NULL),
-(531, 'holter', 'image_YR02197-YR02062-YR02063-IMG.jpg', 6000, 'eccosur', '53-5236-24', '2024-04-20', '2024-04-20', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Semestral', '', '2024-09-24 02:42:18', '2024-11-07 18:53:21', 11124, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(12220, 'Mammography', 'image_Mammography GE Performa.jpg', 85650, 'Performa M Gf 110', '12220', '2019-06-19', '2019-05-28', NULL, NULL, NULL, 'GE', 'Room 9', 'Anual', '', '2020-05-21 19:40:14', '2020-05-21 19:40:14', 11118, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(69690, 'Desitometry', 'image_Densitometry GE Prodigy.jpg', 205170, 'Prodigy', '69690', '2019-11-05', '2019-11-05', NULL, NULL, NULL, 'GE', 'Room 16A', 'Anual', '', '2020-05-21 19:32:47', '2024-11-07 18:53:33', 11127, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(69891, 'CT-Scan', 'image_CT-scan GE Lightspeed Ultra advantage.png', 1578820, 'Lightspeed Ultra advantage', '69891HMO', '2019-06-16', '2019-06-16', NULL, NULL, NULL, 'GE', 'Room 15', 'Anual', '', '2020-05-21 19:35:32', '2024-11-07 18:53:42', 11118, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(656565, 'Maquina de anestesia', 'image_qrcode-generado.png', 35000, 'Spacelabs', 'gdfgrdgdrg', '2025-03-07', '2025-03-01', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Trimestral', '', '2025-03-03 22:06:05', '2025-03-03 22:06:05', 11111, 9119, 'No', '', '', '', 'Activo', 'Activo', 'Reparación', NULL, 1, 0, NULL, NULL),
-(712345, 'Infusion Pump', 'image_top-3300.jpg', 37000, '3300', 'FN60-7265', '2019-12-06', '2019-12-06', NULL, NULL, NULL, 'Top-3300', 'Room 12', 'Anual', '', '2020-05-21 18:38:56', '2024-11-07 18:53:52', 11111, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(781396, 'MRI', 'image_MRI philips INGENIA.jpg', 92002000, 'IGENIA', '781396', '2019-04-26', '2019-04-26', NULL, NULL, NULL, 'Philips', 'Room 1A', 'Semestral', '', '2020-05-21 19:23:16', '2024-11-07 18:54:15', 11122, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(1050023, 'holter', 'image_HolterHT103P_03-600x600-1.jpg', 7500, 'eccosur', '53-5236-26', '2023-02-07', '2023-02-07', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Anual', '', '2024-10-08 00:38:19', '2024-11-07 18:54:04', 11113, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(1222222, 'Maquina de anestesia', 'image_YR02197-YR02062-YR02063-IMG.jpg', 520000, 'Spacelabs', '1222222', '2024-09-18', '2024-09-18', NULL, NULL, NULL, 'Spacelabs', 'Qx2', 'Semestral', '', '2024-09-24 02:20:08', '2024-11-07 18:54:46', 11114, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(4573397, 'Ultrasound', 'image_Ultrasound Toshiba NEMIO SSA.550A.jpg', 227900, 'NEMIO_SSA.550A', 'L4573397', '2019-01-05', '2019-01-05', NULL, NULL, NULL, 'Toshiba', 'Room 22', 'Anual', '', '2020-05-21 19:26:34', '2024-11-07 18:54:57', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(8545678, 'holter', 'image_qrcode-generado.png', 36000, '4008s', '65465jgtfhh', '2025-03-14', '2025-03-07', NULL, NULL, NULL, 'Fresenius', 'Qx1', 'Semestral', '', '2025-03-07 22:08:55', '2025-03-07 22:08:55', 11111, 9119, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', NULL, 1, 0, NULL, NULL),
-(12269856, 'monitor de signos vitales', 'image_monitor spacelabs.jpeg', 12000, 'qube', 'M65226-6556', '2024-11-08', '2024-10-18', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Anual', '', '2024-11-23 03:42:55', '2024-11-23 03:42:55', 11125, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(20202025, 'ELECTROCARDIOGRAFO', 'image_images.jpeg', 12000, 'Spacelabs', '215256165151131', '2024-11-06', '2024-11-06', NULL, NULL, NULL, 'Spacelabs', 'cardiologia', 'Anual', '', '2024-11-06 21:46:31', '2024-11-07 18:56:07', 11120, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(61242056, 'CT-Scan', 'image_CT-scan Toshiba Aquilion one.jpg', 8784240, 'AquillionOne', '6AA1242056', '2019-07-01', '2019-07-01', NULL, NULL, NULL, 'Toshiba', 'Room 18', 'Anual', '', '2020-05-21 19:38:23', '2024-11-07 18:55:57', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(66666555, 'prueba', 'image_HolterHT103P_03-600x600-1.jpg', 650000, 'prueba', '65efsfwef', '2024-10-11', '2024-10-11', NULL, NULL, NULL, 'franeus', 'cardiologia', 'Semestral', '', '2024-10-11 14:24:37', '2024-11-07 18:55:43', 11111, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(82532024, 'Maquina de anestesia', 'image_YR02197-YR02062-YR02063-IMG.jpg', 0, 'Spacelabs', '82532024', '2024-09-23', '2024-09-23', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Semestral', '', '2024-09-24 00:45:37', '2024-11-07 18:55:22', 11123, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(98995566, 'prueba13', 'image_WhatsApp Image 2024-06-11 at 23.32.40 (1).jpeg', 65666, 'mayo', '2025', '2025-05-13', '2025-05-12', NULL, NULL, NULL, 'Amer', 'cardiologia', 'Trimestral', '', '2025-05-13 20:44:56', '2025-05-13 20:44:56', 11112, 3456, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 1, '2028-11-24'),
-(105002366, 'maquina de aferesis', 'image_aferesis_equipo.jpeg', 98000, 'z20', '5434364sef', '2024-10-11', '2024-10-11', NULL, NULL, NULL, 'franeus', 'Qx1', 'Semestral', '', '2024-10-11 14:17:19', '2024-11-07 18:55:32', 11111, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, NULL, NULL),
-(564298763, 'holter', 'image_DiagramasActividades-Orden de trabajo.drawio (2).png', 96000, 'eccosur', '23-65899-366', '2025-03-07', '2025-03-01', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Anual', '', '2025-03-04 02:37:28', '2025-03-04 02:37:28', 11111, 3456, 'Si', '1.236.3', 'eccosur', '', 'Activo', 'Activo', 'Sin Consumible', NULL, 1, 2, NULL, NULL),
-(991415561, 'Ultrasound', 'image_Ultrasound Toshiba Nemio MX.jpg', 227900, 'NEMIO MX', '99A1415561', '2019-05-06', '2019-05-06', NULL, NULL, NULL, 'Toshiba', 'Room 23', 'Anual', '', '2020-05-21 19:30:33', '2024-11-07 18:55:13', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 4, NULL, NULL);
+INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `Model`, `SerialNumber`, `InstallationDate`, `ArrivalDate`, `WarrantyTime`, `AssetInitialDate`, `InsuranceInitialDate`, `Manufacturer`, `Location`, `PM`, `Notes`, `createdAt`, `updatedAt`, `AgentSupplierId`, `DepartmentCode`, `Software`, `SoftwareVersion`, `SoftwarePass`, `NetworkAddress`, `AssetStatus`, `InsuranceStatus`, `FuntionalStatus`, `ReceptionStatusId`, `Active`, `F_record`, `Maintenance_Req`, `GE`, `AcquisitionTypeID`, `WarrantyDate`) VALUES
+(375, 'Lithotrispy', 'image_Lithotripsy SPHINIX 30 LITHO.jpg', 236823, '30 Litho', '375', '2020-02-21', '2020-02-21', NULL, NULL, NULL, 'SPHINIX', 'Room 25', 'Anual', '', '2020-05-21 19:42:58', '2024-08-09 21:06:25', 11118, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 5, NULL, NULL),
+(531, 'holter', 'image_YR02197-YR02062-YR02063-IMG.jpg', 6000, 'eccosur', '53-5236-24', '2024-04-20', '2024-04-20', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Semestral', '', '2024-09-24 02:42:18', '2024-11-07 18:53:21', 11124, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(12220, 'Mammography', 'image_Mammography GE Performa.jpg', 85650, 'Performa M Gf 110', '12220', '2019-06-19', '2019-05-28', NULL, NULL, NULL, 'GE', 'Room 9', 'Anual', '', '2020-05-21 19:40:14', '2020-05-21 19:40:14', 11118, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(69690, 'Desitometry', 'image_Densitometry GE Prodigy.jpg', 205170, 'Prodigy', '69690', '2019-11-05', '2019-11-05', NULL, NULL, NULL, 'GE', 'Room 16A', 'Anual', '', '2020-05-21 19:32:47', '2024-11-07 18:53:33', 11127, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(69891, 'CT-Scan', 'image_CT-scan GE Lightspeed Ultra advantage.png', 1578820, 'Lightspeed Ultra advantage', '69891HMO', '2019-06-16', '2019-06-16', NULL, NULL, NULL, 'GE', 'Room 15', 'Anual', '', '2020-05-21 19:35:32', '2024-11-07 18:53:42', 11118, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(656565, 'Maquina de anestesia', 'image_qrcode-generado.png', 35000, 'Spacelabs', 'gdfgrdgdrg', '2025-03-07', '2025-03-01', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Trimestral', '', '2025-03-03 22:06:05', '2025-03-03 22:06:05', 11111, 9119, 'No', '', '', '', 'Activo', 'Activo', 'Reparación', NULL, 1, 0, 0, 0, NULL, NULL),
+(712345, 'Infusion Pump', 'image_top-3300.jpg', 37000, '3300', 'FN60-7265', '2019-12-06', '2019-12-06', NULL, NULL, NULL, 'Top-3300', 'Room 12', 'Anual', '', '2020-05-21 18:38:56', '2024-11-07 18:53:52', 11111, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(781396, 'MRI', 'image_MRI philips INGENIA.jpg', 92002000, 'IGENIA', '781396', '2019-04-26', '2019-04-26', NULL, NULL, NULL, 'Philips', 'Room 1A', 'Semestral', '', '2020-05-21 19:23:16', '2024-11-07 18:54:15', 11122, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(1050023, 'holter', 'image_HolterHT103P_03-600x600-1.jpg', 7500, 'eccosur', '53-5236-26', '2023-02-07', '2023-02-07', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Anual', '', '2024-10-08 00:38:19', '2024-11-07 18:54:04', 11113, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(1222222, 'Maquina de anestesia', 'image_YR02197-YR02062-YR02063-IMG.jpg', 520000, 'Spacelabs', '1222222', '2024-09-18', '2024-09-18', NULL, NULL, NULL, 'Spacelabs', 'Qx2', 'Semestral', '', '2024-09-24 02:20:08', '2024-11-07 18:54:46', 11114, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(4573397, 'Ultrasound', 'image_Ultrasound Toshiba NEMIO SSA.550A.jpg', 227900, 'NEMIO_SSA.550A', 'L4573397', '2019-01-05', '2019-01-05', NULL, NULL, NULL, 'Toshiba', 'Room 22', 'Anual', '', '2020-05-21 19:26:34', '2024-11-07 18:54:57', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(8545678, 'holter', 'image_qrcode-generado.png', 36000, '4008s', '65465jgtfhh', '2025-03-14', '2025-03-07', NULL, NULL, NULL, 'Fresenius', 'Qx1', 'Semestral', '', '2025-03-07 22:08:55', '2025-03-07 22:08:55', 11111, 9119, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', NULL, 1, 0, 0, 0, NULL, NULL),
+(12269856, 'monitor de signos vitales', 'image_monitor spacelabs.jpeg', 12000, 'qube', 'M65226-6556', '2024-11-08', '2024-10-18', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Anual', '', '2024-11-23 03:42:55', '2024-11-23 03:42:55', 11125, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(20202025, 'ELECTROCARDIOGRAFO', 'image_images.jpeg', 12000, 'Spacelabs', '215256165151131', '2024-11-06', '2024-11-06', NULL, NULL, NULL, 'Spacelabs', 'cardiologia', 'Anual', '', '2024-11-06 21:46:31', '2024-11-07 18:56:07', 11120, 3456, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(23454321, 'PRUEBA', 'image_limpiezanihonkohden.PNG', 2000, 'PRUEBITA', 'WDEF4342', '2025-05-18', '2025-05-17', NULL, NULL, NULL, 'Fresenius', 'cardiologia', 'Anual', '', '2025-05-18 04:22:59', '2025-05-18 04:22:59', 11112, 7686, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 5, 1, '2027-06-24'),
+(61242056, 'CT-Scan', 'image_CT-scan Toshiba Aquilion one.jpg', 8784240, 'AquillionOne', '6AA1242056', '2019-07-01', '2019-07-01', NULL, NULL, NULL, 'Toshiba', 'Room 18', 'Anual', '', '2020-05-21 19:38:23', '2024-11-07 18:55:57', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(66666555, 'prueba', 'image_HolterHT103P_03-600x600-1.jpg', 650000, 'prueba', '65efsfwef', '2024-10-11', '2024-10-11', NULL, NULL, NULL, 'franeus', 'cardiologia', 'Semestral', '', '2024-10-11 14:24:37', '2024-11-07 18:55:43', 11111, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(82532024, 'Maquina de anestesia', 'image_YR02197-YR02062-YR02063-IMG.jpg', 0, 'Spacelabs', '82532024', '2024-09-23', '2024-09-23', NULL, NULL, NULL, 'Spacelabs', 'Qx1', 'Semestral', '', '2024-09-24 00:45:37', '2024-11-07 18:55:22', 11123, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(98995566, 'prueba13', 'image_WhatsApp Image 2024-06-11 at 23.32.40 (1).jpeg', 65666, 'mayo', '2025', '2025-05-13', '2025-05-12', NULL, NULL, NULL, 'Amer', 'cardiologia', 'Trimestral', '', '2025-05-13 20:44:56', '2025-05-13 20:44:56', 11112, 3456, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2028-11-24'),
+(105002366, 'maquina de aferesis', 'image_aferesis_equipo.jpeg', 98000, 'z20', '5434364sef', '2024-10-11', '2024-10-11', NULL, NULL, NULL, 'franeus', 'Qx1', 'Semestral', '', '2024-10-11 14:17:19', '2024-11-07 18:55:32', 11111, 9119, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 0, NULL, NULL),
+(564298763, 'holter', 'image_DiagramasActividades-Orden de trabajo.drawio (2).png', 96000, 'eccosur', '23-65899-366', '2025-03-07', '2025-03-01', NULL, NULL, NULL, 'ekosur', 'cardiologia', 'Anual', '', '2025-03-04 02:37:28', '2025-03-04 02:37:28', 11111, 3456, 'Si', '1.236.3', 'eccosur', '', 'Activo', 'Activo', 'Sin Consumible', NULL, 1, 0, 0, 2, NULL, NULL),
+(991415561, 'Ultrasound', 'image_Ultrasound Toshiba Nemio MX.jpg', 227900, 'NEMIO MX', '99A1415561', '2019-05-06', '2019-05-06', NULL, NULL, NULL, 'Toshiba', 'Room 23', 'Anual', '', '2020-05-21 19:30:33', '2024-11-07 18:55:13', 11114, 7686, '0', '', '', '', '', '', '', NULL, 1, 0, 0, 4, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -384,6 +389,7 @@ INSERT INTO `equipmentspareparts` (`id_equipment`, `id_sparepart`, `createdAt`, 
 (656565, 78226, '2025-03-03 22:06:05', '2025-03-03 22:06:05', 2),
 (8545678, 5942, '2025-03-07 22:08:56', '2025-03-07 22:08:56', 1),
 (8545678, 15541, '2025-03-07 22:08:56', '2025-03-07 22:08:56', 1),
+(23454321, 79189, '2025-05-18 04:22:59', '2025-05-18 04:22:59', 1),
 (98995566, 15541, '2025-05-13 20:44:57', '2025-05-13 20:44:57', 1),
 (564298763, 44582, '2025-03-04 02:37:28', '2025-03-04 02:37:28', 1);
 
@@ -436,7 +442,8 @@ CREATE TABLE `maintenances` (
 --
 
 INSERT INTO `maintenances` (`Id`, `StartDate`, `EndDate`, `Description`, `createdAt`, `updatedAt`, `BreakDownCode`, `ClinicalEnginnerDSSN`) VALUES
-(13, '2024-10-30', '2024-10-30', 'fall pm', '2024-10-31 03:31:49', '2024-10-31 03:31:49', 44, 6458161);
+(13, '2024-10-30', '2024-10-30', 'fall pm', '2024-10-31 03:31:49', '2025-05-18 18:56:47', 44, 6458161),
+(14, '2025-05-18', '2025-05-18', 'Se cambia la pantalla', '2025-05-18 19:06:21', '2025-05-18 19:07:52', 45, 6458161);
 
 -- --------------------------------------------------------
 
@@ -450,6 +457,52 @@ CREATE TABLE `models` (
   `id_brand` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `models`
+--
+
+INSERT INTO `models` (`id`, `Model`, `id_brand`) VALUES
+(1, 'Bair Hugger', 1),
+(2, 'Insight U120 smart', 2),
+(3, '900-ARJOHUNTLEIGH', 3),
+(4, 'DRYSTAR', 4),
+(5, 'BF-683-TDP', 9),
+(6, 'BF-683-EH', 9),
+(7, 'GS IV', 10),
+(8, 'HOSPIVAC 400', 13),
+(9, 'AED', 17),
+(10, 'CORPULS I', 17),
+(11, 'CORPULS III', 17),
+(12, 'RCP', 17),
+(13, 'DOMUS 1', 19),
+(14, 'DOMUS 3D', 19),
+(15, '251', 21),
+(16, 'Exelsa Baby li16x15', 21),
+(17, 'AMPLA 2085', 21),
+(18, 'IT-158.TS', 21),
+(19, 'Panda', 21),
+(20, 'Neuro fax JE-921A', 37),
+(21, '7031321993', 43),
+(22, 'Prima 465', 39),
+(23, '980', 42),
+(24, 'CONNEX', 52),
+(25, 'Magnetos Essential', 44),
+(26, 'MULTI P - X', 44),
+(27, 'Mobilett XP Hybrid', 44),
+(28, 'BFT II', 44),
+(29, '19317', 51),
+(30, 'QUBE', 46),
+(31, 'C50', 46),
+(32, 'Xhibit', 46),
+(33, 'ATS2000', 56),
+(34, 'AMX II', 23),
+(35, 'Prodigy Advance Serie 510493Ma', 23),
+(36, 'Sigma Architecr 3T', 23),
+(37, 'Revolution', 23),
+(38, 'BV Libra', 40),
+(39, 'UMEC12', 35),
+(40, 'DC-30', 35);
+
 -- --------------------------------------------------------
 
 --
@@ -458,96 +511,51 @@ CREATE TABLE `models` (
 
 CREATE TABLE `nameequipment` (
   `id_nameE` int NOT NULL,
-  `Name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `Name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `function` int NOT NULL,
+  `aplication` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `nameequipment`
 --
 
-INSERT INTO `nameequipment` (`id_nameE`, `Name`) VALUES
-(1, 'MONITOR MULTIPARAMETRICO'),
-(2, 'DESFIBRILADOR DEA'),
-(3, 'MONITOR + IMPRESORA'),
-(4, 'LAMPARA DE EXAMEN'),
-(5, 'MONITOR SPOTCHECK'),
-(6, 'ASPIRADOR PORTATIL'),
-(7, 'BALANZA DIGITAL CON TALLIMETRO'),
-(8, 'BALANZA NEONATAL CON INFANTOMETRO'),
-(9, 'MONITOR DESFIBRILADOR'),
-(10, 'SISTEMA DE COMPRESIÓN TORAXICA'),
-(11, 'LAMPARA CIALITICA MOVIL'),
-(12, 'ELECTROCARDIOGRAFO'),
-(13, 'ECOGRAFO MULTIFUNCIONAL'),
-(14, 'MONITOR CONNEX NIBP / SPO2 / TEMP'),
-(15, 'ECG'),
-(16, 'Equipo De Rayos X Movil'),
-(17, 'digitalizado RX'),
-(18, 'Arco En C'),
-(19, 'Mamografo'),
-(20, 'Densitometro'),
-(21, 'Desfibrilador Corplus Aed'),
-(22, 'Rayos X Portatil de mano'),
-(23, 'Disfibrilador Bifasico'),
-(24, 'Resonador Magnetico 1.5T'),
-(25, 'Resonador Magnetico 3T'),
-(26, 'Equipo Tomografo Act16C'),
-(27, 'Inyector de contraste'),
-(28, 'Equipos rayos X'),
-(29, 'Impresora de placas'),
-(30, 'Ecografo Multifuncional'),
-(31, 'Termociclador Accurate + Computador Pc Alta Generacion'),
-(32, 'Centrifuga De Alta Velocidad'),
-(33, 'Baño Seco C/Bloque Calefactor P/1.5Ml 40 Orificios'),
-(34, 'Macrocentrífuga'),
-(35, 'Mini centrifugadora'),
-(36, 'Agitador'),
-(37, 'Cabina flujo laminar con filtro HEPA'),
-(38, 'Cabina flujo laminar'),
-(39, 'Termocilcador'),
-(40, 'Cuagulómetro Siemens Bft Ii Medlab'),
-(41, 'Macrocentrifuga 24 Tubos A Induccion'),
-(42, 'Contador Hermatologico Dif 6 Partes'),
-(43, 'Agitador Vortex'),
-(44, 'Disco rotador de tubo'),
-(45, 'Agitador plataforma'),
-(46, 'Baño Maria De 10 Lt.'),
-(47, 'Microcentifuga'),
-(48, 'Microscopio'),
-(49, 'Analizador Quimico Manual'),
-(50, 'Esterilizador De 75 Lts'),
-(51, 'MacroCentrifuga'),
-(52, 'Analizador De Electrolitros'),
-(53, 'Medidor Hemoglobina glicosilada'),
-(54, 'Analizador de orina'),
-(55, 'BOMBA DE INFUSION'),
-(56, 'RACK SYST. P/BOMBA D/INFUSION. INTELIGEN'),
-(57, 'EEG Nihon Kode'),
-(58, 'EEG Nikon Koden'),
-(59, 'EEG Nikon Koden - Dr. Arias'),
-(60, 'MESA QUIRURGICA'),
-(61, 'MAQUINA D/ANESTESIA'),
-(62, 'ELECTROBISTURI SMART 4'),
-(63, 'MONITOR MODULAR'),
-(64, 'LAMPARA CIALITICA DOS SATELITES'),
-(65, 'SERVOCUNA'),
-(66, 'INCUBADORA DE TRANSPORTE'),
-(67, 'MICROSCOPIO QUIRURGICO'),
-(68, 'TORRE LAPAROSCOPICA'),
-(69, 'BOMBA TIVA'),
-(70, 'MANGUERA AGUA- AIRE'),
-(71, 'SELLADORA  PAPEL'),
-(72, 'CUNA'),
-(73, 'CENTRAL DE MONITOREO'),
-(74, 'VENTILADOR MECANICO'),
-(75, 'COLCHON ANTIESCARRA'),
-(76, 'COMPRESOR DE MIENBROS'),
-(77, 'MODULO DE CAPNOGRAFIA SIDESTREAM'),
-(78, 'ASPIRADOR QUIRURGICO'),
-(79, 'TORNIQUETE NEUMATICO'),
-(80, 'MANTA TERMICA'),
-(81, 'PUPINEL DE 30 LTS'),
-(82, 'PUPINEL DE 20 LTS');
+INSERT INTO `nameequipment` (`id_nameE`, `Name`, `function`, `aplication`) VALUES
+(1, 'Aspirador', 9, 2),
+(2, 'Balanza', 6, 2),
+(3, 'Ecografo', 6, 3),
+(4, 'Electrocardiografo', 6, 3),
+(5, 'Electroencefalografo', 6, 3),
+(6, 'Esterilizacion', 2, 1),
+(7, 'Imagenes Grandes', 6, 2),
+(8, 'Imagenes Pequeñas', 2, 2),
+(9, 'Infusion simple', 6, 3),
+(10, 'infusion inteligente', 2, 1),
+(11, 'infusion Tiva', 7, 3),
+(12, 'termociclador completo', 5, 3),
+(13, 'termociclador simple', 4, 1),
+(14, 'Laboratorio Hematologia', 5, 3),
+(15, 'Laboratorio Orina', 5, 3),
+(16, 'Laboratorio proceso grande', 5, 3),
+(17, 'Laboratorio proceso pequeño', 4, 1),
+(18, 'Laboratorio Quimica sanguinea', 5, 3),
+(19, 'Lampara grande', 9, 7),
+(20, 'Lampara mediana', 7, 2),
+(21, 'Lampara pequeña', 2, 2),
+(22, 'Monitor alto riesgo', 7, 3),
+(23, 'Monitor mediano riesgo', 6, 3),
+(24, 'Central de monitorizacion', 2, 1),
+(25, 'Neonatologia', 7, 3),
+(26, 'Neonatologia Muebles', 2, 1),
+(27, 'Quirofano alto riesgo Nivel 1', 9, 5),
+(28, 'Quirofano alto riesgo Nivel 2', 9, 4),
+(29, 'Quirofano alto riesgo Nivel 3', 9, 3),
+(30, 'Quirofano mediano riesgo Nivel 1', 7, 4),
+(31, 'Quirofano mediano riesgo Nivel 2', 7, 3),
+(32, 'Quirofano bajo riesgo', 6, 3),
+(33, 'Reanimacion', 10, 5),
+(34, 'Terapia', 2, 2),
+(35, 'Ventilacion', 9, 5);
 
 -- --------------------------------------------------------
 
@@ -660,27 +668,60 @@ CREATE TABLE `preventivetasks` (
 --
 
 INSERT INTO `preventivetasks` (`id`, `EquipmentCode`, `ScheduledDate`, `Status`, `createdAt`, `updatedAt`) VALUES
-(1, 375, '2025-02-21', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(2, 531, '2025-04-21', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(3, 12220, '2025-06-19', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(4, 69690, '2025-11-05', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(5, 69891, '2025-06-16', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(6, 656565, '2025-03-07', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(7, 712345, '2025-12-08', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(8, 781396, '2025-04-28', 'Finalizada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(9, 1050023, '2025-02-07', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(10, 1222222, '2025-09-18', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(11, 4573397, '2025-01-06', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(12, 8545678, '2025-03-14', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(13, 12269856, '2025-11-10', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(14, 20202025, '2025-11-06', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(15, 61242056, '2025-07-01', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(16, 66666555, '2025-10-13', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(17, 82532024, '2025-09-23', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(18, 105002366, '2025-10-13', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(19, 564298763, '2025-03-07', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(20, 991415561, '2025-05-06', 'Programada', '2025-05-12 02:21:14', '2025-05-12 02:21:14'),
-(21, 98995566, '2025-05-13', 'Programada', '2025-05-13 20:48:13', '2025-05-13 20:48:13');
+(130, 375, '2021-02-22', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(131, 375, '2022-02-22', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(132, 531, '2025-04-21', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(133, 531, '2026-04-21', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(134, 12220, '2020-06-19', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(135, 12220, '2021-06-21', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(136, 69690, '2020-11-05', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(137, 69690, '2021-11-05', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(138, 69690, '2022-11-07', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(139, 69891, '2020-06-16', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(140, 69891, '2021-06-16', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(141, 69891, '2022-06-16', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(142, 656565, '2026-03-09', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(143, 656565, '2027-03-09', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(144, 712345, '2020-12-07', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(145, 712345, '2021-12-07', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(146, 781396, '2020-04-27', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(147, 781396, '2021-04-27', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(148, 1050023, '2024-02-07', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(149, 1050023, '2025-02-07', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(150, 1050023, '2026-02-09', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(151, 1222222, '2025-09-18', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(152, 1222222, '2026-09-18', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(153, 1222222, '2027-09-20', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(154, 4573397, '2020-01-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(155, 4573397, '2021-01-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(156, 8545678, '2026-03-16', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(157, 8545678, '2027-03-16', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(158, 12269856, '2025-11-10', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(159, 12269856, '2026-11-10', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(160, 20202025, '2025-11-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(161, 20202025, '2026-11-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(162, 20202025, '2027-11-08', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(163, 23454321, '2026-05-18', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(164, 23454321, '2027-05-18', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(165, 23454321, '2028-05-18', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(166, 61242056, '2020-07-01', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(167, 61242056, '2021-07-01', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(168, 61242056, '2022-07-01', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(169, 66666555, '2025-10-13', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(170, 66666555, '2026-10-13', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(171, 82532024, '2025-09-23', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(172, 82532024, '2026-09-23', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(173, 82532024, '2027-09-23', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(174, 98995566, '2026-05-13', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(175, 98995566, '2027-05-13', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(176, 98995566, '2028-05-15', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(177, 105002366, '2025-10-13', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(178, 105002366, '2026-10-13', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(179, 564298763, '2026-03-09', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(180, 564298763, '2027-03-09', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(181, 991415561, '2020-05-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(182, 991415561, '2021-05-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51'),
+(183, 991415561, '2022-05-06', 'Programada', '2025-05-21 13:36:51', '2025-05-21 13:36:51');
 
 -- --------------------------------------------------------
 
@@ -728,9 +769,10 @@ INSERT INTO `repairstage` (`id_Stage`, `Status`, `FuntionalStatus`) VALUES
 (3, 'En espera de repuesto', 0),
 (4, 'Espera de proveedor', 0),
 (5, 'Baja', 0),
-(6, 'Reparado', 1),
+(6, 'Reparado ', 1),
 (7, 'Funcional pero con limitación', 1),
-(8, 'Equipo OK', 1);
+(8, 'Equipo entregado en área', 1),
+(9, 'Entregado a Almacen', 1);
 
 -- --------------------------------------------------------
 
@@ -804,7 +846,14 @@ CREATE TABLE `stopreason` (
 
 INSERT INTO `stopreason` (`id_Reason`, `Description`, `punctuation`) VALUES
 (1, 'Mal uso', 0),
-(2, 'Falla equipo', 1);
+(2, 'Falla equipo', 1),
+(3, 'Falta Consumible', 0),
+(4, 'Ninguna', 0),
+(5, 'Preventivo', 0),
+(6, 'Gestion Compra', 0),
+(7, 'No hay presupuesto', 0),
+(8, 'Equipo Obsoleto', 0),
+(9, 'Proveedor sin repuestos', 0);
 
 -- --------------------------------------------------------
 
@@ -1072,7 +1121,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT de la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
-  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `categories`
@@ -1096,13 +1145,13 @@ ALTER TABLE `insuranceequipment`
 -- AUTO_INCREMENT de la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `models`
 --
 ALTER TABLE `models`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT de la tabla `nameequipment`
@@ -1132,7 +1181,7 @@ ALTER TABLE `ppms`
 -- AUTO_INCREMENT de la tabla `preventivetasks`
 --
 ALTER TABLE `preventivetasks`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT de la tabla `receptionstatus`
@@ -1144,13 +1193,13 @@ ALTER TABLE `receptionstatus`
 -- AUTO_INCREMENT de la tabla `repairstage`
 --
 ALTER TABLE `repairstage`
-  MODIFY `id_Stage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_Stage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `stopreason`
 --
 ALTER TABLE `stopreason`
-  MODIFY `id_Reason` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_Reason` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `tagnotifications`
