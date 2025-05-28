@@ -5,7 +5,8 @@ const searchController = require('../search/search'); // Asegúrate de que la ru
 //añadido 03/03/25
 //const {SparePart} = require('../models');
 const { Agent, ReceptionStatus, AcquisitionType, SparePart } = require('../models');
-
+//añadido 28/05
+const { Nameequipment } = require('../models');
 /*router.get('/equipment', async (req, res) => {
     try {
         const agents = await Agent.findAll();
@@ -26,6 +27,7 @@ const { Agent, ReceptionStatus, AcquisitionType, SparePart } = require('../model
 });*/
 router.get('/equipment', async (req, res) => {
     try {
+      const types = await Nameequipment.findAll();//añadido 28/05
       const agents = await Agent.findAll();
       const spareParts = await SparePart.findAll();
       const acquisitionTypes = await AcquisitionType.findAll();
@@ -35,6 +37,7 @@ router.get('/equipment', async (req, res) => {
     console.log(receptionStatuses); // Lo mismo para receptionStatuses
     
       res.render('equipment', {
+        Types: types,
         Agents:agents,
         spareParts: spareParts,
         acquisitionTypes: acquisitionTypes, 

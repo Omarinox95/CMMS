@@ -62,7 +62,7 @@ exports.completePPMTask = async (req, res) => {
 };
 
 // Generar tareas preventivas con verificación de duplicados
-exports.generateTasks = async (req, res) => {
+/*exports.generateTasks = async (req, res) => {
   try {
     const equipments = await Equipment.findAll();
     const currentYear = moment().year();
@@ -103,6 +103,70 @@ exports.generateTasks = async (req, res) => {
             updatedAt: new Date()
           });
         }
+      }
+    }
+
+    await PreventiveTask.bulkCreate(newTasks);
+    res.json({ message: `${newTasks.length} tareas generadas correctamente` });
+
+  } catch (error) {
+    console.error('Error generando tareas preventivas:', error);
+    res.status(500).json({ error: 'Error generando tareas preventivas' });
+  }
+};*/
+
+const addMonthsAccurately = (date, months) => {
+  const d = new Date(date);
+  const newMonth = d.getMonth() + months;
+  const newDate = new Date(d.setMonth(newMonth));
+  
+  // Ajustar si el día original no existe en el nuevo mes (por ejemplo 31 a 30/28)
+  if (newDate.getDate() !== date.getDate()) {
+    newDate.setDate(0); // último día del mes anterior
+  }
+  return newDate;
+};
+
+exports.generateTasks = async (req, res) => {
+  try {
+    const equipments = await Equipment.findAll();
+    const newTasks = [];
+
+    for (const eq of equipments) {
+      const GE = eq.GE;
+      const startDate = moment(eq.InstallationDate);
+      if (!startDate.isValid()) continue;
+
+      const interval = (GE === 4 || GE === 5) ? 6 : 12;
+      let currentDate = startDate.clone().add(interval, 'months');
+
+      const endDate = moment(startDate).add(3, 'years');
+
+      while (currentDate.isSameOrBefore(endDate)) {
+        // Ajustar si cae sábado o domingo
+        if (currentDate.day() === 6) currentDate.add(2, 'days'); // sábado → lunes
+        if (currentDate.day() === 0) currentDate.add(1, 'day');  // domingo → lunes
+
+        const formattedDate = currentDate.format('YYYY-MM-DD');
+
+        const existing = await PreventiveTask.findOne({
+          where: {
+            EquipmentCode: eq.Code,
+            ScheduledDate: formattedDate
+          }
+        });
+
+        if (!existing) {
+          newTasks.push({
+            EquipmentCode: eq.Code,
+            ScheduledDate: formattedDate,
+            Status: 'Programada',
+            createdAt: new Date(),
+            updatedAt: new Date()
+          });
+        }
+
+        currentDate = currentDate.clone().add(interval, 'months');
       }
     }
 

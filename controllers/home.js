@@ -14,7 +14,8 @@ const moment=require('moment')
 const Category = require('../models/category');
 const ReceptionStatus = require('../models/ReceptionStatus');  // Agrega esta línea
 const AcquisitionType = require('../models/AcquisitionType');  // Y esta línea
-
+const PreventiveTask = require('../models'); // si no está ya importado
+const { Brand, NameEquipment } = require('../models');
 
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
@@ -178,7 +179,7 @@ exports.ppmEngineerEquipment =(req,res) => {
         })
     })
 }
-exports.ppmEngineerEquipmentPost=(req,res) =>{
+/*exports.ppmEngineerEquipmentPost=(req,res) =>{
     date=req.body.DATE
     equipmentId=req.params.Code
     engineerId=req.session.DSSN
@@ -221,6 +222,76 @@ exports.ppmEngineerEquipmentPost=(req,res) =>{
           
     })
 }
+*/
+
+exports.ppmEngineerEquipmentPost = (req, res) => {
+    const date = req.body.DATE;
+    const equipmentId = req.params.Code;
+    const engineerId = req.session.DSSN;
+
+    let q1 = req.body.Q1 == "on" ? "on" : "off";
+    let q2 = req.body.Q2 == "on" ? "on" : "off";
+    let q3 = req.body.Q3 == "on" ? "on" : "off";
+    let q4 = req.body.Q4 == "on" ? "on" : "off";
+    let q5 = req.body.Q5 == "on" ? "on" : "off";
+
+    const n1 = req.body.N1;
+    const n2 = req.body.N2;
+    const n3 = req.body.N3;
+    const n4 = req.body.N4;
+    const n5 = req.body.N5;
+
+    Equipment.findByPk(equipmentId).then(equipment => {
+        if (equipment) {
+            ClinicalEngineer.findByPk(engineerId).then(clinicalengineer => {
+                if (clinicalengineer) {
+                    PPM.create({
+                        DATE: date,
+                        Q1: q1, Q2: q2, Q3: q3, Q4: q4, Q5: q5,
+                        N1: n1, N2: n2, N3: n3, N4: n4, N5: n5,
+                        EquipmentCode: equipmentId,
+                        ClinicalEnginnerDSSN: engineerId
+                    }).then(async ppm => {
+                        // 🔁 Aquí actualizamos la tarea a "Finalizada"
+                        await PreventiveTask.update(
+                            { Status: 'Finalizada', updatedAt: new Date() },
+                            {
+                                where: {
+                                    EquipmentCode: equipmentId,
+                                    Status: 'Programada'
+                                }
+                            }
+                        );
+                        res.redirect('/engineer/ppm');
+                    });
+                } else {
+                    res.render('error', {
+                        layout: false,
+                        pageTitle: 'Error',
+                        href: '/engineer/ppm',
+                        message: 'Sorry !!! Could Not Get this Engineer'
+                    });
+                }
+            });
+        } else {
+            res.render('error', {
+                layout: false,
+                pageTitle: 'Error',
+                href: '/engineer/ppm',
+                message: 'Sorry !!! Could Not Get this Equipment'
+            });
+        }
+    }).catch(err => {
+        console.log(err);
+        res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            href: '/engineer/ppm',
+            message: 'Sorry !!! Could Not Add This Report'
+        });
+    });
+};
+
 
 exports.department=(req,res)=>{
 Department.findAll({
@@ -520,12 +591,126 @@ exports.breakDown=(req,res)=>{
     })
 }
 
-exports.equipment = (req, res) => {
+//equipment nuevo 28/05
+exports.equipment = async (req, res) => {
+  try {
+    const equipments = await Equipment.findAll({
+      include: [
+        { model: Department, as: 'Department' },
+        { model: AgentSupplier },
+        { model: SparePart },
+        { model: NameEquipment, as: 'equipmentType' }
+      ]
+    });
+
+    const eq = equipments.map(equipment => ({
+      Code: equipment.Code,
+      Name: equipment.Name,
+      Cost: equipment.Cost,
+      PM: equipment.PM,
+      Image: equipment.Image,
+      InstallationDate: equipment.InstallationDate,
+      ArrivalDate: equipment.ArrivalDate,
+      WarrantyDate: equipment.WarrantyDate,
+      Model: equipment.Model,
+      SerialNumber: equipment.SerialNumber,
+      Manufacturer: equipment.Manufacturer,
+      Location: equipment.Location,
+      Notes: equipment.Notes,
+      DepartmentName: equipment.Department,
+      AgentSupplierId: equipment.AgentSupplier?.Name,
+      Software: equipment.Software,
+      SoftwareVersion: equipment.SoftwareVersion,
+      SoftwarePass: equipment.SoftwarePass,
+      NetworkAddress: equipment.NetworkAddress,
+      AssetStatus: equipment.AssetStatus,
+      InsuranceStatus: equipment.InsuranceStatus,
+      FuntionalStatus: equipment.FuntionalStatus,
+      TypeName: equipment.equipmentType?.Name,
+      SpareParts: equipment.SpareParts?.map(sp => ({
+        Code: sp.Code,
+        Name: sp.Name
+      }))
+    }));
+
+    // Obtener agentes, repuestos y otros datos en paralelo
+    const [agents, spareParts, receptionStatuses, acquisitionTypes, departments, nameEquipments, brands] = await Promise.all([
+      AgentSupplier.findAll(),
+      SparePart.findAll(),
+      ReceptionStatus.findAll(),
+      AcquisitionType.findAll(),
+      Department.findAll(),
+      NameEquipment.findAll(),
+      Brand.findAll()
+    ]);
+
+    const ag = agents.map(agent => ({
+      Name: agent.Name,
+      Id: agent.Id
+    }));
+
+    const sp = spareParts.map(spare => ({
+      Code: spare.Code,
+      Name: spare.Name
+    }));
+
+    const deptOptions = departments.map(dep => ({
+      Code: dep.Code,
+      Name: dep.Name
+    }));
+
+    const plainReceptionStatuses = receptionStatuses.map(rs => ({
+      Id: rs.Id,
+      Name: rs.Name
+    }));
+
+    const plainAcquisitionTypes = acquisitionTypes.map(at => ({
+      Id: at.Id,
+      Name: at.Name
+    }));
+
+    const typeOptions = nameEquipments.map(type => ({
+      id: type.id_nameE,
+      name: type.Name
+    }));
+
+    const brandOptions = brands.map(brand => ({
+        id_brand: brand.id_brand,
+        Brand: brand.Brand
+    }));
+
+
+    res.render('equipment', {
+      pageTitle: 'Equipment',
+      Equipment: true,
+      equipments: eq,
+      hasEquipments: eq.length > 0,
+      Agents: ag,
+      spareParts: sp,
+      receptionStatuses: plainReceptionStatuses,
+      acquisitionTypes: plainAcquisitionTypes,
+      departments: deptOptions,
+      Types: typeOptions,
+      Brands: brandOptions,
+    });
+  } catch (err) {
+    console.error('Error en equipment controller:', err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'No se pudieron obtener los datos necesarios para la vista.'
+    });
+  }
+};
+
+//es el funcional 28/05
+/*exports.equipment = (req, res) => {
     Equipment.findAll({
         include: [
-            { model: Department },
+            { model: Department, as: 'Department' },
             { model: AgentSupplier },
-            { model: SparePart }
+            { model: SparePart },
+            { model: NameEquipment, as: 'equipmentType' }//añadido
         ]
     }).then(equipments => {
         const eq = equipments.map(equipment => {
@@ -543,7 +728,7 @@ exports.equipment = (req, res) => {
                 Manufacturer: equipment.Manufacturer,
                 Location: equipment.Location,
                 Notes: equipment.Notes,
-                DepartmentCode: equipment.Department?.dataValues.Name,
+                DepartmentName: equipment.Department,
                 AgentSupplierId: equipment.AgentSupplier?.dataValues.Name,
                 Software: equipment.Software,
                 SoftwareVersion: equipment.SoftwareVersion,
@@ -552,6 +737,7 @@ exports.equipment = (req, res) => {
                 AssetStatus: equipment.AssetStatus,
                 InsuranceStatus: equipment.InsuranceStatus,
                 FuntionalStatus: equipment.FuntionalStatus,
+                TypeName: equipment.equipmentType?.Name,//añadido
                 SpareParts: equipment.SpareParts?.map(sp => ({
                     Code: sp.Code,
                     Name: sp.Name
@@ -577,10 +763,16 @@ exports.equipment = (req, res) => {
                 // Obtener receptionStatuses y acquisitionTypes
                 Promise.all([
                     ReceptionStatus.findAll(),  // Obtener los estados de recepción
-                    AcquisitionType.findAll()   // Obtener los tipos de adquisición
-                    
+                    AcquisitionType.findAll(),   // Obtener los tipos de adquisición
+                    Department.findAll(),
+                    NameEquipment.findAll()//añadido
                 ])
-                .then(([receptionStatuses, acquisitionTypes]) => {
+                .then(([receptionStatuses, acquisitionTypes, departments, nameEquipments]) => {
+                    
+                    const deptOptions = departments.map(dep=> ({
+                        Code:dep.Code,
+                        Name:dep.Name
+                    }))
                     const plainReceptionStatuses = receptionStatuses.map(rs => ({
                         Id: rs.Id,
                         Name: rs.Name
@@ -590,6 +782,13 @@ exports.equipment = (req, res) => {
                         Id: at.Id,
                         Name: at.Name
                     }));
+
+                    //añadido
+                    const typeOptions = nameEquipments.map(type => ({
+                        id: type.id_nameE,
+                        name: type.Name
+                    }));
+
                 
                     res.render('equipment', {
                         pageTitle: 'Equipment',
@@ -599,7 +798,9 @@ exports.equipment = (req, res) => {
                         Agents: ag,
                         spareParts: sp,
                         receptionStatuses: plainReceptionStatuses,
-                        acquisitionTypes: plainAcquisitionTypes
+                        acquisitionTypes: plainAcquisitionTypes,
+                        departments: deptOptions,
+                        typeOptions: typeOptions
                     });
                 })
                 
@@ -609,11 +810,12 @@ exports.equipment = (req, res) => {
                 });
             });
         });
+        
     }).catch(err => {
         console.error('Error al obtener los equipos:', err);
         res.render('error', { layout: false, pageTitle: 'Error', href: '/home', message: 'Sorry !!! Could Not Get Equipments' });
     });
-};
+};*/
 
 /*exports.equipment = (req, res) => {
     Equipment.findAll({

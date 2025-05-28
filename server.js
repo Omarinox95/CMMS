@@ -35,6 +35,21 @@ const AcquisitionType = require('./models/AcquisitionType');
 ///AUMENTADO PARA MP
 const preventiveRoutes = require('./routes/preventive');
 
+//aumentoado para mejorar GE
+const { NameEquipment } = require('./models');
+
+//aumentado para marcas
+const brandRoutes = require('./routes/brandRoutes');
+
+//aumentado para actualizar GE 1 vez al dia
+// Ejecutar todos los días a las 06:30 a.m.
+const cron = require('node-cron');
+const actualizarFRecordYGE = require('./util/actualizarFRecordYGE');
+
+cron.schedule('30 6 * * *', () => {
+  console.log('⏰ Ejecutando actualización diaria de F_record y GE...');
+  actualizarFRecordYGE();
+});
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -71,7 +86,8 @@ app.set('views', 'views');
 //aumentado para PM
 app.use('/api', preventiveRoutes); // Las rutas se usarán con /api/ppm-events
 
-//
+//aumentado para marcas
+app.use('/brands', brandRoutes);
 
 app.set('view engine', 'handlebars');
 // Controllers

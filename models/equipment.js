@@ -92,7 +92,32 @@ const Equipment = sequelize.define('Equipment', {
     type: Sequelize.TEXT,
     allowNull:true,
   },
+  NameEquipmentId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'nameequipment',
+      key: 'id_nameE'
+    }
+  },
+  F_record: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+  Maintenance_Req: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   //
 });
 
+
+//añadido 28/05
+Equipment.associate = (models) => {
+    Equipment.belongsTo(models.NameEquipment, {
+      foreignKey: 'NameEquipmentId',
+      as: 'equipmentType'
+    });
+  };
+  //
 module.exports = Equipment;

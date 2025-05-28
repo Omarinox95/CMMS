@@ -51,6 +51,7 @@
     document.addEventListener('DOMContentLoaded', async function () {
       const calendarEl = document.getElementById('calendar');
 
+      // Cargar eventos desde el servidor
       const res = await fetch('/api/ppm-events');
       const events = await res.json();
 
@@ -73,12 +74,20 @@
 
       calendar.render();
 
-      // Acción del botón para generar tareas
+      // Acción del botón para generar tareas MP
       document.getElementById('generateTasks').addEventListener('click', async () => {
-        const res = await fetch('/api/ppm-events/generate', { method: 'POST' });
-        const data = await res.json();
-        alert(data.message || 'Tareas generadas');
-        window.location.reload(); // Recarga el calendario
+        try {
+          const response = await fetch('/api/ppm-events/generate', {
+            method: 'POST'
+          });
+
+          const data = await response.json();
+          alert(data.message || 'Tareas generadas');
+          window.location.reload(); // recarga calendario para mostrar tareas nuevas
+        } catch (err) {
+          console.error(err);
+          alert('Error al generar tareas');
+        }
       });
     });
   </script>

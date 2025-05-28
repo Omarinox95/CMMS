@@ -242,51 +242,100 @@
                 </div>
                 <div class="login-form">
                         <div class="form-group">
-                            <label class=" form-control-label">Código</label>
-                            <input type="text" required name="Code" placeholder="Enter Code" class="form-control">
+                            <label class=" form-control-label">Código Activo</label>
+                            <input type="text" required name="Code" placeholder="Codigo de AF" class="form-control">
                         </div>
+                        <!-- PARA AÑADIR DESPUES DE CREAR CAMPOS EN BDD>
+                        <div class="form-group">
+                            <label class=" form-control-label">Código SEDES</label>
+                            <input type="text" required name="Code" placeholder="Codigo de sedes" class="form-control">
+                        </div>
+                        <! -->
                         <div class="form-group">
                             <label class=" form-control-label">Nombre</label>
-                            <input type="text"required name="Name" placeholder="Enter Name" class="form-control">
+                            <input type="text"required name="Name" placeholder="Descripción del equipo" class="form-control">
                         </div>
+                        <! añadido 18/05/25 para seleccionar el tipo de equipo para traer valores para GE ->
+                         <div class="form-group">
+                            <label class=" form-control-label">Tipo de Equipo</label>
+                            <select name="NameEquipmentId"required id="select" class="form-control">
+                                {{#each Types}}
+                                    <option value="{{this.id}}">{{this.name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <!hasta aqui->
                         <div class="form-group">
                             <label class=" form-control-label">Modelo</label>
-                            <input type="text" required name="Model" placeholder="Enter Model Name" class="form-control">
+                            <input type="text" required name="Model" placeholder="Ingresa Modelo" class="form-control">
                         </div>
                         <div class="form-group">
                             <label class=" form-control-label">Numero de Serie</label>
-                            <input type="text"required name="SerialNumber" placeholder="Enter Serial Number" class="form-control">
+                            <input type="text"required name="SerialNumber" placeholder="Ingresa numero de serie" class="form-control">
                         </div>
+                        <!--<div class="form-group">
+                            <label class=" form-control-label">Marca</label>
+                            <input type="text" required name="Manufacturer" placeholder="Ingrese Marca" class="form-control">
+                        </div>-->
+                        <!--añadido para marcas-->
                         <div class="form-group">
-                            <label class=" form-control-label">Fabricación</label>
-                            <input type="text" required name="Manufacturer" placeholder="Enter Manufacturer" class="form-control">
+                            <label class="form-control-label">Marca</label>
+                            <select name="BrandId" required class="form-control">
+                                <option value="" disabled selected>Seleccione una marca</option>
+                                {{#each Brands}}
+                                <option value="{{this.id_brand}}">{{this.Brand}}</option>
+                                {{/each}}
+                            </select>
                         </div>
+
                         <div class="form-group">
                             <label class=" form-control-label">Foto</label>
-                            <input type="file"  name="image" placeholder="Enter Name" class="form-control">
+                            <input type="file"  name="image" placeholder="Seleccione un archivo" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Costo del equipo</label>
-                            <input type="number"required name="Cost" placeholder="Enter Cost" class="form-control">
-                        </div>
-                       <div class="form-group">
-                            <label class=" form-control-label">Fecha de Instalación</label>
-                            <input type="date"required name="InstallationDate" placeholder="Enter Installation Date" class="form-control">
+                            <label class=" form-control-label">Costo del equipo en Bolivianos</label>
+                            <input type="number"required name="Cost" placeholder="Ingrese el costo en Bs.-" class="form-control">
                         </div>
                         <div class="form-group">
                             <label class=" form-control-label">Fecha de Entrega</label>
-                            <input type="date"required name="ArrivalDate" placeholder="Enter Arrival Date" class="form-control">
+                            <input type="date"required name="ArrivalDate" placeholder="Fecha de entrega a la clinica" class="form-control">
+                        </div>
+                       <div class="form-group">
+                            <label class=" form-control-label">Fecha de Instalación</label>
+                            <input type="date"required name="InstallationDate" placeholder="Ingrese fecha de intalación" class="form-control">
                         </div>
                         <div class="form-group">
                             <label class=" form-control-label">Fecha de culminación de Garantía</label>
-                            <input type="date"required name="WarrantyDate" placeholder="Enter Warranty Date" class="form-control">
+                            <input type="date"required name="WarrantyDate" placeholder="Fecha de fin de garantía" class="form-control">
+                        </div>
+                        <!-- comento>
+                        <div class="form-group">
+                            <label class=" form-control-label">Departmento</label>
+                            <select name="Department"required id="select" class="form-control">
+                                    <option value="OR">OR</option>
+                                    <option value="Radiology">Radiología</option> 
+                                    <option value="ICU">UCI</option>
+                                    <option value="CSSD">CSSD</option>
+                            </select>
+                        </div>
+                        <-->
+                        <div class="form-group">
+                            <label for="DepartmentCode">Departamento</label>
+                            <select id="DepartmentCode" name="DepartmentCode" class="form-control" required>
+                                <option value="">Seleccione un departamento</option>
+                                {{#each departments}}
+                                <option value="{{this.Code}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+
+                        <!com>
+                        <div class="form-group">
+                            <label class=" form-control-label">Ubicación</label>
+                            <input type="text" required name="Location" placeholder="Ingrese la ubicación" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Localización</label>
-                            <input type="text" required name="Location" placeholder="Enter Location" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">Código de Agente</label>
+                            <label class=" form-control-label">Proveedor</label>
                             <select name="Agent"required id="select" class="form-control">
                                 {{#each Agents}}
                                     <option value="{{this.Id}}">{{this.Name}} {{this.Id}} </option>
@@ -302,15 +351,7 @@
 
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">Department</label>
-                            <select name="Department"required id="select" class="form-control">
-                                    <option value="OR">OR</option>
-                                    <option value="Radiology">Radiología</option> 
-                                    <option value="ICU">UCI</option>
-                                    <option value="CSSD">CSSD</option>
-                            </select>
-                        </div>
+                    
                         <!añadido en 02/03/25->
                         <div class="form-group">
                             <label class=" form-control-label">Software</label>
@@ -334,6 +375,19 @@
                             <label class=" form-control-label">Conexion IP</label>
                             <input type="text" name="NetworkAddress" placeholder="Ingrese IP" value="{{ equipment.NetworkAddress }}" class="form-control">
                         </div> 
+
+                        <! añadido en 18/05/25 ->
+                        <div class="form-group">
+                            <label class=" form-control-label">Antecedentes Falla</label>
+                            <select name="FailureRecord" id="select" class="form-control">
+                                    <option value="-1">Insignificante</option>
+                                    <option value="-2">Mínimo</option> 
+                                    <option value="0">Usual</option>
+                                    <option value="1">Moderado</option> 
+                                    <option value="2">Significativo</option>
+                            </select>
+                        </div>
+                        <! hasta aqui ->
                         
                         <div class="form-group">
                             <label class=" form-control-label">Estado Activo</label>
@@ -343,7 +397,7 @@
                                     <option value="Baja">Baja</option> 
                             </select>
                         </div>   
-
+                        
                         <!añadido en 06/05/25->
 
                         <div class="form-group">
@@ -367,9 +421,6 @@
                         {{/each}}
                         </select>
 
-                        
-
-
                         <div class="form-group">
                             <label class=" form-control-label">Estado del Seguro</label>
                             <select name="InsuranceStatus" id="select" class="form-control">
@@ -384,13 +435,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label class=" form-control-label">Estado Activo</label>
+                            <label class=" form-control-label">Estado Equipo</label>
                             <select name="FuntionalStatus" id="select" class="form-control">
                                     <option value="Funcionando">Funcionando</option>
                                     <option value="Reparación">Reparación</option> 
                                     <option value="En espera de repuesto">En espera de repuesto</option> 
                                     <option value="Con Proveedor">Con el Proveedor</option>
                                     <option value="Sin Consumible">Sin consumible</option> 
+                                    <option value="Plan contingencia">Contingencia</option> 
                             </select>
                         </div>
                         <!añadido 03/03/25 ->
