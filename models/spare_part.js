@@ -31,7 +31,7 @@ const SparePart = sequelize.define('SparePart', {
         allowNull: false,
         references: {
             model: 'Categories', // La tabla Categories en la base de datos
-            key: 'id' // Columna id de la tabla Categories
+            key: 'IdCat' // Columna id de la tabla Categories
         }
     }
 });
