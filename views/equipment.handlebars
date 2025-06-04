@@ -161,8 +161,8 @@
                             <div class="card-text">Modelo: <span>{{ this.Model}}</span></div>
                             <div class="card-text">Número de Serie: <span>{{ this.SerialNumber }}</span></div>
                             <div class="card-text">Localización: <span>{{ this.Location }}</span></div>
-                            <div class="card-text">Departamento: <span>{{ this.DepartmentCode }}</span></div>
-                            <div class="card-text">MP: <span>{{ this.PM }}</span></div>
+                            <div class="card-text">Departamento: <span>{{ this.DepartmentName }}</span></div>
+                           
 
                         </div>
                         <div class="table-data-feature">
@@ -209,14 +209,13 @@
                 row.push(cardTexts[3].innerText); // Número de serie
                 row.push(cardTexts[4].innerText); // Localización
                 row.push(cardTexts[5].innerText); // Departamento
-                row.push(cardTexts[6].innerText); // MP
                 rows.push(row);
             }
         });
 
         // Agregar la tabla al PDF
         doc.autoTable({
-            head: [['Código', 'Nombre', 'Modelo', 'Número de Serie', 'Localización', 'Departamento', 'MP']],
+            head: [['Código', 'Nombre', 'Modelo', 'Número de Serie', 'Localización', 'Departamento']],
             body: rows,
             startY: 30 // Para dejar espacio entre el título y la tabla
         });
@@ -245,12 +244,6 @@
                             <label class=" form-control-label">Código Activo</label>
                             <input type="text" required name="Code" placeholder="Codigo de AF" class="form-control">
                         </div>
-                        <!-- PARA AÑADIR DESPUES DE CREAR CAMPOS EN BDD>
-                        <div class="form-group">
-                            <label class=" form-control-label">Código SEDES</label>
-                            <input type="text" required name="Code" placeholder="Codigo de sedes" class="form-control">
-                        </div>
-                        <! -->
                         <div class="form-group">
                             <label class=" form-control-label">Nombre</label>
                             <input type="text"required name="Name" placeholder="Descripción del equipo" class="form-control">
@@ -264,20 +257,20 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <!hasta aqui->
                         <div class="form-group">
-                            <label class=" form-control-label">Modelo</label>
-                            <input type="text" required name="Model" placeholder="Ingresa Modelo" class="form-control">
+                            <label for="ModelId">Modelo:</label>
+                            <select name="ModelId" id="ModelId" required class="form-control">
+                                <option value="">Seleccione un modelo</option>
+                                {{#each Models}}
+                                    <option value="{{this.id}}">{{this.Model}}</option>
+                                {{/each}}
+                            </select>
                         </div>
+                        
                         <div class="form-group">
                             <label class=" form-control-label">Numero de Serie</label>
                             <input type="text"required name="SerialNumber" placeholder="Ingresa numero de serie" class="form-control">
                         </div>
-                        <!--<div class="form-group">
-                            <label class=" form-control-label">Marca</label>
-                            <input type="text" required name="Manufacturer" placeholder="Ingrese Marca" class="form-control">
-                        </div>-->
-                        <!--añadido para marcas-->
                         <div class="form-group">
                             <label class="form-control-label">Marca</label>
                             <select name="BrandId" required class="form-control">
@@ -308,17 +301,6 @@
                             <label class=" form-control-label">Fecha de culminación de Garantía</label>
                             <input type="date"required name="WarrantyDate" placeholder="Fecha de fin de garantía" class="form-control">
                         </div>
-                        <!-- comento>
-                        <div class="form-group">
-                            <label class=" form-control-label">Departmento</label>
-                            <select name="Department"required id="select" class="form-control">
-                                    <option value="OR">OR</option>
-                                    <option value="Radiology">Radiología</option> 
-                                    <option value="ICU">UCI</option>
-                                    <option value="CSSD">CSSD</option>
-                            </select>
-                        </div>
-                        <-->
                         <div class="form-group">
                             <label for="DepartmentCode">Departamento</label>
                             <select id="DepartmentCode" name="DepartmentCode" class="form-control" required>
@@ -328,8 +310,6 @@
                                 {{/each}}
                             </select>
                         </div>
-
-                        <!com>
                         <div class="form-group">
                             <label class=" form-control-label">Ubicación</label>
                             <input type="text" required name="Location" placeholder="Ingrese la ubicación" class="form-control">
@@ -342,16 +322,7 @@
                                 {{/each}}
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">MP</label>
-                            <select name="PM"required id="select" class="form-control">
-                                    <option value="Semestral">Mensual</option>
-                                    <option value="Anual">Anual</option> 
-                                    <option value="Trimestral">Trimestral</option> 
-
-                            </select>
-                        </div>
-                    
+                                           
                         <!añadido en 02/03/25->
                         <div class="form-group">
                             <label class=" form-control-label">Software</label>

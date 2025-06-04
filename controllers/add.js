@@ -14,7 +14,7 @@ const client = require('../emqx/emqx-connection');
 // Añadido 06/05/2025
 const ReceptionStatus = require('../models/ReceptionStatus');
 const AcquisitionType = require('../models/AcquisitionType');
-const { Brand, NameEquipment } = require('../models');
+const { Brand, NameEquipment, Model } = require('../models');
 
 exports.addDepartment=(req,res)=>{
  code=req.body.Code
@@ -290,16 +290,14 @@ exports.addEquipment = async (req, res) => {
       Name: name,
       NameEquipmentId: nameEquipmentId,//añadido
       Cost: cost,
-      Model: model,
+      ModelId: modelId,
       SerialNumber: serialnumber,
       InstallationDate: installationdate,
       ArrivalDate: arrivaldate,
       WarrantyDate: warrantydate,
-      //Manufacturer: manufacturer,
       Location: location,
       DepartmentCode: departmentCode, // esperamos que venga el Code o ID
       Agent: agentId,
-      PM: pm,
       Notes: notes,
       Software: software,
       SoftwareVersion: softwareVersion,
@@ -357,6 +355,9 @@ exports.addEquipment = async (req, res) => {
         return res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró la marca seleccionada' });
     }
 
+    //para modelo
+    const model = await Model.findOne({ where: { id: modelId } });  // Validar modelo
+    if (!model) return res.render('error', { layout: false, pageTitle: 'Error', message: 'No se encontró el modelo seleccionado' });
 
     // Crear equipo
     const newEquipment = await Equipment.create({
@@ -365,7 +366,7 @@ exports.addEquipment = async (req, res) => {
       NameEquipmentId: nameEquipment.id_nameE,//añadido
       Cost: cost,
       Image: image,
-      Model: model,
+      ModelId: model.id,
       SerialNumber: serialnumber,
       InstallationDate: installationdate,
       ArrivalDate: arrivaldate,
@@ -373,7 +374,6 @@ exports.addEquipment = async (req, res) => {
       Manufacturer: brand.Brand,
       Location: location,
       Notes: notes,
-      PM: pm,
       DepartmentCode: department.Code,
       AgentSupplierId: agent.Id,
       Software: software,
@@ -417,15 +417,17 @@ exports.addEquipment = async (req, res) => {
 
 
 
-exports.addSpareParts = (req, res) => {
-    console.log("Repuestos que se van a asociar:", spareParts);
-
+/*exports.addSpareParts = (req, res) => {
+    //console.log("Repuestos que se van a asociar:", spareParts);
+    
     const code = req.body.Code;
     const name = req.body.Name;
     const amount = req.body.Amount;
     const agentId = req.body.AgentSupplierId;
-    const equipmentCode = req.body.EquipmentCode;  // Aquí se obtiene el código del equipo
+    const brandId = req.body.id_brand;
+    //const equipmentCode = req.body.EquipmentCode;  // Aquí se obtiene el código del equipo
     const categoryId = req.body.CategoryId;
+    const codeManufacter = req.body.CodeManufacter; // <--- agregar esta línea
 
     let image;
     if (req.body.edit) {
@@ -439,13 +441,14 @@ exports.addSpareParts = (req, res) => {
         .then(agent => {
             if (agent) {
                 // Buscar el repuesto por código
-                SpareParts.findByPk(code).then(part => {
+                SpareParts.findByPk(id).then(part => {
                     if (part) {
                         // Si el repuesto existe, actualizamos sus detalles
                         part.Name = name;
                         part.Amount = amount;
                         part.AgentSupplierId = agentId;
                         part.CategoryId = categoryId;
+                        part.CodeManufacter = codeManufacter;
                         part.Image = image;
                         part.save().then(p => {
                             // Una vez actualizado el repuesto, asociamos el repuesto con el equipo
@@ -479,8 +482,10 @@ exports.addSpareParts = (req, res) => {
                             Amount: amount,
                             AgentSupplierId: agentId,
                             Image: image,
-                            EquipmentCode: equipmentCode,  // Este campo ya no se actualiza directamente
-                            CategoryId: categoryId
+                            IdBrand: brandId,
+                            //EquipmentCode: equipmentCode,  // Este campo ya no se actualiza directamente
+                            CategoryId: categoryId,
+                            CodeManufacter: codeManufacter,
                         })
                             .then(newPart => {
                                 // Asociar el repuesto recién creado con el equipo
@@ -516,7 +521,71 @@ exports.addSpareParts = (req, res) => {
             res.render('error', { layout: false, pageTitle: 'Error', message: 'Error al obtener el proveedor' });
         });
 };
+*/
 
+exports.addSpareParts = (req, res) => {
+    const code = req.body.Code;
+    const name = req.body.Name;
+    const amount = req.body.Amount;
+    const agentId = req.body.AgentSupplierId;
+    const brandId = req.body.id_brand;
+    const categoryId = req.body.CategoryId;
+    const codeManufacter = req.body.CodeManufacter;
+
+    let image;
+    if (req.body.edit) {
+        image = req.body.Image;
+    } else {
+        image = req.file.path.split('\\').pop();
+    }
+
+    // Validar proveedor y marca antes de crear el repuesto
+    Promise.all([
+        AgentSupplier.findByPk(agentId),
+        Brand.findByPk(brandId)
+    ])
+    .then(([agent, brand]) => {
+        if (!agent) {
+            return res.render('error', {
+                layout: false,
+                pageTitle: 'Error',
+                message: 'Proveedor no encontrado'
+            });
+        }
+
+        if (!brand) {
+            return res.render('error', {
+                layout: false,
+                pageTitle: 'Error',
+                message: 'Marca no encontrada'
+            });
+        }
+
+        // Crear repuesto
+        return SpareParts.create({
+            Code: code,
+            Name: name,
+            Amount: amount,
+            AgentSupplierId: agentId,
+            id_brand: brandId,
+            CategoryId: categoryId,
+            CodeManufacter: codeManufacter,
+            Image: image
+        });
+    })
+    .then(() => {
+        console.log("Repuesto creado correctamente");
+        res.redirect('/sparePart');
+    })
+    .catch(err => {
+        console.error("Error al crear el repuesto:", err);
+        res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            message: 'No se pudo crear el repuesto'
+        });
+    });
+};
 
 /////
 
@@ -563,6 +632,9 @@ exports.addWorkOrder=(req,res) => {
     engineerId=req.body.ClinicalEngineerDSSN
     solution=req.body.Solution //solución de la orden de trabajo
     workdate=req.body.Workdate  //fecha de realizacion del trabajo
+    id_typeW = req.body.id_typeW
+    id_StopReason = req.body.id_StopReason
+    id_RepairStage = req.body.id_RepairStage
     var equId=null
     var engId=null
     
@@ -583,12 +655,16 @@ exports.addWorkOrder=(req,res) => {
                             workorder.Priority=priority
                             workorder.Solution=solution
                             workorder.Workdate=workdate
+                            workorder.id_typeW = id_typeW;
+                            workorder.id_StopReason = id_StopReason;
+                            workorder.id_RepairStage = id_RepairStage;
                             workorder.save().then(workorder => res.redirect('/workOrder'))
                         }
                         else {
                             WorkOrders.create({StartDate:startDate,EndDate:endDate,Description:description,
                             Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority, 
-                            Solution:solution, Workdate: workdate})
+                            Solution:solution, Workdate: workdate, id_typeW: id_typeW, id_StopReason: id_StopReason,
+                            id_RepairStage: id_RepairStage})
                             .then(workorder => res.redirect('/workOrder') )
                            /* WorkOrders.create({StartDate:startdate,EndDate:enddate,Description:description,
                                 Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority})

@@ -187,6 +187,32 @@
                             
                             <input type="Date" hidden name="Workdate" placeholder="Ingresa Fecha de trabajo" class="form-control">
                         </div>
+                        <div class="form-group">
+                            <label class="form-control-label">Tipo de Orden</label>
+                            <select name="id_typeW" required class="form-control">
+                                {{#each OrderTypes}}
+                                <option value="{{this.id_typeW}}">{{this.Name}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label">Razón de Finalización</label>
+                            <select name="id_StopReason" required class="form-control">
+                                {{#each StopReasons}}
+                                    <option value="{{this.id_StopReason}}">{{this.Reason}}</option>
+                                {{/each}}
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-control-label">Estado de Reparación</label>
+                            <select name="id_RepairStage" required class="form-control">
+                                {{#each RepairStages}}
+                                <option value="{{this.id_RepairStage}}">{{this.Status}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+
                         <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
                     </form>  
                 </div>

@@ -23,7 +23,7 @@ Description:{
     allowNull:false
 },
 Cost:{
-    type:Sequelize.INTEGER,
+    type:Sequelize.DECIMAL(15,2),
     allowNull:false
 },
 Priority:{
@@ -39,7 +39,27 @@ Workdate:{
     //defaultValue: Sequelize.NOW,
     allowNull:false
 },
-
+//añadido 04
+ ClinicalEnginnerDSSN: {
+    type: Sequelize.BIGINT,
+    allowNull: true
+  },
+  EquipmentCode: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  id_typeW: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  id_StopReason: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
+  id_RepairStage: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
 
 })
 module.exports=Work_order

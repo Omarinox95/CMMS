@@ -18,7 +18,7 @@ const EquipmentSparePart = sequelize.define('equipmentsparepart', {
     type: Sequelize.INTEGER,
     references: {
       model: SparePart,
-      key: 'Code',  // El campo de SparePart que estamos referenciando
+      key: 'Id',  // El campo de SparePart que estamos referenciando
     },
     primaryKey: true,
   },
@@ -26,7 +26,9 @@ const EquipmentSparePart = sequelize.define('equipmentsparepart', {
     type: Sequelize.DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 1
-  },
+  },}, {
+  tableName: 'equipmentspareparts', // que es el nombre real de la tabla en DB
+  timestamps: true,
 });
 
 Equipment.belongsToMany(SparePart, { through: EquipmentSparePart, foreignKey: 'id_equipment' });

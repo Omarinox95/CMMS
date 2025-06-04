@@ -15,7 +15,8 @@ const Category = require('../models/category');
 const ReceptionStatus = require('../models/ReceptionStatus');  // Agrega esta línea
 const AcquisitionType = require('../models/AcquisitionType');  // Y esta línea
 const PreventiveTask = require('../models'); // si no está ya importado
-const { Brand, NameEquipment } = require('../models');
+const { Brand, NameEquipment, Model } = require('../models');
+const { OrderType, StopReason, RepairStage } = require('../models'); // ajusta el path si es necesario
 
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
@@ -409,11 +410,12 @@ exports.sparePart = (req, res) => {
     SparePart.findAll({
         include: [
             { model: AgentSupplier },
-            { model: Equipment },
-            { model: Category }
+            { model: Category },
+            { model: Brand } 
         ]
     })
     .then(spareparts => {
+        console.log(JSON.stringify(spareparts, null, 2));
         const sp = spareparts.map(sparepart => {
             return {
                 Code: sparepart.Code,
@@ -422,23 +424,20 @@ exports.sparePart = (req, res) => {
                 Image: sparepart.Image,
                 AgentSupplierId: sparepart.AgentSupplier ? sparepart.AgentSupplier.Id : null,
                 AgentSupplierName: sparepart.AgentSupplier ? sparepart.AgentSupplier.Name : "Sin proveedor",
-                EquipmentCode: sparepart.Equipment ? sparepart.Equipment.Code : null,
                 EquipmentName: sparepart.Equipment ? sparepart.Equipment.Name : "Sin equipo",
-                CategoryName: sparepart.Category ? sparepart.Category.Name : "Sin categoría"
+                CategoryName: sparepart.Category ? sparepart.Category.Name : "Sin categoría",
+                BrandName: sparepart.brand ? sparepart.brand.Brand : "Sin marca"  // <-- la marca aquí
             };
         });
 
-        // Obtener Equipos
-        return Equipment.findAll({ include: [{ model: Department }] })
-        .then(equipments => {
-            const eq = equipments.map(equipment => {
-                return {
-                    Code: equipment.Code,
-                    Name: equipment.Name,
-                    DepartmentName: equipment.Department ? equipment.Department.Name : "Sin departamento"
-                };
-            });
-
+        return Brand.findAll()
+            .then(brands => {
+                const br = brands.map(brand => {
+                    return {
+                        id_brand: brand.id_brand,
+                        Brand: brand.Brand
+                    };
+                });
             // Obtener Proveedores
             return AgentSupplier.findAll()
             .then(agents => {
@@ -464,9 +463,9 @@ exports.sparePart = (req, res) => {
                         SP: true,
                         SpareParts: sp,
                         hasPart: sp.length > 0,
-                        Equipments: eq,
                         Agents: ag,
-                        categories: cat
+                        categories: cat,
+                        brands: br,
                     });
                 });
             });
@@ -508,7 +507,7 @@ exports.agentSupplier=(req,res)=>{
 }
 
 
-exports.workOrder=(req,res)=>{
+/*exports.workOrder=(req,res)=>{
 
   WorkOrder.findAll({include:[{model:ClinicalEngineer},{model:Equipment}]}).then(workorders => {
         const wd = workorders.map(workD => {
@@ -546,9 +545,15 @@ exports.workOrder=(req,res)=>{
                     DepartmentName:equipment.Department.Name
                 }
             }) 
+        const orderTypes = await OrderType.findAll();
+        const stopReasons = await StopReason.findAll();
+        const repairStages = await RepairStage.findAll();
+
             res.render('workOrder',{pageTitle:'WorkOrder',
                                         WorkOrder:true,Workorders:wd,
-                                        hasWorkOrder:wd.length>0,WO:true,Engineers:en,Equipments:eq});
+                                        hasWorkOrder:wd.length>0,WO:true,Engineers:en,Equipments:eq, 
+                                        OrderTypes: orderTypes, StopReasons: stopReasons,
+                                        RepairStages: repairStages});
         })    
         })       
 
@@ -558,7 +563,84 @@ exports.workOrder=(req,res)=>{
           res.render('error',{layout:false,pageTitle:'Error',href:'/home',message:'Sorry !!! Could Not Get WorkOrders'})
     })
 
-}
+}*/
+exports.workOrder = (req, res) => {
+  WorkOrder.findAll({ include: [{ model: ClinicalEngineer }, { model: Equipment }] })
+    .then(workorders => {
+      const wd = workorders.map(workD => ({
+        Code: workD.Code,
+        Cost: workD.Cost,
+        StartDate: workD.StartDate,
+        EndDate: workD.EndDate,
+        med: workD.Priority == 'Medium',
+        high: workD.Priority == 'High',
+        low: workD.Priority == 'Low',
+        EquipmentCode: workD.Equipment.Code,
+        EquipmentName: workD.Equipment.Name,
+        EquipmentImage: workD.Equipment.Image,
+        Priority: workD.Priority,
+        Description: workD.Description,
+        ClinicalEnginner: workD.ClinicalEnginner.FName + ' ' + workD.ClinicalEnginner.LName,
+        ClinicalEnginnerImage: workD.ClinicalEnginner.Image
+      }));
+
+      ClinicalEngineer.findAll()
+        .then(clinicalEngineers => {
+          const en = clinicalEngineers.map(c => ({
+            FName: c.FName,
+            LName: c.LName,
+            DSSN: c.DSSN
+          }));
+
+          Equipment.findAll({ include: [{ model: Department }] })
+            .then(equipments => {
+              const eq = equipments.map(e => ({
+                Code: e.Code,
+                Name: e.Name,
+                DepartmentName: e.Department.Name
+              }));
+
+              OrderType.findAll()
+                .then(orderTypesRaw => {
+                  const orderTypes = orderTypesRaw.map(o => o.get({ plain: true }));
+
+                  StopReason.findAll()
+                    .then(stopReasonsRaw => {
+                      const stopReasons = stopReasonsRaw.map(s => s.get({ plain: true }));
+
+                      RepairStage.findAll()
+                        .then(repairStagesRaw => {
+                          const repairStages = repairStagesRaw.map(r => r.get({ plain: true }));
+
+                          res.render('workOrder', {
+                            pageTitle: 'WorkOrder',
+                            WorkOrder: true,
+                            Workorders: wd,
+                            hasWorkOrder: wd.length > 0,
+                            WO: true,
+                            Engineers: en,
+                            Equipments: eq,
+                            OrderTypes: orderTypes,
+                            StopReasons: stopReasons,
+                            RepairStages: repairStages
+                          });
+                        });
+                    });
+                });
+            });
+        });
+    })
+    .catch(err => {
+      console.error(err);
+      res.render('error', {
+        layout: false,
+        pageTitle: 'Error',
+        href: '/home',
+        message: '¡Lo sentimos! No se pudieron cargar las órdenes de trabajo.'
+      });
+    });
+};
+
 
 exports.breakDown=(req,res)=>{
     BreakDown.findAll({include:[{model:Equipment,include:[{model:Department}]}]}).then(breakdowns => {
@@ -599,7 +681,8 @@ exports.equipment = async (req, res) => {
         { model: Department, as: 'Department' },
         { model: AgentSupplier },
         { model: SparePart },
-        { model: NameEquipment, as: 'equipmentType' }
+        { model: NameEquipment, as: 'equipmentType' },
+        { model: Model, as: 'model'},
       ]
     });
 
@@ -607,17 +690,16 @@ exports.equipment = async (req, res) => {
       Code: equipment.Code,
       Name: equipment.Name,
       Cost: equipment.Cost,
-      PM: equipment.PM,
       Image: equipment.Image,
       InstallationDate: equipment.InstallationDate,
       ArrivalDate: equipment.ArrivalDate,
       WarrantyDate: equipment.WarrantyDate,
-      Model: equipment.Model,
+      Model: equipment.model ? equipment.model.Model:null,
       SerialNumber: equipment.SerialNumber,
       Manufacturer: equipment.Manufacturer,
       Location: equipment.Location,
       Notes: equipment.Notes,
-      DepartmentName: equipment.Department,
+      DepartmentName: equipment.Department ? equipment.Department.Name : 'Sin departamento',
       AgentSupplierId: equipment.AgentSupplier?.Name,
       Software: equipment.Software,
       SoftwareVersion: equipment.SoftwareVersion,
@@ -634,14 +716,15 @@ exports.equipment = async (req, res) => {
     }));
 
     // Obtener agentes, repuestos y otros datos en paralelo
-    const [agents, spareParts, receptionStatuses, acquisitionTypes, departments, nameEquipments, brands] = await Promise.all([
+    const [agents, spareParts, receptionStatuses, acquisitionTypes, departments, nameEquipments, brands, models] = await Promise.all([
       AgentSupplier.findAll(),
       SparePart.findAll(),
       ReceptionStatus.findAll(),
       AcquisitionType.findAll(),
       Department.findAll(),
       NameEquipment.findAll(),
-      Brand.findAll()
+      Brand.findAll(),
+      Model.findAll()
     ]);
 
     const ag = agents.map(agent => ({
@@ -679,6 +762,10 @@ exports.equipment = async (req, res) => {
         Brand: brand.Brand
     }));
 
+    const modelOptions = models.map(model => ({
+      id: model.id,
+      Model: model.Model
+    }));
 
     res.render('equipment', {
       pageTitle: 'Equipment',
@@ -692,6 +779,7 @@ exports.equipment = async (req, res) => {
       departments: deptOptions,
       Types: typeOptions,
       Brands: brandOptions,
+      Models: modelOptions,
     });
   } catch (err) {
     console.error('Error en equipment controller:', err);
@@ -811,76 +899,6 @@ exports.equipment = async (req, res) => {
             });
         });
         
-    }).catch(err => {
-        console.error('Error al obtener los equipos:', err);
-        res.render('error', { layout: false, pageTitle: 'Error', href: '/home', message: 'Sorry !!! Could Not Get Equipments' });
-    });
-};*/
-
-/*exports.equipment = (req, res) => {
-    Equipment.findAll({
-        include: [
-            { model: Department },
-            { model: AgentSupplier },
-            { model: SparePart }  // ✅ Agregar los repuestos relacionados
-        ]
-    }).then(equipments => {
-        const eq = equipments.map(equipment => {
-            return {
-                Code: equipment.Code,
-                Name: equipment.Name,
-                Cost: equipment.Cost,
-                PM: equipment.PM,
-                Image: equipment.Image,
-                InstallationDate: equipment.InstallationDate,
-                ArrivalDate: equipment.ArrivalDate,
-                WarrantyDate: equipment.WarrantyDate,
-                Model: equipment.Model,
-                SerialNumber: equipment.SerialNumber,
-                Manufacturer: equipment.Manufacturer,
-                Location: equipment.Location,
-                Notes: equipment.Notes,
-                DepartmentCode: equipment.Department?.dataValues.Name, // Validar si existe
-                AgentSupplierId: equipment.AgentSupplier?.dataValues.Name,
-                Software: equipment.Software,
-                SoftwareVersion: equipment.SoftwareVersion,
-                SoftwarePass: equipment.SoftwarePass,
-                NetworkAddress: equipment.NetworkAddress,
-                AssetStatus: equipment.AssetStatus,
-                InsuranceStatus: equipment.InsuranceStatus,
-                FuntionalStatus: equipment.FuntionalStatus,
-                SpareParts: equipment.SpareParts?.map(sp => ({  // ✅ Mapear los repuestos
-                    Code: sp.Code,
-                    Name: sp.Name
-                }))
-            };
-        });
-
-        AgentSupplier.findAll().then(agents => {
-            const ag = agents.map(agent => {
-                return {
-                    Name: agent.Name,
-                    Id: agent.Id
-                };
-            });
-
-            // ✅ Obtener todos los repuestos disponibles para el formulario
-            SparePart.findAll().then(spareParts => {
-                const sp = spareParts.map(spare => ({
-                    Code: spare.Code,
-                    Name: spare.Name
-                }));
-
-                res.render('equipment', {
-                    pageTitle: 'Equipment',
-                    Equipment: true,
-                    equipments: eq,
-                    hasEquipments: eq.length > 0,
-                    Agents: ag,
-                    spareParts: sp // ✅ Enviar los repuestos a la vista
-                });
-            });
-        });
     }).catch(err => {
         console.error('Error al obtener los equipos:', err);
         res.render('error', { layout: false, pageTitle: 'Error', href: '/home', message: 'Sorry !!! Could Not Get Equipments' });
@@ -1018,7 +1036,12 @@ WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
 exports.workorderDescription=(req,res)=>{
     code=req.params.code
     engineerId=req.session.DSSN
-    WorkOrder.findOne({where:{Code:code},include:[{model:Equipment}]}).then(order => {
+    WorkOrder.findOne({where:{Code:code},include:[{model:Equipment},{ model: OrderType, /*attributes: ['work'] */},       // o el nombre que uses
+    { model: StopReason, /*attributes: ['Description']*/ },
+    { model: RepairStage, attributes: ['Status'] } ]}).then(order => {
+        console.log('Order raw data:', JSON.stringify(order, null, 2));
+  console.log('OrderType:', order.OrderType);
+  console.log('StopReason:', order.StopReason);
         var order={
             Code:order.Code,
             EquipmentName:order.Equipment.Name,
@@ -1028,7 +1051,10 @@ exports.workorderDescription=(req,res)=>{
             Cost:order.Cost,
             StartDate:order.StartDate,
             EndDate:order.EndDate,
-            Description:order.Description
+            Description:order.Description,
+            Type: order.OrderType?.Name || 'N/A',
+            StopReason: order.StopReason?.Reason || 'N/A',
+            RepairStage: order.RepairStage?.Status || 'N/A'
 
         }
         ClinicalEngineer.findByPk(engineerId).then(engineer => {
@@ -1159,8 +1185,43 @@ exports.getDashboard = async (req, res) => {
 };*/
 
 const { Sequelize } = require('sequelize');
-
 exports.home = async (req, res) => {
+  try {
+    const totalEquipos = await Equipment.count();
+    const costoTotalRaw = await Equipment.sum('Cost');
+
+    // Formatear costo total con coma como separador de miles y dos decimales
+    const costoTotal = costoTotalRaw
+      ? Number(costoTotalRaw).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : '0.00';
+
+    const costosPorAnioRaw = await Equipment.findAll({
+      attributes: [
+        [Sequelize.fn('YEAR', Sequelize.col('InstallationDate')), 'anio'],
+        [Sequelize.fn('SUM', Sequelize.col('Cost')), 'total']
+      ],
+      group: [Sequelize.fn('YEAR', Sequelize.col('InstallationDate'))],
+      raw: true
+    });
+
+    // Formatear cada total por año con el mismo formato
+    const costosPorAnio = costosPorAnioRaw.map(item => ({
+      anio: item.anio,
+      total: Number(item.total).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    }));
+
+    res.render('home', {
+      totalEquipos,
+      costoTotal,
+      costosPorAnio
+    });
+  } catch (error) {
+    console.error('Error en controlador home:', error);
+    res.status(500).send('Error interno del servidor');
+  }
+};
+
+/*exports.home = async (req, res) => {
   try {
     // Indicadores principales
     const totalEquipos = await Equipment.count();
@@ -1185,6 +1246,6 @@ exports.home = async (req, res) => {
     console.error('Error en controlador home:', error);
     res.status(500).send('Error interno del servidor');
   }
-};
+};*/
 
 

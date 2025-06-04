@@ -20,12 +20,16 @@ const Equipment = sequelize.define('Equipment', {
     allowNull: true,
   },
   Cost: {
-    type: Sequelize.BIGINT(12),
-    allowNull: false,
+    type: Sequelize.DECIMAL(15, 2),
+    allowNull: false
   },
-  Model: {
-    type: Sequelize.STRING,
-    allowNull: false,
+  ModelId: {
+    type: Sequelize.INTEGER,
+    allowNull: false, // si siempre debe estar presente
+    references: {
+      model: 'models',
+      key: 'id'
+    }
   },
   SerialNumber: {
     type: Sequelize.STRING,
@@ -51,10 +55,7 @@ const Equipment = sequelize.define('Equipment', {
     type: Sequelize.STRING,
     allowNull: false,
   },
-  PM: {
-    type: Sequelize.STRING,
-    allowNull: false,
-  },
+  
   Notes: {
     type: Sequelize.TEXT,
     allowNull: true,
@@ -108,6 +109,15 @@ const Equipment = sequelize.define('Equipment', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  ModelId: {
+    type: Sequelize.INTEGER,
+    allowNull: true,
+    references: {
+      model: 'models',
+      key: 'id'
+    }
+  },
+
   //
 });
 
@@ -120,4 +130,5 @@ Equipment.associate = (models) => {
     });
   };
   //
+
 module.exports = Equipment;

@@ -21,9 +21,9 @@
     <!-- Tarjeta de costo total -->
     <div class="col-md-4">
       <div class="card text-white bg-success mb-3">
-        <div class="card-header">Costo total</div>
+        <div class="card-header">Costo total EQUIPOS</div>
         <div class="card-body">
-          <h5 class="card-title">${{costoTotal}}</h5>
+          <h5 class="card-title">Bs.-{{costoTotal}}</h5>
         </div>
       </div>
     </div>
@@ -31,10 +31,10 @@
     <!-- Tarjeta con distribución por año -->
     <div class="col-md-4">
       <div class="card text-white bg-info mb-3">
-        <div class="card-header">Costo total por año</div>
+        <div class="card-header">Costo total por año EQUIPAMIENTO</div>
         <div class="card-body">
           {{#each costosPorAnio}}
-            <p><strong>{{this.anio}}:</strong> ${{this.total}}</p>
+            <p><strong>{{this.anio}}:</strong> Bs.-{{this.total}}</p>
           {{/each}}
         </div>
       </div>

@@ -1,127 +1,3 @@
-<!--<head>
-    <style>
-        /* Estilo para los títulos dentro de card-text */
-        .card-text {
-            color: #009f48; /* Verde para los títulos */
-        }
-
-        /* Estilo para los valores dentro de span */
-        .card-text span {
-            color: #303655; /* Gris oscuro para los valores */
-        }
-    </style>
-</head>
-
-<div class="main-content">
-    <div class="section__content section__content--p30"> 
-        <div class="container-fluid">
-            <div class="table-data__tool">
-                <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                <i class="zmdi zmdi-plus"></i>Añadir Repuesto</a>
-            </div>
-           {{#if hasPart}} 
-            <div class="row">
-              {{#each SpareParts }}   
-                <div class="col-md-4">
-                    <div class="card" style="width: auto;">
-                        <img class="card-img-top" src="images/{{this.Image}}" alt="Card image cap" style="height: 250px;">
-                        <div class="card-body">
-                            <div class="card-text" style="#009f48">Código: <span style="#303655">{{this.Code}}</span></div>
-                            <div class="card-text">Nombre: <span>{{this.Name}}</span></div>
-                            <div class="card-text">Cantidad: <span>{{this.Amount}}</span></div>
-                            <div class="card-text">Categoría: <span>{{this.CategoryName}}</span></div> 
-                             <div class="card-text">Código Equipo: <span>{{ this.EquipmentName }} (Code:{{this.EquipmentCode}})</span></div>
-                            <div class="card-text">ID Proveedor: <span>{{ this.AgentSupplierName }} (Id:{{this.AgentSupplierId}})</span></div>
-                        </div>
-                        <div class="table-data-feature">
-                            <a href="/sparePart/edit/{{ this.Code }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                <i class="zmdi zmdi-edit"></i>
-                            </a>
-                            <a href="/sparePart/delete/{{ this.Code }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                <i class="zmdi zmdi-delete"></i>
-                            </a>
-
-                        </div>
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-            {{/if}}
-        </div>
-    </div>
-</div>
-      
-  <!-- END PAGE CONTAINER-->    >
-<!--
-<div class="modal fade" id="modalAppointment" tabindex="-1" role="dialog" aria-labelledby="modalAppointmentLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          
-          <div class="modal-body">
-            <form method="POST" action="/sparePart/add" enctype="multipart/form-data">
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-                <div class="login-logo">
-                 
-                    <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
-                </div>
-                <div class="login-form">
-                        <div class="form-group">
-                            <label class=" form-control-label">Código</label>
-                            <input type="text" name="Code" required placeholder="Ingresa Código" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">Nombre</label>
-                            <input type="text" name="Name" required placeholder="Ingresa nombre" class="form-control">
-                        </div>
-                          <div class="form-group">
-                            <label class=" form-control-label">Código Equipo</label>
-                            <select name="EquipmentCode"required id="select" class="form-control">
-                                {{#each Equipments}}
-                                    <option value="{{this.Code}}">{{this.Name}} {{this.Code}} {{this.DepartmentName}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">Cantidad</label>
-                            <input type="text" name="Amount" required placeholder="Ingresa Cantidad" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">Id Proveedor</label>
-                           <select name="AgentSupplierId"required id="select" class="form-control">
-                                {{#each Agents}}
-                                    <option value="{{this.Id}}">{{this.Name}} {{this.Id}} </option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <!--añadido el 02/03/25--><!--
-                         <div class="form-group">
-                            <label class=" form-control-label">Código de Fabricante:</label>
-                            <input type="text" name="CodeManufacturer" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label class=" form-control-label">Categoría</label>
-                            <select name="CategoryId" class="form-control" required>
-                                {{#each categories}}
-                                    <option value="{{this.id}}">{{this.name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                      
-                         <div class="form-group">
-                            <label class=" form-control-label">Foto</label>
-                            <input type="file"required name="image" placeholder="Ingresa Fotografía" class="form-control">
-                        </div>
-                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
-                </div>
-            </form>
-          </div>  
-        </div>
-    </div>     
-</div>   
-  <!---->
   <head>
     <style>
         /* Estilo para los títulos dentro de card-text */
@@ -160,8 +36,17 @@
                             <div class="card-text">Nombre: <span>{{this.Name}}</span></div>
                             <div class="card-text">Cantidad: <span>{{this.Amount}}</span></div>
                             <div class="card-text">Categoría: <span>{{this.CategoryName}}</span></div> <!-- Mostrar categoría -->
-                            <div class="card-text">Código Equipo: <span>{{this.EquipmentName}} (Code:{{this.EquipmentCode}})</span></div>
+                            <div class="card-text">Marca: <span>{{this.BrandName}}</span></div>
                             <div class="card-text">ID Proveedor: <span>{{this.AgentSupplierName}} (Id:{{this.AgentSupplierId}})</span></div>
+                        </div>
+                        <div class="table-data-feature">
+                            <a href="/sparePart/edit/{{ this.Code }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                <i class="zmdi zmdi-edit"></i>
+                            </a>
+                            <a href="/sparePart/delete/{{ this.Code }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -194,13 +79,14 @@
                             <input type="text" name="Name" required placeholder="Ingresa nombre" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Código Equipo</label>
-                            <select name="EquipmentCode" required id="select" class="form-control">
-                                {{#each Equipments}}
-                                    <option value="{{this.Code}}">{{this.Name}} {{this.Code}} {{this.DepartmentName}}</option>
+                            <label class="form-control-label">Marca</label>
+                            <select name="id_brand" class="form-control" required>
+                                {{#each brands}}
+                                <option value="{{this.id_brand}}">{{this.Brand}}</option>
                                 {{/each}}
                             </select>
                         </div>
+
                         <div class="form-group">
                             <label class=" form-control-label">Cantidad</label>
                             <input type="text" name="Amount" required placeholder="Ingresa Cantidad" class="form-control">
@@ -215,7 +101,7 @@
                         </div>
                         <div class="form-group">
                             <label class=" form-control-label">Código de Fabricante:</label>
-                            <input type="text" name="CodeManufacturer" class="form-control">
+                            <input type="text" name="CodeManufacter" class="form-control">
                         </div>
                         <div class="form-group">
                             <label class=" form-control-label">Categoría</label>

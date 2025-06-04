@@ -36,7 +36,7 @@ const AcquisitionType = require('./models/AcquisitionType');
 const preventiveRoutes = require('./routes/preventive');
 
 //aumentoado para mejorar GE
-const { NameEquipment } = require('./models');
+const { NameEquipment, Model } = require('./models');
 
 //aumentado para marcas
 const brandRoutes = require('./routes/brandRoutes');
