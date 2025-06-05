@@ -36,7 +36,7 @@ exports.editAgentSupplier=(req,res)=>{
 
 exports.editClinicalEngineer=(req,res) => {
     dssn=req.params.id
-    ClinicalEngineer.findOne({where:{DSSN:dssn},include:[{model:Department}]}).then(clinicalEngineer => { 
+    ClinicalEngineer.findOne({where:{DSSN:dssn}}).then(clinicalEngineer => { 
         const cs = {
               FName: clinicalEngineer.FName,
               LName: clinicalEngineer.LName,
@@ -47,10 +47,7 @@ exports.editClinicalEngineer=(req,res) => {
               Email:clinicalEngineer.Email,
               Age:clinicalEngineer.Age,
               Image:clinicalEngineer.Image,
-              OR:clinicalEngineer.Department.Name =='OR' ? true : false,
-              CSSD:clinicalEngineer.Department.Name =='CSSD' ? true:false,
-              ICU:clinicalEngineer.Department.Name=='ICU' ? true:false,
-              Radiology:clinicalEngineer.Department.Name == 'Radiology' ? true:false
+              
             }
     
     console.log(cs)    

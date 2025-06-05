@@ -84,6 +84,8 @@ OrderType.hasMany(WorkOrder, { foreignKey: 'id_typeW' });
 StopReason.hasMany(WorkOrder, { foreignKey: 'id_StopReason' });
 RepairStage.hasMany(WorkOrder, { foreignKey: 'id_RepairStage' });
 
+
+
 module.exports = {
     //Ppm,
     Equipment,

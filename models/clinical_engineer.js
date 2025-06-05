@@ -2,7 +2,7 @@ const Sequelize=require('sequelize');
 const sequelize=require('../util/db.js');
 
 
-const Clinical_enginner=sequelize.define('ClinicalEnginner',{
+const Clinical_engineer=sequelize.define('ClinicalEngineer',{
     DSSN: {
         type:Sequelize.BIGINT(20),
        allowNull:false,
@@ -44,6 +44,10 @@ const Clinical_enginner=sequelize.define('ClinicalEnginner',{
         type:Sequelize.STRING,
         allowNull:false
     }
-})
+}, {
+    tableName: 'clinicalenginners', // 👈 nombre real de tu tabla en MySQL
+    timestamps: true,               // 👈 ya que tienes createdAt y updatedAt
+    freezeTableName: true  
+});
 
-module.exports=Clinical_enginner;
+module.exports=Clinical_engineer;

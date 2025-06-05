@@ -56,8 +56,105 @@ exports.addAgentSupplier=(req,res)=>{
    .catch(err => console.log("ERROR!!!!!!",err))
 }
 
+exports.addClinicalEngineer = (req, res) => {
+    const dssn = req.body.DSSN;
+    const fname = req.body.FName;
+    const lname = req.body.LName;
+    const address = req.body.Address;
+    const phone = req.body.Phone;
+    const email = req.body.Email;
 
-exports.addClinicalEngineer=(req,res)=>{
+    let image;
+    if (req.body.edit) {
+        image = req.body.Image;
+    } else {
+        const pathParts = req.file.path.split(/[/\\]/);
+        image = pathParts[pathParts.length - 1];
+    }
+
+    const age = req.body.Age;
+    const workhours = req.body.workHours;
+
+    // Encriptar contraseña si está presente
+    if (req.body.Password) {
+        bcrypt.genSalt(10, (err, salt) => {
+            if (err) {
+                return res.render('error', {
+                    layout: false,
+                    pageTitle: 'Error',
+                    href: '/clinicalEngineer',
+                    message: 'Error al generar la contraseña'
+                });
+            }
+
+            bcrypt.hash(req.body.Password, salt, (err, hash) => {
+                if (err) {
+                    return res.render('error', {
+                        layout: false,
+                        pageTitle: 'Error',
+                        href: '/clinicalEngineer',
+                        message: 'Error al encriptar la contraseña'
+                    });
+                }
+
+                const pass = hash;
+
+                ClinicalEngineer.findByPk(dssn).then(clinicalEngineer => {
+                    if (clinicalEngineer) {
+                        clinicalEngineer.DSSN = dssn;
+                        clinicalEngineer.FName = fname;
+                        clinicalEngineer.LName = lname;
+                        clinicalEngineer.Adress = address;
+                        clinicalEngineer.Phone = phone;
+                        clinicalEngineer.Email = email;
+                        clinicalEngineer.Image = image;
+                        clinicalEngineer.Age = age;
+                        clinicalEngineer.WorkHours = workhours;
+                        clinicalEngineer.Password = pass;
+                        clinicalEngineer.save().then(() => res.redirect('/clinicalEngineer'));
+                    } else {
+                        ClinicalEngineer.create({
+                            DSSN: dssn,
+                            FName: fname,
+                            LName: lname,
+                            Adress: address,
+                            Phone: phone,
+                            Image: image,
+                            Email: email,
+                            Age: age,
+                            WorkHours: workhours,
+                            Password: pass
+                        }).then(() => res.redirect('/clinicalEngineer'));
+                    }
+                });
+            });
+        });
+    } else {
+        // Si no se proporciona contraseña
+        ClinicalEngineer.findByPk(dssn).then(clinicalEngineer => {
+            if (clinicalEngineer) {
+                clinicalEngineer.DSSN = dssn;
+                clinicalEngineer.FName = fname;
+                clinicalEngineer.LName = lname;
+                clinicalEngineer.Adress = address;
+                clinicalEngineer.Phone = phone;
+                clinicalEngineer.Email = email;
+                clinicalEngineer.Image = image;
+                clinicalEngineer.Age = age;
+                clinicalEngineer.WorkHours = workhours;
+                clinicalEngineer.save().then(() => res.redirect('/clinicalEngineer'));
+            } else {
+                return res.render('error', {
+                    layout: false,
+                    pageTitle: 'Error',
+                    href: '/clinicalEngineer',
+                    message: 'Debe proporcionar una contraseña para nuevos registros'
+                });
+            }
+        });
+    }
+};
+/*exports.addClinicalEngineer=(req,res)=>{
     dssn=req.body.DSSN
     fname=req.body.FName
     lname=req.body.LName
@@ -125,7 +222,7 @@ exports.addClinicalEngineer=(req,res)=>{
     .catch(err =>res.render('error',{layout:false,pageTitle:'Error',href:'/equipment',message:'Sorry !!! Could Not Get Engineers'})                
     )
 
-}
+}*/
 
 /*exports.addEquipment = (req, res) => {
     console.log("Datos recibidos en el backend:", req.body);

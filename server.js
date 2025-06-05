@@ -110,10 +110,19 @@ app.use((req, res) => {
 // Model Associations
 ppm_questions.belongsTo(equipment, { foreignKey: 'EquipmentCode' });
 equipment.hasOne(ppm_questions, { foreignKey: 'EquipmentCode' });
-clinical_engineer.belongsTo(department);
-department.hasMany(clinical_engineer);
-work_order.belongsTo(clinical_engineer);
-clinical_engineer.hasMany(work_order);
+//clinical_engineer.belongsTo(department);
+//department.hasMany(clinical_engineer);
+//work_order.belongsTo(clinical_engineer);
+//clinical_engineer.hasMany(work_order);
+work_order.belongsTo(clinical_engineer, {
+  foreignKey: 'ClinicalEnginnerDSSN',   // debe coincidir con tu modelo
+  targetKey: 'DSSN',
+});
+
+clinical_engineer.hasMany(work_order, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  sourceKey: 'DSSN',
+});
 spare_parts.belongsTo(agent_supplier);
 agent_supplier.hasMany(spare_parts);
 equipment.belongsTo(agent_supplier);
@@ -128,15 +137,41 @@ maintenance.belongsTo(break_down);
 break_down.hasMany(maintenance);
 dialy_inspection.belongsTo(equipment);
 equipment.hasMany(dialy_inspection);
-dialy_inspection.belongsTo(clinical_engineer);
-clinical_engineer.hasMany(dialy_inspection);
+//dialy_inspection.belongsTo(clinical_engineer);
+//clinical_engineer.hasMany(dialy_inspection);
+dialy_inspection.belongsTo(clinical_engineer, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  targetKey: 'DSSN'
+});
+clinical_engineer.hasMany(dialy_inspection, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  sourceKey: 'DSSN'
+});
+
 ppm.belongsTo(equipment);
 equipment.hasMany(ppm);
-ppm.belongsTo(clinical_engineer);
-clinical_engineer.hasMany(ppm);
-maintenance.belongsTo(clinical_engineer);
-clinical_engineer.hasMany(maintenance);
+//ppm.belongsTo(clinical_engineer);
+//clinical_engineer.hasMany(ppm);
+//maintenance.belongsTo(clinical_engineer);
+//clinical_engineer.hasMany(maintenance);
+ppm.belongsTo(clinical_engineer, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  targetKey: 'DSSN'
+});
+clinical_engineer.hasMany(ppm, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  sourceKey: 'DSSN'
+});
 
+// Relación con Maintenance
+maintenance.belongsTo(clinical_engineer, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  targetKey: 'DSSN'
+});
+clinical_engineer.hasMany(maintenance, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  sourceKey: 'DSSN'
+});
 //spare_parts.belongsTo(equipment);
 //equipment.hasMany(spare_parts);
 equipment.belongsToMany(spare_parts, { through: 'equipmentsparepart', foreignKey: 'id_equipment' });

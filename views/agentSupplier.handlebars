@@ -176,12 +176,9 @@
                         🖨️ Imprimir Tabla
                     </button>
 
-                    <div class="table-data__tool">
-                        <div class="table-data__tool-right">
+                    <div  class="table-data__tool-right">
                             <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                <i class="zmdi zmdi-plus"></i> Agent/Proveedores
-                            </a>
-                        </div>
+                                <i class="zmdi zmdi-plus"></i>Agent/Proveedores</a>
                     </div>
                     <div class="table-responsive table-responsive-data2">
                         <table class="table table-data2" id="agentTable">
@@ -235,6 +232,51 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalAppointment" tabindex="-1" role="dialog" aria-labelledby="modalAppointmentLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+            <form method="POST" action="/agentSupplier/add">
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="login-logo">
+                    <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
+                </div>
+                <div class="login-form">
+                        <div class="form-group">
+                            <label class=" form-control-label">ID</label>
+                            <input type="text" name="Id" required placeholder="Ingresa ID" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Nombre Completo</label>
+                            <input type="text" name="Name" required placeholder="Ingresa Nombre Completo" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Dirección</label>
+                            <input type="text" name="Address"  required placeholder="Ingresa Dirección" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Celular</label>
+                            <input type="phone" name="Phone" required placeholder="Ingresa Celular" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Email</label>
+                            <input type="email" required name="Email" placeholder="Ingresa Email" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label class=" form-control-label">Notas</label>
+                            <textarea type="text" name="Notes" placeholder="Ingresa Notas" class="form-control"></textarea>
+                        </div>
+                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
+                </div>
+            </form>
+          </div>  
+        </div>
+    </div>     
+</div>  
 <!-- Script para imprimir solo la tabla -->
 <script>
     function printTable() {

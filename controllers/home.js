@@ -296,14 +296,13 @@ exports.ppmEngineerEquipmentPost = (req, res) => {
 
 exports.department=(req,res)=>{
 Department.findAll({
-    include:[{model:ClinicalEngineer},{model:Equipment}]
+    include:[{model:Equipment}]
     }).then(departments => {
         const deps = departments.map(department => {       
             return {
                         Name: department.Name,
                         Code: department.Code,
                         Location: department.Location,
-                        Engineers:department.ClinicalEnginners.length,
                         Equipments:department.Equipment.length
                     }
                 })      
@@ -379,7 +378,7 @@ exports.maintenance=(req,res)=>{
 
 
 exports.clinicalEngineer=(req,res)=>{
-    ClinicalEngineer.findAll({include:[{model:Department}]}).then(clinicalEngineers=>{
+    ClinicalEngineer.findAll().then(clinicalEngineers=>{
         const clinicalengineers=clinicalEngineers.map(clinicalengineer => {     
             return{
                 DSSN:clinicalengineer.DSSN,
@@ -391,7 +390,6 @@ exports.clinicalEngineer=(req,res)=>{
                 Email:clinicalengineer.Email,
                 Age:clinicalengineer.Age,
                 WorkHours:clinicalengineer.WorkHours,
-                DepartmentCode:clinicalengineer.Department.Name
             }
 
         })
@@ -580,8 +578,8 @@ exports.workOrder = (req, res) => {
         EquipmentImage: workD.Equipment.Image,
         Priority: workD.Priority,
         Description: workD.Description,
-        ClinicalEnginner: workD.ClinicalEnginner.FName + ' ' + workD.ClinicalEnginner.LName,
-        ClinicalEnginnerImage: workD.ClinicalEnginner.Image
+        ClinicalEngineer: workD.ClinicalEngineer.FName + ' ' + workD.ClinicalEngineer.LName,
+        ClinicalEngineerImage: workD.ClinicalEngineer.Image
       }));
 
       ClinicalEngineer.findAll()
@@ -1052,6 +1050,7 @@ exports.workorderDescription=(req,res)=>{
             StartDate:order.StartDate,
             EndDate:order.EndDate,
             Description:order.Description,
+            Solution:order.Solution,
             Type: order.OrderType?.Name || 'N/A',
             StopReason: order.StopReason?.Reason || 'N/A',
             RepairStage: order.RepairStage?.Status || 'N/A'

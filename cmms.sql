@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 04-06-2025 a las 08:20:49
--- Versión del servidor: 8.0.39
--- Versión de PHP: 8.2.22
+-- Tiempo de generación: 04-06-2025 a las 20:51:11
+-- Versión del servidor: 8.0.42
+-- Versión de PHP: 8.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -53,11 +53,11 @@ INSERT INTO `acquisitiontype` (`ID`, `Name`) VALUES
 
 CREATE TABLE `agentsuppliers` (
   `Id` int NOT NULL,
-  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Adress` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Phone` bigint NOT NULL,
-  `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Notes` text COLLATE utf8mb4_general_ci,
+  `Email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -67,7 +67,8 @@ CREATE TABLE `agentsuppliers` (
 --
 
 INSERT INTO `agentsuppliers` (`Id`, `Name`, `Adress`, `Phone`, `Email`, `Notes`, `createdAt`, `updatedAt`) VALUES
-(11112, 'HP Medical', 'roca y coronado 2do y 3er anillo, SCZ', 222687712, 'null@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11');
+(11112, 'HP Medical', 'roca y coronado 2do y 3er anillo, SCZ', 3542525, 'vtoro@hpmedical.com.bo', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11'),
+(11131, 'Riomed', 'Av. Alameda Junin Nro301', 3333333333, 'rioma@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11');
 
 -- --------------------------------------------------------
 
@@ -77,7 +78,7 @@ INSERT INTO `agentsuppliers` (`Id`, `Name`, `Adress`, `Phone`, `Email`, `Notes`,
 
 CREATE TABLE `brand` (
   `id_brand` int NOT NULL,
-  `Brand` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+  `Brand` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -150,12 +151,19 @@ INSERT INTO `brand` (`id_brand`, `Brand`) VALUES
 
 CREATE TABLE `breakdowns` (
   `Code` int NOT NULL,
-  `Reason` text COLLATE utf8mb4_general_ci NOT NULL,
-  `DATE` text COLLATE utf8mb4_general_ci NOT NULL,
+  `Reason` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `DATE` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `EquipmentCode` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `breakdowns`
+--
+
+INSERT INTO `breakdowns` (`Code`, `Reason`, `DATE`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
+(47, 'FALLA DE PANTALLA TACTIL', '2025-05-28', '2025-06-04 19:21:29', '2025-06-04 19:21:29', 3);
 
 -- --------------------------------------------------------
 
@@ -165,7 +173,7 @@ CREATE TABLE `breakdowns` (
 
 CREATE TABLE `categories` (
   `IdCat` int NOT NULL,
-  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -185,15 +193,15 @@ INSERT INTO `categories` (`IdCat`, `Name`) VALUES
 
 CREATE TABLE `clinicalenginners` (
   `DSSN` bigint NOT NULL,
-  `FName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `LName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `FName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `LName` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Phone` bigint NOT NULL,
-  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Age` int NOT NULL,
-  `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Adress` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `WorkHours` int DEFAULT NULL,
-  `Password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `DepartmentCode` int DEFAULT NULL
@@ -215,8 +223,8 @@ INSERT INTO `clinicalenginners` (`DSSN`, `FName`, `LName`, `Phone`, `Image`, `Ag
 
 CREATE TABLE `departments` (
   `Code` int NOT NULL,
-  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -246,15 +254,15 @@ INSERT INTO `departments` (`Code`, `Name`, `Location`, `createdAt`, `updatedAt`)
 
 CREATE TABLE `dialyinspections` (
   `Code` int NOT NULL,
-  `DATE` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q3` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q4` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q5` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q6` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q7` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q8` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `DATE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q4` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q5` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q6` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q7` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q8` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `EquipmentCode` int DEFAULT NULL,
@@ -269,18 +277,18 @@ CREATE TABLE `dialyinspections` (
 
 CREATE TABLE `equipment` (
   `Code` int NOT NULL,
-  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Cost` decimal(15,2) NOT NULL,
-  `SerialNumber` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `SerialNumber` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `InstallationDate` date NOT NULL,
   `ArrivalDate` date NOT NULL,
   `WarrantyTime` int DEFAULT NULL,
   `AssetInitialDate` date DEFAULT NULL,
   `InsuranceInitialDate` date DEFAULT NULL,
-  `Manufacturer` text COLLATE utf8mb4_general_ci,
-  `Location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Notes` text COLLATE utf8mb4_general_ci,
+  `Manufacturer` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Notes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `AgentSupplierId` int DEFAULT NULL,
@@ -289,8 +297,8 @@ CREATE TABLE `equipment` (
   `SoftwareVersion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `SoftwarePass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `NetworkAddress` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `AssetStatus` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
-  `InsuranceStatus` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `AssetStatus` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `InsuranceStatus` varchar(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `FuntionalStatus` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `ReceptionStatusId` int DEFAULT NULL,
   `Active` tinyint(1) DEFAULT '1',
@@ -347,7 +355,26 @@ INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `SerialNumber`, `Insta
 (38, 'CENTRAL DE MONITOREO', 'image_xhibit.jpg', 115395.66, 'SLA0519F04578', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '1.3.5.4452', 'Biomed', '192.168.21.10', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 4, 1, '2026-01-06', 24, 32),
 (39, 'COLCHON ANTIESCARA', 'image_DOMUS1.jpg', 800.00, 'K012211085300078', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'APEX', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 4, 1, '2026-01-06', 34, 13),
 (40, 'COLCHON ANTIESCARA', 'image_domus3d.jpg', 3500.00, 'K012205064800004', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'APEX', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 4, 1, '2026-01-06', 34, 14),
-(41, 'Maquina de anestesia', 'image_Prima465.jfif', 305996.00, '4650623-0005', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Penlon', 'Banzer', '', '2025-06-04 03:34:19', '2025-06-04 03:34:19', 11112, 4, 'Si', '1.00.37', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 27, 22);
+(41, 'MAQUINA DE ANESTESIA', 'image_Prima465.jfif', 305996.00, '4650623-0005', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Penlon', 'Banzer', '', '2025-06-04 03:34:19', '2025-06-04 03:34:19', 11112, 4, 'Si', '1.00.37', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 27, 22),
+(42, 'MESA QUIRURGICA', 'image_BF683TDP.jpg', 131400.00, '4348150', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Barrfab', 'BANZER', '', '2025-06-04 17:20:14', '2025-06-04 17:20:14', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 15, 1, '2024-01-06', 27, 5),
+(43, 'MESA QUIRURGICA', 'image_BF683EH.jpg', 196376.40, '162200323', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Barrfab', 'BANZER', '', '2025-06-04 17:20:14', '2025-06-04 17:20:14', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 15, 1, '2024-01-06', 27, 6),
+(44, 'COMPRESOR DE MIEMBROS', 'image_900-ARJOHUNTLEIGH.jpg', 16000.00, '2200004493', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Activated Flowtron', 'BANZER', '', '2025-06-04 17:40:49', '2025-06-04 17:40:49', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 1, 5, 1, '2024-01-06', 34, 3),
+(45, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1004266-01', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(46, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1005706-01', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(47, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1005706-02', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(48, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1005706-03', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(49, 'ELECTROBISTURI', 'image_SMART4.jpg', 83520.00, 'SD-1104621', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Avanteb', 'BANZER', '', '2025-06-04 18:01:06', '2025-06-04 18:01:06', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 2, 14, 1, '2024-01-06', 27, 44),
+(50, 'ELECTROBISTURI', 'image_SMART4.jpg', 83520.00, 'SD-1104623', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Avanteb', 'BANZER', '', '2025-06-04 18:01:06', '2025-06-04 18:01:06', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 2, 14, 1, '2024-01-06', 27, 44),
+(51, 'INCUBADORA DE TRANSPORTE', 'image_IT158TS.jpg', 95000.00, 'FAU013284', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 18:12:44', '2025-06-04 18:12:44', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 25, 18),
+(52, 'LAMPARA CIALITICA DOS SATELITES', 'image_X2MTX3MT.png', 38927.00, 'S22000008487/S22000008488', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Surgirs', 'BANZER', '', '2025-06-04 18:26:35', '2025-06-04 18:26:35', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 12, 1, '2024-01-06', 19, 45),
+(53, 'LAMPARA CIALITICA DOS SATELITES', 'image_X2MTX3MT.png', 200448.00, 'S22000003306/S22000003304', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Surgirs', 'BANZER', '', '2025-06-04 18:26:35', '2025-06-04 18:26:35', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 12, 1, '2024-01-06', 19, 45),
+(54, 'LAMPARA CIALITICA MOVIL', 'image_AUXILIAR3LE.png', 38927.28, '418842601', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Sismatec', 'BANZER', '', '2025-06-04 18:41:49', '2025-06-04 18:41:49', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 20, 47),
+(55, 'ASPIRADOR QUIRURGICO', 'image_HOSPIVAC 400.jpg', 18400.00, '21644', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Ca mi', 'BANZER', '', '2025-06-04 18:52:54', '2025-06-04 18:52:54', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 3, 13, 1, '2026-01-06', 1, 8),
+(56, 'MANTA TERMICA', 'image_BAIR HUGGER.jpg', 30000.00, '35552', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', '3M', 'BANZER', '', '2025-06-04 18:57:54', '2025-06-04 18:57:54', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-01-06', 32, 1),
+(57, 'SERVOCUNA', 'image_2085Ampla.jpg', 50056.32, 'FAU013290', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 19:31:26', '2025-06-04 19:31:26', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 12, 1, '2026-01-06', 25, 17),
+(58, 'VENTILADOR MECANICO', 'image_980Purittan.jpg', 407243.63, '35B2004502', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Puritan benett', 'BANZER', '', '2025-06-04 19:37:21', '2025-06-04 19:37:21', 11112, 5, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 3, 17, 1, '2026-01-06', 35, 23),
+(59, 'MONITOR MULTIPARAMETRICO', 'image_H8.jpg', 7500.00, '210513628', '2024-08-28', '2024-08-28', NULL, '2024-08-28', '2024-08-28', 'Hwatime', 'BANZER', '', '2025-06-04 19:57:33', '2025-06-04 19:57:33', 11131, 11, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-08-28', 22, 48),
+(60, 'SISTEMA DE COMPRESION TORAXICA', 'image_CPR.jpg', 66239.00, '23400581', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Corpuls', 'BANZER', '', '2025-06-04 20:27:44', '2025-06-04 20:27:44', 11112, 1, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 17, 1, '2026-01-06', 33, 12);
 
 -- --------------------------------------------------------
 
@@ -387,7 +414,7 @@ CREATE TABLE `insuranceequipment` (
   `updateDate` date DEFAULT NULL,
   `endInsurance` date DEFAULT NULL,
   `insuranceStatus` int DEFAULT NULL,
-  `descripcion_actualizacion` text COLLATE utf8mb4_general_ci
+  `descripcion_actualizacion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -398,9 +425,9 @@ CREATE TABLE `insuranceequipment` (
 
 CREATE TABLE `maintenances` (
   `Id` int NOT NULL,
-  `StartDate` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `EndDate` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `StartDate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `EndDate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `BreakDownCode` int DEFAULT NULL,
@@ -415,7 +442,7 @@ CREATE TABLE `maintenances` (
 
 CREATE TABLE `models` (
   `id` int NOT NULL,
-  `Model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `id_brand` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -464,9 +491,15 @@ INSERT INTO `models` (`id`, `Model`, `id_brand`) VALUES
 (38, 'BV Libra', 40),
 (39, 'UMEC12', 35),
 (40, 'DC-30', 35),
-(41, 'CORPULS AED', NULL),
-(42, 'TE*LM800', NULL),
-(43, 'TE*LF630', NULL);
+(41, 'CORPULS AED', 17),
+(42, 'TE*LM800', 51),
+(43, 'TE*LF630', 51),
+(44, 'SMART4', 7),
+(45, 'X3MT/X2MT', 49),
+(46, 'X2MT/X2MT', 49),
+(47, '3-LE', 45),
+(48, 'H8', 25),
+(49, 'VAC PRO', 6);
 
 -- --------------------------------------------------------
 
@@ -530,7 +563,7 @@ INSERT INTO `nameequipment` (`id_nameE`, `Name`, `function`, `aplication`) VALUE
 
 CREATE TABLE `ordertype` (
   `id_typeW` int NOT NULL,
-  `work` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+  `work` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -552,11 +585,11 @@ INSERT INTO `ordertype` (`id_typeW`, `work`) VALUES
 
 CREATE TABLE `ppmquestions` (
   `Code` int NOT NULL,
-  `Q1` text COLLATE utf8mb4_general_ci,
-  `Q2` text COLLATE utf8mb4_general_ci,
-  `Q3` text COLLATE utf8mb4_general_ci,
-  `Q4` text COLLATE utf8mb4_general_ci,
-  `Q5` text COLLATE utf8mb4_general_ci,
+  `Q1` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Q2` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Q3` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Q4` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Q5` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `EquipmentCode` int DEFAULT NULL
@@ -585,17 +618,17 @@ INSERT INTO `ppmquestions` (`Code`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `createdAt`, `
 
 CREATE TABLE `ppms` (
   `Code` int NOT NULL,
-  `DATE` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q3` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q4` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Q5` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `N1` text COLLATE utf8mb4_general_ci,
-  `N2` text COLLATE utf8mb4_general_ci,
-  `N3` text COLLATE utf8mb4_general_ci,
-  `N4` text COLLATE utf8mb4_general_ci,
-  `N5` text COLLATE utf8mb4_general_ci,
+  `DATE` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q3` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q4` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Q5` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `N1` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `N2` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `N3` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `N4` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `N5` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `EquipmentCode` int DEFAULT NULL,
@@ -612,7 +645,7 @@ CREATE TABLE `preventivetasks` (
   `id` int NOT NULL,
   `EquipmentCode` int NOT NULL,
   `ScheduledDate` date NOT NULL,
-  `Status` varchar(20) COLLATE utf8mb4_general_ci DEFAULT 'Programada',
+  `Status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Programada',
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -649,7 +682,7 @@ INSERT INTO `receptionstatus` (`ID`, `Name`) VALUES
 
 CREATE TABLE `repairstage` (
   `id_Stage` int NOT NULL,
-  `Status` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `FuntionalStatus` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -676,14 +709,14 @@ INSERT INTO `repairstage` (`id_Stage`, `Status`, `FuntionalStatus`) VALUES
 
 CREATE TABLE `spareparts` (
   `Id` int NOT NULL,
-  `Code` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Code` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Amount` int NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `AgentSupplierId` int DEFAULT NULL,
-  `CodeManufacter` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `CodeManufacter` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `CategoryId` int DEFAULT NULL,
   `id_brand` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -703,7 +736,7 @@ INSERT INTO `spareparts` (`Id`, `Code`, `Name`, `Image`, `Amount`, `createdAt`, 
 
 CREATE TABLE `stopreason` (
   `id_Reason` int NOT NULL,
-  `Description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `punctuation` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -730,8 +763,8 @@ INSERT INTO `stopreason` (`id_Reason`, `Description`, `punctuation`) VALUES
 
 CREATE TABLE `tagnotifications` (
   `id_tagn` int NOT NULL,
-  `user` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -752,11 +785,11 @@ INSERT INTO `tagnotifications` (`id_tagn`, `user`, `message`, `createdAt`, `upda
 
 CREATE TABLE `workorders` (
   `Code` int NOT NULL,
-  `StartDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `EndDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `Description` text COLLATE utf8mb4_general_ci NOT NULL,
+  `StartDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `EndDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Cost` decimal(15,2) NOT NULL,
-  `Priority` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Priority` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
   `ClinicalEnginnerDSSN` bigint DEFAULT NULL,
@@ -773,7 +806,9 @@ CREATE TABLE `workorders` (
 --
 
 INSERT INTO `workorders` (`Code`, `StartDate`, `EndDate`, `Description`, `Cost`, `Priority`, `createdAt`, `updatedAt`, `ClinicalEnginnerDSSN`, `EquipmentCode`, `Solution`, `Workdate`, `id_typeW`, `id_StopReason`, `id_RepairStage`) VALUES
-(15, '2025-06-03', '2025-06-06', 'ruptura de sensor de capnografia', 0.00, 'High', '2025-06-04 07:42:28', '2025-06-04 07:42:28', 6458161, 41, '', '', 5, 6, 4);
+(15, '2025-06-03', '2025-06-06', 'ruptura de sensor de capnografia', 0.00, 'High', '2025-06-04 07:42:28', '2025-06-04 07:42:28', 6458161, 41, '', '', 5, 6, 4),
+(16, '2025-05-28', '2025-06-06', 'FALLO DE PANTALLA', 0.00, 'High', '2025-06-04 19:19:16', '2025-06-04 19:19:16', 6458161, 3, '', '', 1, 2, 4),
+(17, '2025-06-04', '2025-06-05', 'REQUERIMIENTO DE MONITOR', 0.00, 'High', '2025-06-04 19:58:51', '2025-06-04 20:05:11', 6458161, 59, 'SE LLEVA MONITOR A UTI POR SOLICITUD DE INTERNACIÓN', '2025-06-04', 3, 6, 8);
 
 --
 -- Índices para tablas volcadas
@@ -974,7 +1009,7 @@ ALTER TABLE `acquisitiontype`
 -- AUTO_INCREMENT de la tabla `agentsuppliers`
 --
 ALTER TABLE `agentsuppliers`
-  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11131;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11132;
 
 --
 -- AUTO_INCREMENT de la tabla `brand`
@@ -986,7 +1021,7 @@ ALTER TABLE `brand`
 -- AUTO_INCREMENT de la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
-  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT de la tabla `categories`
@@ -1016,7 +1051,7 @@ ALTER TABLE `maintenances`
 -- AUTO_INCREMENT de la tabla `models`
 --
 ALTER TABLE `models`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT de la tabla `nameequipment`
@@ -1082,7 +1117,7 @@ ALTER TABLE `tagnotifications`
 -- AUTO_INCREMENT de la tabla `workorders`
 --
 ALTER TABLE `workorders`
-  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- Restricciones para tablas volcadas
