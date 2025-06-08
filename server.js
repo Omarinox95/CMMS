@@ -53,6 +53,8 @@ cron.schedule('30 6 * * *', () => {
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+
 app.use(session({ secret: 'anysecret', resave: false, saveUninitialized: false }));
 
 const filestorage = multer.diskStorage({

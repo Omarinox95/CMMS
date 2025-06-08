@@ -99,10 +99,12 @@
         }
 
         // Función para actualizar el input oculto con los repuestos seleccionados
-        function updateSparePartsInput() {
+        /*function updateSparePartsInput() {
             sparePartsInput.value = JSON.stringify(selectedSpareParts.map(sp => sp.Code));
+        }*/
+        function updateSparePartsInput() {
+            sparePartsInput.value = JSON.stringify(selectedSpareParts);
         }
-
         // Agregar evento al botón "Agregar Repuesto"
         addSparePartBtn.addEventListener("click", addSparePart);
     });
@@ -111,7 +113,7 @@
 <!--fin-->
 
 <!-- controlador para tag de grabador de equipo-->
-<script type="text/javascript">
+<!--script type="text/javascript">
   class FunctionController {
     estadoTag(){
       $.ajax({
@@ -119,10 +121,14 @@
         type: 'GET',
         dataType: 'json',
         success: function(resultado) {
-          let EstadoTag = $('#EstadoTag')
+            console.log('Respuesta recibida:', resultado);
+          let EstadoTag = $('#EstadoTag');
+          EstadoTag.html(JSON.stringify(resultado));
           if (resultado.detectado == "si"){
+            console.log('Código detectado: si - habilitando botón');
             document.getElementById('btnRegistroEquipo').disabled = false;
           } else {
+            console.log('Código detectado distinto de "si":', resultado.detectado);
             alert('Error en la confirmación');
             document.getElementById('btnRegistroEquipo').disabled = true;
           }
@@ -132,6 +138,84 @@
     }
   }
   functionController = new FunctionController();
+</script-->
+<!--script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  class FunctionController {
+    estadoTag() {
+      $.ajax({
+        url: '/confirmacion',
+        type: 'GET',
+        dataType: 'json',
+        success: function(resultado) {
+          console.log('Respuesta recibida:', resultado);
+          let EstadoTag = $('#EstadoTag');
+          EstadoTag.html(resultado.detectado);
+
+          if (resultado.detectado && resultado.detectado !== 'error' && resultado.detectado !== '') {
+            console.log('Código detectado:', resultado.detectado);
+            // Por ejemplo, si quieres habilitar botón solo si detectado es distinto de error
+            document.getElementById('btnRegistroEquipo').disabled = false;
+          } else {
+            console.log('No se detectó código válido');
+            alert('Error en la confirmación');
+            document.getElementById('btnRegistroEquipo').disabled = true;
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error en AJAX:', error);
+          alert('Error en la consulta');
+          document.getElementById('btnRegistroEquipo').disabled = true;
+        }
+      });
+    }
+  }
+
+  // Instancia y llamada de ejemplo
+  const functionController = new FunctionController();
+
+  // Puedes llamar periódicamente para actualizar estado:
+  setInterval(() => {
+    functionController.estadoTag();
+  }, 3000); // cada 3 segundos
+</script-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  class FunctionController {
+    estadoTag() {
+      $.ajax({
+        url: '/confirmacion',
+        type: 'GET',
+        dataType: 'json',
+        success: function(resultado) {
+          console.log('Respuesta recibida:', resultado);
+          let EstadoTag = $('#EstadoTag');
+          EstadoTag.html(resultado.detectado);
+
+          if (resultado.detectado && resultado.detectado !== 'error' && resultado.detectado !== '') {
+            console.log('Código detectado:', resultado.detectado);
+            document.getElementById('btnRegistroEquipo').disabled = false;
+          } else {
+            console.log('No se detectó código válido');
+            // Mejor solo mensaje en consola
+            document.getElementById('btnRegistroEquipo').disabled = true;
+          }
+        },
+        error: function(xhr, status, error) {
+          console.error('Error en AJAX:', error);
+          alert('Error en la consulta');
+          document.getElementById('btnRegistroEquipo').disabled = true;
+        }
+      });
+    }
+  }
+
+  // Instanciamos el controlador para poder llamar a la función
+  const functionController = new FunctionController();
+
+  // Opcional: podrías hacer que se ejecute cada cierto tiempo para actualizar el estado
+  // setInterval(() => functionController.estadoTag(), 3000);
+
 </script>
 
 
@@ -446,8 +530,10 @@
                         </table>
 
                         <!-- Input oculto para enviar los repuestos seleccionados -->
-                        <input type="hidden" name="spareParts" id="sparePartsInput">
-                        <! ->
+                        <input type="hidden" id="sparePartsInput" name="spareParts" value="[]">
+
+                        <!-- input type="hidden" name="spareParts" id="sparePartsInput">
+                        <! -->
 
                          <div class="form-group">
                             <label class=" form-control-label">Notas</label>

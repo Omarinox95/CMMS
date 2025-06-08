@@ -242,7 +242,7 @@ exports.equipmentDialyInspectionReport=(req,res) => {
                 return{
                     Code:report.Code,
                     DATE:report.DATE,
-                    Engineer:report.ClinicalEnginner.FName +' '+ report.ClinicalEnginner.LName ,
+                    Engineer:report.ClinicalEngineer.FName +' '+ report.ClinicalEngineer.LName ,
                     Equipment:report.Equipment.Name,
                     EquipmentModel:report.Equipment.Model
                 }
@@ -269,7 +269,7 @@ exports.dialyInspectionReport = (req,res) =>{
  DialyInspection.findOne({where:{Code:code},include:[{model:ClinicalEngineer},{model:Equipment}]}).then(report =>{
     const rep = {
         DATE:report.DATE,
-        Engineer:report.ClinicalEnginner.FName+' '+report.ClinicalEnginner.LName,
+        Engineer:report.ClinicalEngineer.FName+' '+report.ClinicalEngineer.LName,
         EquipmentName:report.Equipment.Name,
         EquipmentCode:report.Equipment.Code,
         EquipmentModel:report.Equipment.Model,

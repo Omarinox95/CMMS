@@ -7,6 +7,35 @@ const searchController = require('../search/search'); // Asegúrate de que la ru
 const { Agent, ReceptionStatus, AcquisitionType, SparePart } = require('../models');
 //añadido 28/05
 const { Nameequipment } = require('../models');
+//05/06/25
+/*const multer = require('multer');
+
+const filestorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images');  // carpeta donde se guardarán las imágenes
+  },
+  filename: (req, file, cb) => {
+    cb(null, 'image_' + Date.now() + '_' + file.originalname); // nombre único
+  },
+});
+
+const filefilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({ storage: filestorage, fileFilter: filefilter });
+const equipmentController = require('../controllers/add');
+
+router.post('/equipment/add', upload.single('Image'), equipmentController.addEquipment);
+*/
 /*router.get('/equipment', async (req, res) => {
     try {
         const agents = await Agent.findAll();

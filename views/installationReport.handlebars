@@ -155,9 +155,16 @@
             <div class="login-logo">
                 <img src="images/LogoMedical.png" />
             </div>
+            <!-- Botón para grabar el RFID -->
+            <input type="hidden" id="equipmentCode" value="{{equipment.Code}}">
+            <button class="print-btn" onclick="writeRFID(document.getElementById('equipmentCode').value)">Grabar RFID</button>
+            
+
+
             <h3 class="title-3 m-b-30">
                 <i class="zmdi zmdi-account-calendar"></i>Reporte de instalación</h3>
             <div class="card-body">
+
                 <div class="card-text"><strong>Fecha/Hora:</strong> {{Date}} </div>
                 <div class="card-text"><strong>Equipo:</strong> {{ equipment.Name}}</div>
                 <div class="card-text"><strong>Modelo:</strong> {{equipment.Model}}</div>
@@ -265,5 +272,72 @@
         printWindow.print(); // Imprimir el contenido
     }
 </script>
+<!--
+<script>
+    function writeRFID(Code) {
+        fetch('/rfid/sendCode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ Code })
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message || 'Código enviado correctamente');
+        })
+        .catch(err => {
+            console.error('Error al enviar:', err);
+            alert('Error al enviar código');
+        });
+    }
+</script-->
 
-    
+<!--script>
+    function writeRFID(code) {
+         console.log('Código que se envía:', code);
+  fetch('/rfid/sendCode', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ Code: code })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log('Código enviado a ESP32');
+
+    // Actualizar notificación en TagNotification
+    fetch('/tagstopicsubscribe', {
+      method: 'POST'
+    })
+    .then(res => res.json())
+    .then(result => {
+      console.log('Notificación limpiada');
+    });
+  })
+  .catch(err => {
+    console.error('Error en grabado RFID:', err);
+  });
+}
+
+</script-->
+<script>
+function writeRFID(code) {
+  console.log('Entró a writeRFID con código:', code);
+  alert('Entró a writeRFID con código: ' + code);
+
+  fetch('/rfid/sendCode', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ Code: code })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log('Respuesta del servidor:', data);
+    alert(data.message || 'Código enviado correctamente');
+  })
+  .catch(err => {
+    console.error('Error en grabado RFID:', err);
+    alert('Error al enviar código');
+  });
+}
+</script>

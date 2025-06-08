@@ -417,11 +417,21 @@ exports.addEquipment = async (req, res) => {
     const maintenanceReqValue = MaintenanceReq ?? 0;
     // Imagen
     let image;
-    if (req.body.edit) {
+    /*if (req.body.edit) {
       image = req.body.Image;
     } else {
       image = req.file.path.split('\\').pop();
+    }*/
+   if (req.body.edit) {
+     image = req.body.Image;
+    } else {
+    if (req.file) {
+        image = req.file.path.split('\\').pop(); // o usa .split('/') si estás en Linux/Mac
+    } else {
+        image = null; // o asigna una imagen por defecto si es necesario
+        console.log('No se recibió archivo de imagen.');
     }
+}
 
     // Validar que existen los registros referenciados
 
@@ -489,7 +499,7 @@ exports.addEquipment = async (req, res) => {
     });
 
     // Asociar repuestos
-    let parsedSpareParts = spareParts;
+   /* let parsedSpareParts = spareParts;
     if (typeof spareParts === "string") {
       parsedSpareParts = JSON.parse(spareParts);
     }
@@ -497,7 +507,33 @@ exports.addEquipment = async (req, res) => {
     if (parsedSpareParts && Array.isArray(parsedSpareParts) && parsedSpareParts.length > 0) {
       await newEquipment.addSpareParts(parsedSpareParts, { through: 'EquipmentSpareParts' });
       console.log("Repuestos asociados correctamente");
+    }*/
+
+    // Procesar repuestos si vienen
+    let parsedSpareParts = [];
+
+    if (typeof spareParts === "string" && spareParts.trim() !== "") {
+    try {
+        parsedSpareParts = JSON.parse(spareParts);
+    } catch (error) {
+        console.warn("Error al parsear spareParts:", error.message);
+        parsedSpareParts = [];
     }
+    }
+
+    if (Array.isArray(parsedSpareParts) && parsedSpareParts.length > 0) {
+    for (const sparePart of parsedSpareParts) {
+        const foundSparePart = await SparePart.findOne({ where: { Code: sparePart.Code } });
+        if (foundSparePart) {
+        await newEquipment.addSparePart(foundSparePart, {
+            through: { quantity: sparePart.Quantity },
+        });
+        }
+    }
+    console.log("Repuestos asociados correctamente con cantidades.");
+    }
+
+
 
     res.redirect('/equipment');
 

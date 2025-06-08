@@ -983,7 +983,7 @@ exports.dailyInspection=(req,res)=>{
         return{
             Code:report.Code,
             DATE:report.DATE,
-            Engineer:report.ClinicalEnginner.FName +' '+ report.ClinicalEnginner.LName ,
+            Engineer:report.ClinicalEngineer.FName +' '+ report.ClinicalEngineer.LName ,
             Equipment:report.Equipment.Name,
             eq:true,
             EquipmentModel:report.Equipment.Model
