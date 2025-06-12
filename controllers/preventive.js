@@ -61,6 +61,11 @@ exports.completePPMTask = async (req, res) => {
   }
 };
 
+// Mostrar vista del calendario preventivo para clínico
+exports.renderClinicalCalendar = (req, res) => {
+  res.render('clinical_ppm_calendar', { layout: 'clinicalEngineerLayout' });
+};
+
 // Generar tareas preventivas con verificación de duplicados
 /*exports.generateTasks = async (req, res) => {
   try {

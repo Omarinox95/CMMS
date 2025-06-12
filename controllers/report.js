@@ -19,71 +19,7 @@ const calcularHorasTotales = (fechaInicio, fechaFin) => {
   const diffEnHoras = Math.abs(new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60);
   return diffEnHoras;
 };
-/*
-exports.indicadoresPorEquipo = async (req, res) => {
-  const code = req.params.code;
 
-  try {
-    const equipo = await Equipment.findOne({ where: { code } });
-    
-
-    if (!equipo) {
-      return res.status(404).send('Equipo no encontrado');
-    }
-
-    const fallas = await BreakDown.findAll({ where: { EquipmentCode: code } });
-
-    console.log('Fallas encontradas:', fallas.length);
-
-    let tiempoTotalReparacion = 0;
-
-    // Cargar mantenimientos asociados a las fallas
-    for (const falla of fallas) {
-      const mantenimiento = await Maintenance.findOne({ where: { BreakDownCode: falla.Code } });
-
-      if (mantenimiento && mantenimiento.StartDate && mantenimiento.EndDate) {
-        const horas = calcularHorasTotales(mantenimiento.StartDate, mantenimiento.EndDate);
-        tiempoTotalReparacion += horas;
-      }
-    }
-
-    const numFallos = fallas.length;
-    const fechaInicio = equipo.InstallationDate || new Date();
-    const fechaFin = new Date();
-    const horasTotalesOperacion = calcularHorasTotales(fechaInicio, fechaFin);
-
-    const MTBF = numFallos > 0 ? (horasTotalesOperacion / numFallos).toFixed(2) : 'N/A';
-    const MTTR = numFallos > 0 ? (tiempoTotalReparacion / numFallos).toFixed(2) : 'N/A';
-    //const disponibilidad = numFallos > 0 ? ((horasTotalesOperacion - tiempoTotalReparacion) / horasTotalesOperacion * 100).toFixed(2) : '100';
-    let disponibilidad = '100';
-
-    if (numFallos > 0 && horasTotalesOperacion > 0) {
-    disponibilidad = ((horasTotalesOperacion - tiempoTotalReparacion) / horasTotalesOperacion * 100).toFixed(2);
-    } else if (horasTotalesOperacion === 0) {
-    disponibilidad = 'N/A';
-    }
-
-    const confiabilidad = numFallos > 0 ? (Math.exp(-1 / (horasTotalesOperacion / numFallos)) * 100).toFixed(2) : '100';
-
-
-    res.render('indicadores', {
-      equipo,
-      name: equipo.Name,
-      installationDate: equipo.InstallationDate,
-      MTBF,
-      MTTR,
-      disponibilidad,
-      confiabilidad,
-      numFallos,
-      tiempoTotalReparacion: tiempoTotalReparacion.toFixed(2),
-      code
-    });
-
-  } catch (error) {
-    console.error('Error al obtener indicadores:', error);
-    res.status(500).send('Error interno del servidor');
-  }
-};*/
 
 
 exports.indicadoresPorEquipo = async (req, res) => {
@@ -127,39 +63,7 @@ exports.indicadoresPorEquipo = async (req, res) => {
       : '100';
 
     // ================== NUEVO BLOQUE: Indicadores Mensuales ==================
-   /* const indicadoresMensuales = {};
-
-    for (let mes = 0; mes < 12; mes++) {
-      const fallasMes = fallas.filter(f => {
-        const fecha = new Date(f.Date);
-        return fecha.getMonth() === mes;
-      });
-
-      let tiempoReparacionMes = 0;
-      for (const falla of fallasMes) {
-        const mantenimiento = await Maintenance.findOne({ where: { BreakDownCode: falla.Code } });
-        if (mantenimiento?.StartDate && mantenimiento?.EndDate) {
-          tiempoReparacionMes += calcularHorasTotales(mantenimiento.StartDate, mantenimiento.EndDate);
-        }
-      }
-
-      const numFallosMes = fallasMes.length;
-      const horasOperacionMes = 30 * 24; // Aproximado
-      const MTBFmes = numFallosMes > 0 ? (horasOperacionMes / numFallosMes).toFixed(2) : 0;
-      const MTTRmes = numFallosMes > 0 ? (tiempoReparacionMes / numFallosMes).toFixed(2) : 0;
-      const disponibilidadMes = numFallosMes > 0 ? ((horasOperacionMes - tiempoReparacionMes) / horasOperacionMes * 100).toFixed(2) : 100;
-      const confiabilidadMes = numFallosMes > 0 ? (Math.exp(-1 / (horasOperacionMes / numFallosMes)) * 100).toFixed(2) : 100;
-
-      indicadoresMensuales[mes] = {
-        mes,
-        MTBF: parseFloat(MTBFmes),
-        MTTR: parseFloat(MTTRmes),
-        disponibilidad: parseFloat(disponibilidadMes),
-        confiabilidad: parseFloat(confiabilidadMes)
-      };
-    }
-*/
-    // Año actual para análisis
+       // Año actual para análisis
     const anioAnalisis = new Date().getFullYear();
 
     const indicadoresMensuales = {};
@@ -203,6 +107,7 @@ console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
     // ========================================================================
 
     res.render('indicadores', {
+        layout: 'equipmentReportLayout',
       equipo,
       name: equipo.Name,
       installationDate: equipo.InstallationDate,

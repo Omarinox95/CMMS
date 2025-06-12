@@ -99,7 +99,7 @@ app.set('views', 'views');
 ///
 
 //aumentado para PM
-app.use('/api', preventiveRoutes); // Las rutas se usarán con /api/ppm-events
+app.use('/preventive', preventiveRoutes); // Las rutas se usarán con /api/ppm-events
 
 //aumentado para marcas
 app.use('/brands', brandRoutes);
