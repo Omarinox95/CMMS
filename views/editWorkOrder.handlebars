@@ -19,11 +19,11 @@
                                         </div>
                                         <div class="form-group">
                                             <label class=" form-control-label">Fecha de Inicio</label>
-                                            <input type="date" required name="StartDATE" value="{{ workOrder.StartDate}}" class="form-control">
+                                            <input type="datetime-local" required name="StartDATE" value="{{ workOrder.StartDate}}" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label class=" form-control-label">Fecha de Finalización</label>
-                                            <input type="date" required name="EndDATE"  placeholder="New Datee" value="{{ workOrder.EndDate}}" class="form-control">
+                                            <input type="datetime-local" required name="EndDATE"  placeholder="New Datee" value="{{ workOrder.EndDate}}" class="form-control">
                                         </div>
                                         <div class="form-group">
                                             <label class=" form-control-label">Costo</label>
@@ -51,7 +51,7 @@
                                         </div>             
                                         <div class="form-group">
                                             <label class=" form-control-label">Fecha de Trabajo</label>
-                                            <input type="Date"  name="Workdate" placeholder="Ingresa Fecha de trabajo" value="{{ workOrder.Workdate }}" class="form-control">
+                                            <input type="Datetime-local"  name="Workdate" placeholder="Ingresa Fecha de trabajo" value="{{ workOrder.Workdate }}" class="form-control">
                                         </div>                        
                                         <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Editar</button>
                                 

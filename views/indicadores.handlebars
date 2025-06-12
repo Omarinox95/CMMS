@@ -1,74 +1,213 @@
-<div class="container">
-    <div class="card-body card-block">
-        <div class="login-content">
-            <div class="login-logo">
-                <img src="images/LogoMedical.png" />
-            </div>
-            <h3 class="title-3 m-b-30"><i class="zmdi zmdi-chart"></i> Dashboard de Equipos</h3>
+<!-- Chart.js versión 4 - solo esta -->
+<style>
+.charts-row {
+  display: flex;
+  justify-content: space-between; /* espacio entre columnas */
+  gap: 5px; /* espacio entre gráficos */
+  align-items: center;
+  flex-wrap: nowrap; /* para que no bajen de fila */
+  max-width: 100%;
+  overflow-x: auto; /* si no caben, permite scroll horizontal */
+}
 
-            <div class="card-body">
-                <div class="card-text"><strong>Total Equipos:</strong> {{totalEquipos}}</div>
-                <div class="card-text"><strong>Costo Total:</strong> {{costoTotal}} L.E</div>
-            </div>
+.charts-row canvas {
+  width: 350px !important;  /* ancho más pequeño */
+  height: 280px !important; /* alto más pequeño */
+  max-width: 100%;
+}
 
-            <div class="row">
-                <!-- Equipos por Año -->
-                <div class="col-lg-6">
-                    <canvas id="chartAnio"></canvas>
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+<div class="main-content">
+    <div class="section__content section__content--p30"> 
+        <div class="container-fluid">
+         <h2 class="mb-4">Indicadores de Mantenimiento</h2>
+
+          <h4 class="card-title">
+            Equipo: Nombre: {{name}}
+          </h4>
+          <p><strong>Fecha de instalación:</strong> {{installationDate}}</p>
+
+
+          <div class="row">
+            {{!-- Indicador MTBF --}}
+            <div class="col-md-3">
+              <div class="card text-white bg-primary mb-3">
+                <div class="card-header">MTBF</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{MTBF}} horas</h5>
                 </div>
-
-                <!-- Estado Funcional -->
-                <div class="col-lg-6">
-                    <canvas id="chartEstado"></canvas>
-                </div>
-
-                <!-- Activos vs Inactivos -->
-                <div class="col-lg-6 mt-4">
-                    <canvas id="chartActivo"></canvas>
-                </div>
+              </div>
             </div>
+
+            {{!-- Indicador MTTR --}}
+            <div class="col-md-3">
+              <div class="card text-white bg-warning mb-3">
+                <div class="card-header">MTTR</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{MTTR}} horas</h5>
+                </div>
+              </div>
+            </div>
+
+            {{!-- Disponibilidad --}}
+            <div class="col-md-3">
+              <div class="card text-white bg-success mb-3">
+                <div class="card-header">Disponibilidad</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{disponibilidad}} %</h5>
+                </div>
+              </div>
+            </div>
+
+            {{!-- Confiabilidad --}}
+            <div class="col-md-3">
+              <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Confiabilidad</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{confiabilidad}} %</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Cuadro resumen de fallas -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white">Resumen de Fallas Totales</div>
+        <div class="card-body">
+          <h5 class="card-title">Total de Fallas: {{numFallos}}</h5>
         </div>
+      </div>
+      <!-- Gráficos Pareto -->
+      <div class="charts-row">
+        <canvas id="chartDisponibilidad" width="300" height="200"></canvas>
+        <canvas id="chartConfiabilidad" width="300" height="200"></canvas>
+        <canvas id="chartMTBF" width="300" height="200"></canvas>
+        <canvas id="chartMTTR" width="300" height="200"></canvas>
+      </div>
+
+      <div class="container mt-4">
+        <h3 class="text-lg font-bold mt-6">Tabla de Indicadores Mensuales</h3>
+        <table class="table-auto w-full text-sm text-left text-gray-700 mt-2 border">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="border px-4 py-2">Mes</th>
+              <th class="border px-4 py-2">MTBF (hrs)</th>
+              <th class="border px-4 py-2">MTTR (hrs)</th>
+              <th class="border px-4 py-2">Disponibilidad (%)</th>
+              <th class="border px-4 py-2">Confiabilidad (%)</th>
+            </tr>
+          </thead>
+          <tbody id="tablaIndicadoresBody">
+            <!-- Aquí se llena con JS -->
+          </tbody>
+        </table>
+
+    </div>
+
+          <a href="/report/equipment/installation/{{equipo.code}}" class="btn btn-outline-secondary mt-3">Volver al detalle del equipo</a>
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const porAnio = JSON.parse('{{{porAnio}}}');
-    const porEstado = JSON.parse('{{{porEstado}}}');
-    const porActivo = JSON.parse('{{{porActivo}}}');
+  const datos = {{{json indicadoresMensuales}}};
+  //const datos = JSON.parse('{{indicadoresMensuales}}');
 
-    new Chart(document.getElementById("chartAnio"), {
-        type: 'bar',
-        data: {
-            labels: Object.keys(porAnio),
-            datasets: [{
-                label: 'Equipos por año',
-                data: Object.values(porAnio),
-                backgroundColor: '#007bff'
-            }]
-        }
+  console.log('Tipo de datos:', typeof datos);      // debería ser 'object'
+console.log('Es array?', Array.isArray(datos));   // debería ser true
+console.log('Contenido:', datos);                 // inspecciona si es el esperado
+
+  const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+  const etiquetas = datos.map(d => meses[d.mes] || ''); // etiqueta mes según índice mes
+console.log('Datos indicadoresMensuales:', datos);
+ /* const indicadores = {
+    Disponibilidad: datos.map(d => d.disponibilidad),
+    Confiabilidad: datos.map(d => d.confiabilidad),
+    MTBF: datos.map(d => d.MTBF),
+    MTTR: datos.map(d => d.MTTR)
+  };*/
+  const indicadores = {
+    Disponibilidad: datos.map(d => d.disponibilidad || 0),
+    Confiabilidad: datos.map(d => d.confiabilidad || 0),
+    MTBF: datos.map(d => d.MTBF || 0),
+    MTTR: datos.map(d => d.MTTR || 0)
+  };
+
+
+  const colores = {
+    Disponibilidad: 'rgba(75, 192, 192, 0.7)',
+    Confiabilidad: 'rgba(153, 102, 255, 0.7)',
+    MTBF: 'rgba(255, 159, 64, 0.7)',
+    MTTR: 'rgba(255, 205, 86, 0.7)'
+  };
+
+  Object.entries(indicadores).forEach(([nombre, valores]) => {
+    const acumulado = [];
+    let total = valores.reduce((a, b) => a + b, 0);
+    let acum = 0;
+    valores.forEach(v => {
+      acum += v;
+      acumulado.push(((acum / total) * 100).toFixed(2));
     });
 
-    new Chart(document.getElementById("chartEstado"), {
-        type: 'pie',
-        data: {
-            labels: Object.keys(porEstado),
-            datasets: [{
-                label: 'Estado funcional',
-                data: Object.values(porEstado),
-                backgroundColor: ['#28a745', '#ffc107', '#dc3545', '#6f42c1']
-            }]
+    const ctx = document.getElementById('chart' + nombre).getContext('2d');
+    new Chart(ctx, {
+      data: {
+        labels: etiquetas,
+        datasets: [
+          {
+            type: 'bar',
+            label: nombre,
+            data: valores,
+            backgroundColor: colores[nombre]
+          },
+          {
+            type: 'line',
+            label: '% Acumulado',
+            data: acumulado,
+            yAxisID: 'y1',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            tension: 0.3
+          }
+        ]
+      },
+      options: {
+        responsive: false,
+        scales: {
+          y: { beginAtZero: true },
+          y1: {
+            beginAtZero: true,
+            position: 'right',
+            ticks: {
+              callback: val => val + '%'
+            }
+          }
         }
+      }
     });
+  });
+</script>
 
-    new Chart(document.getElementById("chartActivo"), {
-        type: 'doughnut',
-        data: {
-            labels: ['Activo', 'Inactivo'],
-            datasets: [{
-                data: [porActivo.Activo, porActivo.Inactivo],
-                backgroundColor: ['#17a2b8', '#6c757d']
-            }]
-        }
-    });
+<script>
+  const datosMensuales = {{{json indicadoresMensuales}}};
+  console.log("Indicadores Mensuales:", datosMensuales);
+
+  const mesesNombre = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+  const tablaBody = document.getElementById("tablaIndicadoresBody");
+
+  datosMensuales.forEach(dato => {
+    const fila = document.createElement("tr");
+
+    fila.innerHTML = `
+      <td class="border px-4 py-2">${mesesNombre[dato.mes]}</td>
+      <td class="border px-4 py-2">${dato.MTBF}</td>
+      <td class="border px-4 py-2">${dato.MTTR}</td>
+      <td class="border px-4 py-2">${dato.disponibilidad}</td>
+      <td class="border px-4 py-2">${dato.confiabilidad}</td>
+    `;
+
+    tablaBody.appendChild(fila);
+  });
 </script>

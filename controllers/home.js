@@ -53,6 +53,7 @@ exports.signIn=(req,res) => {
 exports.home=(req,res) =>{
     res.render('home',{pageTitle:'Home',Home:true});
 }
+
 exports.dialyInspectionEngineer=(req,res) =>{
     engineerId=req.session.DSSN
     Equipment.findAll({include:[{model:Department}]}).then(equipments => {
@@ -333,8 +334,8 @@ exports.maintenance=(req,res)=>{
                     EquipmentName:main.BreakDown.Equipment.Name,
                     EquipmentCode:main.BreakDown.Equipment.Code,
                     EquipmentImage:main.BreakDown.Equipment.Image,
-                    ClinicalEngineer:main.ClinicalEnginner.FName+' '+main.ClinicalEnginner.LName,
-                    ClinicalEngineerImage:main.ClinicalEnginner.Image,
+                    ClinicalEngineer:main.ClinicalEngineer.FName+' '+main.ClinicalEngineer.LName,
+                    ClinicalEngineerImage:main.ClinicalEngineer.Image,
                     Department:main.BreakDown.Equipment.Department.Name,
                     Description:main.Description             
                   }
@@ -1247,4 +1248,48 @@ exports.home = async (req, res) => {
   }
 };*/
 
+// Mostrar vista con modelos y preguntas
+exports.getConfDayliQuestion = async (req, res) => {
+  try {
+    const search = req.query.search || '';
 
+    const models = await Model.findAll({
+      where: search ? {
+        Model: {
+          [require('sequelize').Op.like]: `%${search}%`
+        }
+      } : {}
+    });
+
+    res.render('confDayliQuestion', {
+      models,
+      search
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al cargar la configuración de preguntas diarias');
+  }
+};
+
+exports.postConfDayliQuestion = async (req, res) => {
+  try {
+    const updates = req.body.models;
+
+    for (const item of updates) {
+      await Model.update({
+        Q1: item.Q1,
+        Q2: item.Q2,
+        Q3: item.Q3,
+        Q4: item.Q4,
+        Q5: item.Q5
+      }, {
+        where: { id: item.id }
+      });
+    }
+
+    res.redirect('/confDayliQuestion');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al actualizar las preguntas');
+  }
+};

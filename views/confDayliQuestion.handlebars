@@ -1,0 +1,75 @@
+<h2>Configuración de Preguntas Diarias</h2>
+
+<form id="modeloForm" method="POST">
+  <label for="modeloSelect">Selecciona un modelo:</label>
+  <select id="modeloSelect" class="form-control">
+    <option value="">-- Selecciona --</option>
+    {{#each modelos}}
+      <option value="{{this.id}}">{{this.Model}}</option>
+    {{/each}}
+  </select>
+
+  <div id="preguntas" style="margin-top: 20px; display:none;">
+    {{!-- Campos de preguntas --}}
+    {{!-- Se rellenan con JS --}}
+    <div class="form-group">
+      <label>Pregunta 1:</label>
+      <input type="text" name="Q1" class="form-control" disabled>
+    </div>
+    <div class="form-group">
+      <label>Pregunta 2:</label>
+      <input type="text" name="Q2" class="form-control" disabled>
+    </div>
+    <div class="form-group">
+      <label>Pregunta 3:</label>
+      <input type="text" name="Q3" class="form-control" disabled>
+    </div>
+    <div class="form-group">
+      <label>Pregunta 4:</label>
+      <input type="text" name="Q4" class="form-control" disabled>
+    </div>
+    <div class="form-group">
+      <label>Pregunta 5:</label>
+      <input type="text" name="Q5" class="form-control" disabled>
+    </div>
+
+    <button type="button" id="editarBtn" class="btn btn-warning">Editar</button>
+    <button type="submit" id="guardarBtn" class="btn btn-success" style="display:none;">Guardar</button>
+  </div>
+</form>
+
+<script>
+  const select = document.getElementById('modeloSelect');
+  const preguntasDiv = document.getElementById('preguntas');
+  const form = document.getElementById('modeloForm');
+  let currentModelId = null;
+
+  select.addEventListener('change', async function () {
+    const id = this.value;
+    if (!id) return;
+
+    const res = await fetch(`/confDayliQuestion/${id}`);
+    const data = await res.json();
+
+    form.action = `/confDayliQuestion/update/${id}`;
+    currentModelId = id;
+    preguntasDiv.style.display = 'block';
+
+    ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'].forEach(q => {
+      form[q].value = data[q];
+      form[q].disabled = true;
+    });
+
+    document.getElementById('editarBtn').style.display = 'inline-block';
+    document.getElementById('guardarBtn').style.display = 'none';
+  });
+
+  document.getElementById('editarBtn').addEventListener('click', () => {
+    ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'].forEach(q => {
+      form[q].disabled = false;
+    });
+
+    document.getElementById('guardarBtn').style.display = 'inline-block';
+    document.getElementById('editarBtn').style.display = 'none';
+  });
+</script>

@@ -38,7 +38,12 @@
 
 <body class="animsition" >
     <div class="page-wrapper">
-        
+        <!-- Botón para abrir el menú en móviles -->
+    <button id="mobile-menu-toggle" class="btn btn-primary d-block d-lg-none m-2">
+        <i class="fa fa-bars"></i> Menú
+    </button>
+
+        <!-- MENU SIDEBAR-->
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
@@ -77,13 +82,36 @@
                         <i class="fas fa-copy"></i>Mantenimiento</a>
                 </li>    
                 <li class="{{#if M }}active{{/if}} has-sub">
-                    <a class="js-arrow" href="/report/equipment/maintenance/{{ code }}">
+                    <a class="js-arrow" href="/report/equipment/indicadores/{{ code }}">
                         <i class="fas fa-copy"></i>Indicadores</a>
                 </li>          
                     </ul>
                 </nav>
             </div>
         </aside>
+        <!-- END MENU SIDEBAR-->
+        <!-- MENU SIDEBAR -->
+    <aside id="mobile-sidebar" class="menu-sidebar bg-dark text-white" style="z-index: 9999; position: fixed; top: 0; bottom: 0; left: 0; width: 250px; display: none;">
+    <div class="logo">
+        <img src="images/LogoMedical.png" />
+    </div>
+    <div class="menu-sidebar__content js-scrollbar1">
+        <nav class="navbar-sidebar">
+            <ul class="list-unstyled navbar__list">
+                <!-- Tus elementos existentes -->
+                <li class="has-sub"><a href="/equipment"><i class="fas fa-copy"></i>Equipos</a></li>
+                <li class="{{#if ID }}active{{/if}} has-sub"><a href="/report/equipment/installation/{{ code }}"><i class="fas fa-copy"></i>Instalación</a></li>
+                <li class="{{#if PPM }}active{{/if}} has-sub"><a class="js-arrow" href="/report/equipment/ppm/{{ code }}"><i class="fas fa-copy"></i>MP</a></li>
+                <li class="{{#if DI }}active{{/if}} has-sub"><a class="js-arrow" href="/report/equipment/dailyInspection/{{ code }}"><i class="fas fa-copy"></i>Inspecciones Diarias</a></li>
+                <li class="{{#if SP }}active{{/if}} has-sub"><a class="js-arrow" href="/report/equipment/spareParts/{{ code }}"><i class="fas fa-copy"></i>Acc/Rep/Insum</a></li>
+                <li class="{{#if BD }}active{{/if}} has-sub"><a class="js-arrow" href="/report/equipment/breakDowns/{{ code }}"><i class="fas fa-copy"></i>Historial de errores</a></li>
+                <li class="{{#if M }}active{{/if}} has-sub"><a class="js-arrow" href="/report/equipment/maintenance/{{ code }}"><i class="fas fa-copy"></i>Mantenimiento</a></li>
+                <li class="{{#if M }}active{{/if}} has-sub"><a class="js-arrow" href="/report/equipment/indicadores/{{ code }}"><i class="fas fa-copy"></i>Indicadores</a></li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+
         <!-- END MENU SIDEBAR-->.
 
         <!-- PAGE CONTAINER-->
@@ -187,6 +215,40 @@
 
     <!-- Main JS-->
     <script src="js/main.js"></script>
+
+    <script>
+    const sidebar = document.getElementById("mobile-sidebar");
+    const toggleBtn = document.getElementById("mobile-menu-toggle");
+
+    // Función para mostrar/ocultar el sidebar
+    toggleBtn.addEventListener("click", () => {
+        if (sidebar.style.display === "none" || sidebar.style.display === "") {
+            sidebar.style.display = "block";
+        } else {
+            sidebar.style.display = "none";
+        }
+    });
+
+    // Cierra el sidebar si se hace clic fuera de él en pantallas pequeñas
+    document.addEventListener("click", (e) => {
+        if (window.innerWidth < 992) {
+            if (!sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+                sidebar.style.display = "none";
+            }
+        }
+    });
+
+    // Cierra el sidebar al hacer clic en cualquier enlace dentro de él (solo en móvil)
+    sidebar.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => {
+            if (window.innerWidth < 992) {
+                sidebar.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
 
 </body>
 

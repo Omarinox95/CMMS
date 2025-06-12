@@ -2,148 +2,127 @@
     <style>
         /* Fondo de thead */
         table thead {
-            background-color: #d2d6d9 !important; /* Fondo gris claro */
+            background-color: #d2d6d9 !important;
         }
 
         /* Letras de los th */
         table thead th {
-            color: #009f48 !important; /* Letras verdes */
+            color: #009f48 !important;
         }
 
         /* Letras de los td */
         table tbody td {
-            color: #303655 !important; /* Letras gris oscuro */
+            color: #303655 !important;
         }
     </style>
 </head>
-<div class="container" >
+
+<div class="container">
     <div class="card-body card-block">
-        <div class="login-content" >
+        <div class="login-content">
             <div class="login-logo">
-                
                 <img src="images/LogoMedical.png" />
             </div>
             <h3 class="title-3 m-b-30">
-            <i class="zmdi zmdi-account-calendar"></i>Inspecciones Diarias</h3>
-            <form action="/engineer/dialyInspection" method="POST">
-                    <div class="login-form">
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label for="text-input" class=" form-control-label">Fecha:</label>
-                                </div>
-                                <div class="col col-sm-3">
-                                    <input type="date" required name="DATE" placeholder="Enter Date" class="form-control">
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-md-3">
-                                    <label for="text-input"  class=" form-control-label">Equipo:</label>
-                                </div>
-                                <div class="col col-sm-3">
-                                       <select name="Device"required id="select" class="form-control">
-                                        {{#each equipments}}
-                                            <option value="{{this.Code}}">{{this.Name}} {{this.Code}} {{this.Department}}</option>
-                                        {{/each}}
-                                    </select>
-                                </div>
-                            </div>
+                <i class="zmdi zmdi-account-calendar"></i> Inspecciones Diarias
+            </h3>
 
+            <!-- Selección de fecha y equipo -->
+            <div class="login-form">
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label class="form-control-label">Fecha:</label>
                     </div>
-                    <div class="top-campaign" >
-                        <div class="table-responsive"  >
-                                <table class="table table-top-campaign" >
-                                <thead>
-                                    <tr>
-                                        <td> Preguntas</td>
-                                        <td>Seleccionado</td>    
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td> 1- Revisión externa del equipo, está correcto?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q1">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 2- El equipo cumple con los estandares requeridos?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q2">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 3- Están todos los manuales requeridos del equipo?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q3">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 4- Las tomas electricas cumplen los estandares?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q4">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 5- Are tools and machinery used so as to avoid electrical hazards?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q5">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 6- Is proper training given in the safe use of tools and machinery?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q6">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 7- Do all employees know how to get first aid assistance when needed?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q7">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td> 8- Do the first-aiders know when and to which hospital or clinic an injured person should be taken?</td>
-                                        <td>
-                                            <label class="au-checkbox">
-                                                <input type="checkbox" name="Q8">
-                                                <span class="au-checkmark"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                
-                                </thead>
-                                <tr>
-
-                                    <td>
-
-                                        <button class="au-btn au-btn-load " style="margin-left: 0;">Save</button>
-                                    </td>
-                                </tr>
-                                
-                            </table>
-                        </div>
+                    <div class="col col-sm-3">
+                        <input type="date" required id="inspectionDate" class="form-control">
                     </div>
-            </form>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <label class="form-control-label">Equipo:</label>
+                    </div>
+                    <div class="col col-sm-3">
+                        <select required id="equipmentSelect" class="form-control">
+                            <option disabled selected value="">Selecciona un equipo</option>
+                            {{#each equipments}}
+                                <option value="{{this.Code}}" data-model-id="{{this.ModelId}}">
+                                    {{this.Name}} - {{this.Code}} - {{this.Department}}
+                                </option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botón para cargar preguntas -->
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <button id="loadQuestions" class="au-btn au-btn-load" type="button">Cargar preguntas</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenedor dinámico de preguntas -->
+            <div class="top-campaign" id="questionsContainer"></div>
         </div>
     </div>
 </div>
+
+<!-- SCRIPT PARA CARGAR PREGUNTAS DEL BACKEND -->
+<script>
+document.getElementById('loadQuestions').addEventListener('click', function () {
+    const equipmentSelect = document.getElementById('equipmentSelect');
+    const equipmentId = equipmentSelect.value;
+    const modelId = equipmentSelect.options[equipmentSelect.selectedIndex].dataset.modelId;
+    const date = document.getElementById('inspectionDate').value;
+
+    if (!equipmentId || !date || !modelId) {
+        alert("Por favor seleccione un equipo y una fecha.");
+        return;
+    }
+
+    fetch(`/api/model-questions/${modelId}`)
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = `
+                <form method="POST" action="/engineer/dialyInspection">
+                    <input type="hidden" name="Device" value="${equipmentId}">
+                    <input type="hidden" name="DATE" value="${date}">
+                    <div class="table-responsive">
+                        <table class="table table-top-campaign">
+                            <thead>
+                                <tr>
+                                    <th>Preguntas</th>
+                                    <th>Seleccionado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${Object.entries(data).map(([key, question]) => `
+                                    <tr>
+                                        <td>${question}</td>
+                                        <td>
+                                            <label class="au-checkbox">
+                                                <input type="checkbox" name="${key}">
+                                                <span class="au-checkmark"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                                <tr>
+                                    <td>
+                                        <button type="submit" class="au-btn au-btn-load">Guardar</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            `;
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Error al cargar las preguntas del modelo.");
+        });
+});
+</script>

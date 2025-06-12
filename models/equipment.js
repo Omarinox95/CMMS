@@ -89,6 +89,14 @@ const Equipment = sequelize.define('Equipment', {
     type: Sequelize.TEXT,
     allowNull:true,
   },
+  AssetInitialDate: {
+  type: Sequelize.DATE,
+  allowNull: true
+  },
+  InsuranceInitialDate: {
+    type: Sequelize.DATE,
+    allowNull: true
+  },
   FuntionalStatus: {
     type: Sequelize.TEXT,
     allowNull:true,
@@ -109,14 +117,14 @@ const Equipment = sequelize.define('Equipment', {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
-  ModelId: {
+  /*ModelId: {
     type: Sequelize.INTEGER,
     allowNull: true,
     references: {
       model: 'models',
       key: 'id'
     }
-  },
+  },*/
 
   //
 });

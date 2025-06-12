@@ -77,7 +77,20 @@ const filefilter = (req, file, cb) => {
 app.use(multer({ storage: filestorage, fileFilter: filefilter }).single('image'));
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.engine('handlebars', exphbs({ layoutsDir: 'views/layouts/', defaultLayout: 'main-layout', partialsDir: 'views/includes/' }));
+//app.engine('handlebars', exphbs({ layoutsDir: 'views/layouts/', defaultLayout: 'main-layout', partialsDir: 'views/includes/' }));
+const hbs = exphbs.create({
+  layoutsDir: 'views/layouts/',
+  defaultLayout: 'main-layout',
+  partialsDir: 'views/includes/',
+  helpers: {
+    json: function(context) {
+      return JSON.stringify(context);
+    }
+  }
+});
+
+app.engine('handlebars', hbs.engine);
+
 app.set('view engine', 'handlebars');
 app.set('views', 'views');
 
