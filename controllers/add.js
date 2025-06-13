@@ -9,7 +9,8 @@ const WorkOrders = require('../models/work_order')
 const Maintenance = require('../models/maintenance')
 const Category = require('../models/category');
 const client = require('../emqx/emqx-connection');
-
+const StopOrder=require('../models/stopOrder')
+const notifyTelegram = require('../util/telegramNotifier');
 //añadido 06/05/205
 // Añadido 06/05/2025
 const ReceptionStatus = require('../models/ReceptionStatus');
@@ -768,6 +769,7 @@ exports.addWorkOrder=(req,res) => {
     id_typeW = req.body.id_typeW
     id_StopReason = req.body.id_StopReason
     id_RepairStage = req.body.id_RepairStage
+    id_StopOrder = req.body.id_StopOrder
     var equId=null
     var engId=null
     
@@ -791,14 +793,27 @@ exports.addWorkOrder=(req,res) => {
                             workorder.id_typeW = id_typeW;
                             workorder.id_StopReason = id_StopReason;
                             workorder.id_RepairStage = id_RepairStage;
+                            workorder.id_StopOrder = id_StopOrder;
                             workorder.save().then(workorder => res.redirect('/workOrder'))
                         }
                         else {
                             WorkOrders.create({StartDate:startDate,EndDate:endDate,Description:description,
                             Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority, 
                             Solution:solution, Workdate: workdate, id_typeW: id_typeW, id_StopReason: id_StopReason,
-                            id_RepairStage: id_RepairStage})
-                            .then(workorder => res.redirect('/workOrder') )
+                            id_RepairStage: id_RepairStage, id_StopOrder: id_StopOrder})
+                            //.then(workorder => res.redirect('/workOrder') )
+                            .then(async workorder => {
+
+                                const message = `🛠 *Nueva Orden de Trabajo*
+                                📟 *Equipo:* ${equipmentId}
+                                👨‍🔧 *Ingeniero:* ${engineerId}
+                                📅 *Fecha inicio:* ${startDate}
+                                📝 *Descripción:* ${description}`;
+
+                                await notifyTelegram(message);
+
+                                res.redirect('/workOrder');
+                                })
                            /* WorkOrders.create({StartDate:startdate,EndDate:enddate,Description:description,
                                 Cost:cost,EquipmentCode:equId,ClinicalEnginnerDSSN:engId,Priority:priority})
                                 .then(workorder => res.redirect('/workOrder') )*/

@@ -60,6 +60,12 @@ Workdate:{
     type: Sequelize.INTEGER,
     allowNull: true
   },
+  id_StopOrder: {
+    type: Sequelize.INTEGER,
+    allowNull: true
+  },
 
 })
-module.exports=Work_order
+module.exports=Work_order;
+
+

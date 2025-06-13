@@ -40,4 +40,32 @@
       </div>
     </div>
   </div>
+  {{#if ordenesPendientes.length}}
+  <h3>Órdenes de Trabajo Pendientes</h3>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Orden</th>
+        <th>Equipo</th>
+        <th>Razón</th>
+        <th>Estado de reparación</th>
+        <th>Encargado</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each ordenesPendientes}}
+        <tr>
+          <td>{{this.Code}}</td>
+          <td>{{this.EquipmentName}}</td>
+          <td>{{this.Description}}</td>
+          <td>{{this.Estado}}</td>
+          <td>{{this.Encargado}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <p>No hay órdenes de trabajo pendientes.</p>
+{{/if}}
+
 </div>

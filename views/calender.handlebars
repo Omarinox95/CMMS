@@ -79,26 +79,7 @@
 
         <!-- PAGE CONTAINER-->
         <div class="page-container">
-            <!-- HEADER DESKTOP-->
-            {{!-- <header class="header-desktop">
-                        <div class="section__content section__content--p30">
-                            <div class="container-fluid">
-                                <div class="header-wrap">
-                                    <form class="form-header" action="" method="POST">
-                                        
-                                    </form>
-                                    
-                                    <div class="header-button">
-                                        <form class="form-header" action="" method="POST">
-                                            <a href="/" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-account"></i>Sign Out</a>
-                                        </form> 
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                        </div>
-            </header>             --}}
+           
             <header class="header-desktop">
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
@@ -198,39 +179,11 @@
     <!-- Main JS-->
     <script src="js/main.js"></script>
     <script type="text/javascript">
-$(function() {
-  // for now, there is something adding a click handler to 'a'
-  // var tues = moment().day(2).hour(19);
+        $(function() {
+        const events = {{{json events}}};
 
-  // build trival night events for example data
-   var events = 
-   [
-   {{#each events }}
-        {
-        title: " {{ this.title }} ",
-        color:" {{ this.color }} ",
-        start:" {{ this.start }} ",
-        end:" {{ this.end }} ",
-        url:" {{ this.url }}",
-        },
-   {{/each }}
 
-  ];
 
- 
-
-//   for(var i = 1; i <= 4; i++) {
-//     var n = tues.clone().add(i, 'weeks');
-//     console.log("isoString: " + n.toISOString());
-//     trivia_nights.push({
-//       title: 'Trival Night @ Pub XYZ',
-//       start: n.toISOString(),
-//       allDay: false,
-//       url: '#'
-//     });
-//   }
-
-  // setup a few events
   $('#calendar').fullCalendar({
     header: {
       left: 'prev,next today',

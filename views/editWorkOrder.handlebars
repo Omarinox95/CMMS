@@ -13,46 +13,123 @@
                                 <div class="login-form" style="height: auto;">
                                     <form action="/workOrder/add" method="POST">
                                         <input type="text" hidden required name="Code"  placeholder="New Code" value="{{ workOrder.Code}}" class="form-control">
-                                      <div class="form-group">
-                                            <label class=" form-control-label">Descripción</label>
-                                            <input type="text" required name="Description"  placeholder="New Description" value="{{ workOrder.Description}}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Fecha de Inicio</label>
-                                            <input type="datetime-local" required name="StartDATE" value="{{ workOrder.StartDate}}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Fecha de Finalización</label>
-                                            <input type="datetime-local" required name="EndDATE"  placeholder="New Datee" value="{{ workOrder.EndDate}}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Costo</label>
-                                            <input type="text" required name="Cost" placeholder="New Cost" value="{{ workOrder.Cost}}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Código Equipo</label>
-                                            <input type="text" required name="EquipmentCode" placeholder="New Equipment Code"  value="{{ workOrder.EquipmentCode }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class=" form-control-label">CI de Ing. Clínico</label>
-                                            <input type="text"  required name="ClinicalEngineerDSSN" placeholder="New DSSN" value="{{ workOrder.ClinicalEnginnerDSSN }}" class="form-control">
-                                        </div>
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Prioridad</label>
-                                            <select name="Priority"required id="select"  class="form-control" >
-                                                <option value="Low" {{#if workOrder.low}} selected {{/if}}>Baja</option>
-                                                <option value="Medium" {{#if workOrder.med}} selected {{/if}}>Media</option>
-                                                <option value="High" {{#if workOrder.high}} selected {{/if}}>Alta</option>
-                                            </select>
-                                        </div> 
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Solución</label>
-                                            <input type="text" required name="Solution"  placeholder="Ingresa la solucion" value="{{ workOrder.Solution}}" class="form-control">
-                                        </div>             
-                                        <div class="form-group">
-                                            <label class=" form-control-label">Fecha de Trabajo</label>
-                                            <input type="Datetime-local"  name="Workdate" placeholder="Ingresa Fecha de trabajo" value="{{ workOrder.Workdate }}" class="form-control">
-                                        </div>                        
+                                       <!-- Razón de Creación -->
+              <div class="form-group">
+                <label>Razón de Creación</label>
+                <select name="id_StopReason" required class="form-control">
+                  {{#each StopReasons}}
+                  <option value="{{this.id_StopReason}}" {{#if (eq this.id_StopReason ../workOrder.id_StopReason)}}selected{{/if}}>
+                    {{this.Reason}}
+                  </option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <!-- Descripción -->
+              <div class="form-group">
+                <label>Descripción</label>
+                <input type="text" name="Description" required class="form-control" value="{{workOrder.Description}}" />
+              </div>
+
+              <!-- Equipo -->
+              <div class="form-group">
+                <label>Equipo</label>
+                <select name="EquipmentCode" required class="form-control">
+                  {{#each Equipments}}
+                  <option value="{{this.Code}}" {{#if (eq this.Code ../workOrder.EquipmentCode)}}selected{{/if}}>
+                    {{this.Name}} {{this.Code}} {{this.DepartmentName}}
+                  </option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <!-- Ingeniero Clínico -->
+              <div class="form-group">
+                <label>CI Ing. Clínico</label>
+                <select name="ClinicalEngineerDSSN" required class="form-control">
+                  {{#each Engineers}}
+                  <option value="{{this.DSSN}}" {{#if (eq this.DSSN ../workOrder.ClinicalEngineerDSSN)}}selected{{/if}}>
+                    {{this.FName}} {{this.LName}} {{this.DSSN}}
+                  </option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <!-- Fecha Inicio -->
+              <div class="form-group">
+                <label>Fecha de Inicio</label>
+                <input type="datetime-local" name="StartDATE" required class="form-control" value="{{workOrder.StartDate}}" />
+              </div>
+
+              <!-- Fecha Fin -->
+              <div class="form-group">
+                <label>Fecha de Fin</label>
+                <input type="datetime-local" name="EndDATE" required class="form-control" value="{{workOrder.EndDate}}" />
+              </div>
+
+              <!-- Costo -->
+              <div class="form-group">
+                <label>Costo</label>
+                <input type="number" name="Cost" required class="form-control" value="{{workOrder.Cost}}" />
+              </div>
+
+              <!-- Prioridad -->
+              <div class="form-group">
+                <label>Prioridad</label>
+                <select name="Priority" required class="form-control">
+                  <option value="Low" {{#if (eq workOrder.Priority "Low")}}selected{{/if}}>Baja</option>
+                  <option value="Medium" {{#if (eq workOrder.Priority "Medium")}}selected{{/if}}>Media</option>
+                  <option value="High" {{#if (eq workOrder.Priority "High")}}selected{{/if}}>Alta</option>
+                </select>
+              </div>
+
+              <!-- Solución -->
+              <div class="form-group">
+                <label>Solución</label>
+                <input type="text" name="Solution" class="form-control" value="{{workOrder.Solution}}" />
+              </div>
+
+              <!-- Fecha de Trabajo -->
+              <div class="form-group">
+                <label>Fecha de Trabajo</label>
+                <input type="datetime-local" name="Workdate" class="form-control" value="{{workOrder.Workdate}}" />
+              </div>
+
+              <!-- Tipo de Orden -->
+              <div class="form-group">
+                <label>Tipo de Orden</label>
+                <select name="id_typeW" required class="form-control">
+                  {{#each OrderTypes}}
+                  <option value="{{this.id_typeW}}" {{#if (eq this.id_typeW ../workOrder.id_typeW)}}selected{{/if}}>
+                    {{this.Name}}
+                  </option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <!-- Razón Finalización -->
+              <div class="form-group">
+                <label>Razón de Finalización</label>
+                <select name="id_StopOrder" required class="form-control">
+                  {{#each StopOrders}}
+                  <option value="{{this.id}}" {{#if (eq this.id ../workOrder.id_StopOrder)}}selected{{/if}}>
+                    {{this.description}}
+                  </option>
+                  {{/each}}
+                </select>
+              </div>
+
+              <!-- Estado de Reparación -->
+              <div class="form-group">
+                <label>Estado de Reparación</label>
+                <select name="id_RepairStage" required class="form-control">
+                  {{#each RepairStages}}
+                  <option value="{{this.id_RepairStage}}" {{#if (eq this.id_RepairStage ../workOrder.id_RepairStage)}}selected{{/if}}>
+                    {{this.Status}}
+                  </option>
+                  {{/each}}
+                </select>
+              </div>               
                                         <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Editar</button>
                                 
                                     </form>  

@@ -47,6 +47,7 @@
                             <thead>
                                 <tr>
                                     <th>ID_OT</th>
+                                    <th>Estado</th>
                                     <th>Descripción</th>
                                     <th>Fecha de inicio</th>
                                     <th>Fecha Final</th>
@@ -63,6 +64,7 @@
 
                                 <tr class="tr-shadow">
                                     <td>{{this.Code}}</td>
+                                    <td>{{this.RepairStageStatus}}</td>
                                     <td>{{this.Description}}</td>
                                     <td>{{this.StartDate}}</td>
                                     <td>{{this.EndDate}}</td>
@@ -139,6 +141,15 @@
                 </div>
                 <div class="login-form">
                         <div class="form-group">
+                            <label class="form-control-label">Razón de Creación</label>
+                            <select name="id_StopReason" required class="form-control">
+                                {{#each StopReasons}}
+                                    <option value="{{this.id_StopReason}}">{{this.Reason}}</option>
+                                {{/each}}
+
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label class=" form-control-label">Descripción</label>
                             <input type="text" required name="Description" placeholder="Ingresa la Descripción" class="form-control">
                         </div>
@@ -196,14 +207,15 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="form-control-label">Razón de Finalización</label>
-                            <select name="id_StopReason" required class="form-control">
-                                {{#each StopReasons}}
-                                    <option value="{{this.id_StopReason}}">{{this.Reason}}</option>
-                                {{/each}}
-
-                            </select>
+                        <label class="form-control-label">Razón de finalización de la Orden</label>
+                        <select name="id_StopOrder" class="form-control" required>
+                            <option value="">Seleccionar</option>
+                            {{#each stopOrderOptions}}
+                            <option value="{{this.id}}">{{this.description}}</option>
+                            {{/each}}
+                        </select>
                         </div>
+
                         <div class="form-group">
                             <label class="form-control-label">Estado de Reparación</label>
                             <select name="id_RepairStage" required class="form-control">

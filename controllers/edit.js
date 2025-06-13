@@ -7,6 +7,7 @@ const WorkOrder =require('../models/work_order');
 const Maintenance =require('../models/maintenance');
 const Category = require('../models/category');
 
+const { StopReason, OrderType, StopOrder, RepairStage } = require('../models');
 
 
 
@@ -223,7 +224,7 @@ exports.editBreakDown=(req,res)=>{
 
 }
 
-exports.editWorkOrder=(req,res)=>{
+/*exports.editWorkOrder=(req,res)=>{
    code = req.params.id
    WorkOrder.findByPk(code).then(workOrder=>{
       const wd = {
@@ -252,7 +253,74 @@ exports.editWorkOrder=(req,res)=>{
 
      .catch(err=>console.log("errorrrrr",err))
 
-}
+}*/
+exports.editWorkOrder = async (req, res) => {
+  const code = req.params.id;
+
+  try {
+    const workOrder = await WorkOrder.findByPk(code);
+    if (!workOrder) {
+      return res.render('error', {
+        layout: false,
+        pageTitle: 'Error',
+        href: '/workOrder',
+        message: 'No se encontró la orden de trabajo',
+      });
+    }
+
+    // Obtener datos para selects
+    const [stopReasons, equipments, engineers, orderTypes, stopOrders, repairStages] = await Promise.all([
+      StopReason.findAll(),
+      Equipment.findAll(),
+      ClinicalEngineer.findAll(),
+      OrderType.findAll(),
+      StopOrder.findAll(),
+      RepairStage.findAll(),
+    ]);
+
+    const wd = {
+      Code: workOrder.Code,
+      Cost: workOrder.Cost,
+      StartDate: workOrder.StartDate,
+      EndDate: workOrder.EndDate,
+      Description: workOrder.Description,
+      EquipmentCode: workOrder.EquipmentCode,
+      Priority: workOrder.Priority,
+      med: workOrder.Priority == 'Medium',
+      high: workOrder.Priority == 'High',
+      low: workOrder.Priority == 'Low',
+      ClinicalEngineerDSSN: workOrder.ClinicalEngineerDSSN,
+      Solution: workOrder.Solution,
+      Workdate: workOrder.Workdate,
+      id_typeW: workOrder.id_typeW,
+      id_StopReason: workOrder.id_StopReason,
+      id_RepairStage: workOrder.id_RepairStage,
+      id_StopOrder: workOrder.id_StopOrder,
+    };
+
+    res.render('editWorkOrder', {
+      layout: 'main-layout.handlebars',
+      pageTitle: 'Editar Orden de Trabajo',
+      WO: true,
+      workOrder: wd,
+      StopReasons: stopReasons.map(r => r.toJSON()),
+      Equipments: equipments.map(e => e.toJSON()),
+      Engineers: engineers.map(e => e.toJSON()),
+      OrderTypes: orderTypes.map(t => t.toJSON()),
+      StopOrders: stopOrders.map(s => s.toJSON()),
+      RepairStages: repairStages.map(r => r.toJSON()),
+    });
+
+  } catch (err) {
+    console.error('Error al cargar la orden:', err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/workOrder',
+      message: 'Error al cargar los datos para editar',
+    });
+  }
+};
 
 
 

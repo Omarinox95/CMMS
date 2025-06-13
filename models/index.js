@@ -21,6 +21,11 @@ const WorkOrder = require('./work_order');
 const OrderType = require('./OrderType');
 const StopReason = require('./StopReason');
 const RepairStage = require('./RepairStage');
+
+const StopOrder = require('./stopOrder');
+StopOrder.hasMany(WorkOrder, { foreignKey: 'id_StopOrder', as: 'work_orders' });
+WorkOrder.belongsTo(StopOrder, { foreignKey: 'id_StopOrder', as: 'stopOrder' });
+
 // Configurar la asociación entre Equipment y Department
 Equipment.belongsTo(Department, {
   foreignKey: 'DepartmentCode',
@@ -100,6 +105,7 @@ module.exports = {
     OrderType,
     StopReason,
     RepairStage,
+    StopOrder,
     //Clinical_enginner,
     //Ppm_questions,
 };

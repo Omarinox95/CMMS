@@ -16,8 +16,8 @@ const ReceptionStatus = require('../models/ReceptionStatus');  // Agrega esta l�
 const AcquisitionType = require('../models/AcquisitionType');  // Y esta línea
 const PreventiveTask = require('../models'); // si no está ya importado
 const { Brand, NameEquipment, Model } = require('../models');
-const { OrderType, StopReason, RepairStage } = require('../models'); // ajusta el path si es necesario
-
+const { OrderType, StopReason, RepairStage, StopOrder } = require('../models'); // ajusta el path si es necesario
+const { Op } = require('sequelize');
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
 }
@@ -564,7 +564,7 @@ exports.agentSupplier=(req,res)=>{
 
 }*/
 exports.workOrder = (req, res) => {
-  WorkOrder.findAll({ include: [{ model: ClinicalEngineer }, { model: Equipment }] })
+  WorkOrder.findAll({ include: [{ model: ClinicalEngineer }, { model: Equipment }, {model: StopOrder, as: 'stopOrder'}, { model: RepairStage }],order: [[{ model: RepairStage }, 'id_Stage', 'ASC']] })
     .then(workorders => {
       const wd = workorders.map(workD => ({
         Code: workD.Code,
@@ -580,7 +580,10 @@ exports.workOrder = (req, res) => {
         Priority: workD.Priority,
         Description: workD.Description,
         ClinicalEngineer: workD.ClinicalEngineer.FName + ' ' + workD.ClinicalEngineer.LName,
-        ClinicalEngineerImage: workD.ClinicalEngineer.Image
+        ClinicalEngineerImage: workD.ClinicalEngineer.Image,
+        StopOrder: workD.stopOrder?.Description || 'No especificado',
+        RepairStageStatus: workD.RepairStage?.Status || 'No especificado',
+        RepairStageId: workD.RepairStage?.id_stage || 0,
       }));
 
       ClinicalEngineer.findAll()
@@ -611,7 +614,7 @@ exports.workOrder = (req, res) => {
                         .then(repairStagesRaw => {
                           const repairStages = repairStagesRaw.map(r => r.get({ plain: true }));
 
-                          res.render('workOrder', {
+                          /*res.render('workOrder', {
                             pageTitle: 'WorkOrder',
                             WorkOrder: true,
                             Workorders: wd,
@@ -621,7 +624,24 @@ exports.workOrder = (req, res) => {
                             Equipments: eq,
                             OrderTypes: orderTypes,
                             StopReasons: stopReasons,
-                            RepairStages: repairStages
+                            RepairStages: repairStages*/
+                            StopOrder.findAll()
+                                .then(stopOrdersRaw => {
+                                const stopOrders = stopOrdersRaw.map(r => r.get({ plain: true }));
+
+                                    res.render('workOrder', {
+                                        pageTitle: 'WorkOrder',
+                                        WorkOrder: true,
+                                        Workorders: wd,
+                                        hasWorkOrder: wd.length > 0,
+                                        WO: true,
+                                        Engineers: en,
+                                        Equipments: eq,
+                                        OrderTypes: orderTypes,
+                                        StopReasons: stopReasons,
+                                        RepairStages: repairStages,
+                                        stopOrderOptions: stopOrders,
+                                    });
                           });
                         });
                     });
@@ -1008,8 +1028,10 @@ WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
         return{
             title:order.Description,
             color:order.Priority == 'Low' ? 'green' :order.Priority == 'High' ? 'red': 'blue' ,
-            start:(order.StartDate.split('-')[0]+'-'+order.StartDate.split('-')[1]+'-'+order.StartDate.split('-')[2])+' '+'00:00:00Z',
-            end:(order.EndDate.split('-')[0]+'-'+order.EndDate.split('-')[1]+'-'+order.EndDate.split('-')[2])+' '+'23:00:00Z',
+            /*start:(order.StartDate.split('-')[0]+'-'+order.StartDate.split('-')[1]+'-'+order.StartDate.split('-')[2])+' '+'00:00:00Z',
+            end:(order.EndDate.split('-')[0]+'-'+order.EndDate.split('-')[1]+'-'+order.EndDate.split('-')[2])+' '+'23:00:00Z',*/
+            start: order.StartDate,
+            end: order.EndDate,
             url:'/engineer/workOrder/description/'+order.Code
         }
 
@@ -1185,6 +1207,7 @@ exports.getDashboard = async (req, res) => {
 };*/
 
 const { Sequelize } = require('sequelize');
+const stopOrder = require('../models/stopOrder');
 exports.home = async (req, res) => {
   try {
     const totalEquipos = await Equipment.count();
@@ -1210,10 +1233,34 @@ exports.home = async (req, res) => {
       total: Number(item.total).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
     }));
 
+    // 🔍 Buscar órdenes pendientes (RepairStageId 1-4)
+    const workordersPendientes = await WorkOrder.findAll({
+      where: {
+        id_RepairStage: { [Op.in]: [1, 2, 3, 4] }
+      },
+      include: [
+        { model: Equipment },
+        { model: ClinicalEngineer },
+        { model: RepairStage }
+      ]
+    });
+
+    const ordenesPendientes = workordersPendientes.map(w => ({
+      Code: w.Code,
+      EquipmentName: w.Equipment?.Name || 'No especificado',
+      Description: w.Description,
+      Estado: w.RepairStage?.Status || 'No especificado',
+      Encargado: w.ClinicalEngineer
+        ? `${w.ClinicalEngineer.FName} ${w.ClinicalEngineer.LName}`
+        : 'No asignado'
+    }));
+
+
     res.render('home', {
       totalEquipos,
       costoTotal,
-      costosPorAnio
+      costosPorAnio,
+      ordenesPendientes
     });
   } catch (error) {
     console.error('Error en controlador home:', error);
