@@ -56,12 +56,13 @@ exports.home=(req,res) =>{
 
 exports.dialyInspectionEngineer=(req,res) =>{
     engineerId=req.session.DSSN
-    Equipment.findAll({include:[{model:Department}]}).then(equipments => {
+    Equipment.findAll({include:[{model:Department}, { model: Model, as: 'model' }]}).then(equipments => {
         const eqs=equipments.map(equipment => {
             return{
                 Name:equipment.Name,
                 Code:equipment.Code,
-                Department:equipment.Department.Name
+                Department:equipment.Department.Name,
+                ModelId: equipment.model?.id || ''
             }
         })
         ClinicalEngineer.findByPk(engineerId).then(engineer => {

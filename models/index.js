@@ -21,6 +21,10 @@ const WorkOrder = require('./work_order');
 const OrderType = require('./OrderType');
 const StopReason = require('./StopReason');
 const RepairStage = require('./RepairStage');
+const ClinicalEngineer = require('./clinical_engineer');
+const Daily_inspection = require('./dialy_inspection');
+const TagNotification = require('./tagnotification'); // o el nombre correcto del archivo del modelo
+
 
 const StopOrder = require('./stopOrder');
 StopOrder.hasMany(WorkOrder, { foreignKey: 'id_StopOrder', as: 'work_orders' });
@@ -89,6 +93,19 @@ OrderType.hasMany(WorkOrder, { foreignKey: 'id_typeW' });
 StopReason.hasMany(WorkOrder, { foreignKey: 'id_StopReason' });
 RepairStage.hasMany(WorkOrder, { foreignKey: 'id_RepairStage' });
 
+// Asociaciones de DialyInspection
+Daily_inspection.belongsTo(Equipment, {
+  foreignKey: 'EquipmentCode',
+  targetKey: 'Code'
+});
+
+
+//const ClinicalEngineer = require('./clinical_enginner');
+Daily_inspection.belongsTo(ClinicalEngineer, {
+  foreignKey: 'ClinicalEnginnerDSSN',
+  targetKey: 'DSSN'
+});
+
 
 
 module.exports = {
@@ -106,6 +123,9 @@ module.exports = {
     StopReason,
     RepairStage,
     StopOrder,
+    Daily_inspection,
+    ClinicalEngineer,
+    TagNotification,
     //Clinical_enginner,
     //Ppm_questions,
 };

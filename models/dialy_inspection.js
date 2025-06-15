@@ -46,5 +46,17 @@ Q8:{
     allowNull:false,
 }
 
-})
+});
+
+Daily_inspection.associate = function (models) {
+  Daily_inspection.belongsTo(models.Equipment, {
+    foreignKey: 'EquipmentCode',
+    targetKey: 'Code'
+  });
+
+  Daily_inspection.belongsTo(models.ClinicalEngineer, {
+    foreignKey: 'ClinicalEnginnerDSSN',
+    targetKey: 'DSSN'
+  });
+};
 module.exports=Daily_inspection

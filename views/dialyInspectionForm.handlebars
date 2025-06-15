@@ -26,6 +26,7 @@
             <h3 class="title-3 m-b-30">
                 <i class="zmdi zmdi-account-calendar"></i> Inspecciones Diarias
             </h3>
+            <input type="hidden" id="rfidModelId">
 
             <!-- Selección de fecha y equipo -->
             <div class="login-form">
@@ -36,7 +37,21 @@
                     <div class="col col-sm-3">
                         <input type="date" required id="inspectionDate" class="form-control">
                     </div>
+                    <div class="col col-md-3">
+                        <button id="loadQuestions" class="au-btn au-btn-icon au-btn--green au-btn--small" type="button">Cargar preguntas</button>
+                    </div>
                 </div>
+                <div class="row form-group">
+                    <div class="col col-md-3">
+                        <button id="loadByRFID" class="au-btn au-btn-icon au-btn--blue au-btn--small" type="button">Usar RFID</button>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col col-md-6">
+                        <label id="rfidInfo" style="font-weight: bold; color: #009f48;"></label>
+                    </div>
+                </div>
+
 
                 <div class="row form-group">
                     <div class="col col-md-3">
@@ -54,13 +69,6 @@
                     </div>
                 </div>
 
-                <!-- Botón para cargar preguntas -->
-                <div class="row form-group">
-                    <div class="col col-md-3">
-                        <button id="loadQuestions" class="au-btn au-btn-load" type="button">Cargar preguntas</button>
-                    </div>
-                </div>
-            </div>
 
             <!-- Contenedor dinámico de preguntas -->
             <div class="top-campaign" id="questionsContainer"></div>
@@ -111,7 +119,7 @@ document.getElementById('loadQuestions').addEventListener('click', function () {
                                 `).join('')}
                                 <tr>
                                     <td>
-                                        <button type="submit" class="au-btn au-btn-load">Guardar</button>
+                                        <button type="submit" class="au-btn au-btn-icon au-btn--green au-btn--small">Guardar</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -125,4 +133,163 @@ document.getElementById('loadQuestions').addEventListener('click', function () {
             alert("Error al cargar las preguntas del modelo.");
         });
 });
+</script>
+<!--script>
+document.getElementById('loadByRFID').addEventListener('click', async () => {
+    const date = document.getElementById('inspectionDate').value;
+    if (!date) {
+        alert("Por favor selecciona una fecha.");
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/ultimo-rfid');
+        const data = await response.json();
+        console.log('Datos recibidos por RFID:', data);
+
+        if (!data || !data.equipment || !data.modelId) {
+            alert("No se encontró equipo para el último RFID.");
+            return;
+        }
+        
+
+        const equipmentId = data.equipment;
+        const modelId = data.modelId;
+        // Actualizar campo oculto si lo usas
+        document.getElementById('rfidModelId').value = modelId;
+
+        // Mostrar info visual
+        document.getElementById('rfidInfo').textContent = `Equipo detectado: ${data.name} | Serie: ${data.serial}`;
+
+        // Llamada para cargar preguntas del modelo
+        fetch(`/api/model-questions/${modelId}`)
+            .then(res => res.json())
+            .then(questions => {
+                const container = document.getElementById('questionsContainer');
+                container.innerHTML = `
+                    <form method="POST" action="/engineer/dialyInspection">
+                        <input type="hidden" name="Device" value="${equipmentId}">
+                        <input type="hidden" name="DATE" value="${date}">
+                        <div class="table-responsive">
+                            <table class="table table-top-campaign">
+                                <thead>
+                                    <tr>
+                                        <th>Preguntas</th>
+                                        <th>Seleccionado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${Object.entries(questions).map(([key, question]) => `
+                                        <tr>
+                                            <td>${question}</td>
+                                            <td>
+                                                <label class="au-checkbox">
+                                                    <input type="checkbox" name="${key}">
+                                                    <span class="au-checkmark"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                    <tr>
+                                        <td colspan="2">
+                                            <button type="submit" class="au-btn au-btn-icon au-btn--green au-btn--small">Guardar</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                `;
+            });
+
+    } catch (err) {
+        console.error(err);
+        alert("Error al obtener información por RFID.");
+    }
+});
+
+</script-->
+<script>
+    document.getElementById('loadByRFID').addEventListener('click', async () => {
+    const date = document.getElementById('inspectionDate').value;
+    if (!date) {
+        alert("Por favor selecciona una fecha.");
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/ultimo-rfid');
+        const data = await response.json();
+
+        console.log('Datos recibidos por RFID:', data);
+
+        if (!data || !data.equipment || data.modelId == null) {
+            alert("No se encontró equipo para el último RFID.");
+            return;
+        }
+
+        const equipmentId = data.equipment;
+        const modelId = data.modelId;
+
+        // Actualizar campo oculto si lo usas
+        document.getElementById('rfidModelId').value = modelId;
+
+        // Mostrar info visual
+        document.getElementById('rfidInfo').textContent = `Equipo detectado: ${data.name} | Serie: ${data.serial}`;
+
+
+        // Llamada para cargar preguntas del modelo
+        const questionsResponse = await fetch(`/api/model-questions/${modelId}`);
+        const questions = await questionsResponse.json();
+
+        console.log('Preguntas recibidas:', questions);
+
+        const container = document.getElementById('questionsContainer');
+
+        if (!questions || Object.keys(questions).length === 0) {
+            container.innerHTML = '<p>No hay preguntas disponibles para este modelo.</p>';
+            return;
+        }
+
+        container.innerHTML = `
+            <form method="POST" action="/engineer/dialyInspection">
+                <input type="hidden" name="Device" value="${equipmentId}">
+                <input type="hidden" name="DATE" value="${date}">
+                <div class="table-responsive">
+                    <table class="table table-top-campaign">
+                        <thead>
+                            <tr>
+                                <th>Preguntas</th>
+                                <th>Seleccionado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${Object.entries(questions).map(([key, question]) => `
+                                <tr>
+                                    <td>${question}</td>
+                                    <td>
+                                        <label class="au-checkbox">
+                                            <input type="checkbox" name="${key}">
+                                            <span class="au-checkmark"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                            <tr>
+                                <td colspan="2">
+                                    <button type="submit" class="au-btn au-btn-icon au-btn--green au-btn--small">Guardar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        `;
+
+    } catch (err) {
+        console.error(err);
+        alert("Error al obtener información por RFID.");
+    }
+});
+
 </script>

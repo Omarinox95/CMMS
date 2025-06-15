@@ -12,6 +12,7 @@ Maintenance=require('../models/maintenance')
 PPM =require('../models/ppm')
 PPMQuestions=require('../models/ppm_questions')
 EquipmentSparePart = require('../models/equipmentsparepart');
+Model = require('../models/model');
 //const { Equipment, SparePart, EquipmentSparePart, Agent_supplier } = require('../models');
 const { Op } = require('sequelize');
 
@@ -309,7 +310,7 @@ exports.equipmentInstallationReport=(req,res)=>{
                 InstallationDate: equipment.InstallationDate,
                 WarrantyDate: equipment.WarrantyDate,
                 ArrivalDate: equipment.InstallationDate,
-                Model:equipment.Model,
+                Model:equipment.ModelId,
                 SerialNumber:equipment.SerialNumber,
                 Manufacturer:equipment.Manufacturer,
                 Location:equipment.Location,
@@ -382,13 +383,18 @@ exports.dialyInspectionReport = (req,res) =>{
  layout=req.query.report ? 'main-layout' :'equipmentReportLayout' 
  di=req.query.report ? false : true
  Reports=req.query.report ? true : false
- DialyInspection.findOne({where:{Code:code},include:[{model:ClinicalEngineer},{model:Equipment}]}).then(report =>{
+ DialyInspection.findOne({where:{Code:code},include:[{model:ClinicalEngineer},{model:Equipment, include: [{ model: Model, as: 'model' }]}]}).then(report =>{
     const rep = {
         DATE:report.DATE,
         Engineer:report.ClinicalEngineer.FName+' '+report.ClinicalEngineer.LName,
         EquipmentName:report.Equipment.Name,
         EquipmentCode:report.Equipment.Code,
-        EquipmentModel:report.Equipment.Model,
+        EquipmentModel:report.Equipment.ModelId,
+        P1:report.Equipment.model.Q1,
+        P2:report.Equipment.model.Q2,
+        P3:report.Equipment.model.Q3,
+        P4:report.Equipment.model.Q4,
+        P5:report.Equipment.model.Q5,
         Q1:report.Q1,
         Q2:report.Q2,
         Q3:report.Q3,
@@ -399,6 +405,7 @@ exports.dialyInspectionReport = (req,res) =>{
         Q8:report.Q8,
 
     }
+    console.log(rep);
     rep.Q1 = rep.Q1 == "on" ? true: false
     rep.Q2 = rep.Q2 == "on" ? true: false
     rep.Q3 = rep.Q3 == "on" ? true: false

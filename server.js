@@ -27,6 +27,7 @@ const searchController = require('./search/search');
 const equipmentRoutes = require('./routes/equipmentRoutes');
 const equipmentsparepart = require('./models/equipmentsparepart');
 const { Equipment, Department } = require('./models'); // Importa los modelos desde index.js
+const inspectionRoutes = require('./routes/dialyInspection');
 
 //añadido 06/05/25
 const ReceptionStatus = require('./models/ReceptionStatus');
@@ -117,6 +118,7 @@ app.use(addController);
 app.use(homeController);
 app.use(emqxController);
 app.use('/equipment', equipmentRoutes);
+app.use(inspectionRoutes);
 //app.use(searchController);
 //app.use(MPPCalendarRoutes);
 

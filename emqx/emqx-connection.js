@@ -129,6 +129,19 @@ client.on('connect', () => {
 client.on('message', async (topic, message) => {
   const payload = message.toString();
   console.log(`Mensaje recibido en '${topic}': ${payload}`);
+    if (topic === 'lecturaEquipo') {
+    console.log("Lectura de equipo recibida:", payload);
+
+    try {
+      await TagNotification.upsert({
+        user: '1', // Temporal: puedes reemplazar con lógica por sesión luego
+        message: payload
+      });
+      console.log("RFID guardado en tagnotifications");
+    } catch (err) {
+      console.error("Error al guardar en tagnotifications:", err);
+    }
+  }
 
   try {
     const d = new Date();

@@ -73,7 +73,7 @@ router.get('/confirmacion', async (req, res) => {
 // Ruta para obtener equipo por RFID leído más reciente
 router.get('/equipment/rfid', async (req, res) => {
   try {
-    const notification = await TagNotification.findOne({ where: { user: req.session.DSSN.toString() } });
+    const notification = await TagNotification.findOne({ where: { user: req.session.DSSN.toString() }, order: [['updatedAt', 'DESC']], });
     if (!notification || !notification.message) {
       return res.status(404).json({ error: 'No se ha leído ningún tag RFID recientemente.' });
     }
