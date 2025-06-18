@@ -1,0 +1,36 @@
+<div class="main-content"> 
+  <div class="section__content section__content--p30">
+    <div class="container-fluid">
+      <div class="page-wrapper">
+        <div class="page-content--bge5">
+          <div class="container">
+            <div class="login-wrap">
+              <div class="login-content">
+                <div class="login-logo">
+                  <img src="/images/LogoMedical.png" alt="Logo" />       
+                </div>
+                <div class="login-form">
+                  <form action="/repairstage/edit/{{repairstage.id_RepairStage}}" method="POST">
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" value="{{repairstage.id_RepairStage}}" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <input type="text" name="Status" value="{{repairstage.Status}}" required class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado funcional</label>
+                        <input type="number" name="FuntionalStatus" value="{{repairstage.FuntionalStatus}}" required class="form-control">
+                    </div>
+                    <button type="submit" class="au-btn au-btn--block au-btn--green m-b-20">Actualizar</button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+     </div>
+  </div>        
+</div>

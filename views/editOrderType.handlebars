@@ -1,0 +1,32 @@
+<div class="main-content"> 
+  <div class="section__content section__content--p30">
+    <div class="container-fluid">
+      <div class="page-wrapper">
+        <div class="page-content--bge5">
+          <div class="container">
+            <div class="login-wrap">
+              <div class="login-content">
+                <div class="login-logo">
+                  <img src="/images/LogoMedical.png" alt="Logo" />       
+                </div>
+                <div class="login-form">
+                  <form action="/ordertype/edit/{{ordertype.id_typeW}}" method="POST">
+                    <div class="form-group">
+                        <label>ID</label>
+                        <input type="text" value="{{ordertype.id_typeW}}" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de orden</label>
+                        <input type="text" name="Name" value="{{ordertype.Name}}" required class="form-control" autofocus>
+                    </div>
+                    <button type="submit" class="au-btn au-btn--block au-btn--green m-b-20">Actualizar</button>
+                </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+     </div>
+  </div>        
+</div>

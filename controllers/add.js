@@ -16,19 +16,55 @@ const notifyTelegram = require('../util/telegramNotifier');
 const ReceptionStatus = require('../models/ReceptionStatus');
 const AcquisitionType = require('../models/AcquisitionType');
 const { Brand, NameEquipment, Model } = require('../models');
+const { Op } = require('sequelize');
 
-exports.addDepartment=(req,res)=>{
- code=req.body.Code
- name=req.body.Name
- location=req.body.Location
- Department.create({Code:code,Name:name,Location:location}).then(dep =>{
- res.redirect('/department');
- }).catch(err=> {
-    console.log("ERROR!!!!!!",err)
-    })
+exports.addDepartment = async (req, res) => {
+    const code = req.body.Code;
+    const name = req.body.Name;
+    const location = req.body.Location;
+
+    try {
+        await Department.create({
+            Code: code,
+            Name: name,
+            Location: location
+        });
+
+        res.redirect('/department');
+    } catch (err) {
+        if (err.name === 'SequelizeUniqueConstraintError') {
+            // Puedes pasar un mensaje de error a la vista department.handlebars
+            const departments = await Department.findAll({
+                include: [{ model: Equipment }]
+            });
+
+            const deps = departments.map(department => ({
+                Name: department.Name,
+                Code: department.Code,
+                Location: department.Location,
+                Equipments: department.Equipment.length
+            }));
+
+            return res.render('department', {
+                pageTitle: 'Department',
+                Department: true,
+                departments: deps,
+                hasDepartment: deps.length > 0,
+                errorMessage: '⚠️ Ya existe un departamento con ese código.'
+            });
+        }
+
+        console.log("ERROR GENERAL", err);
+        res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            href: '/department',
+            message: 'Ocurrió un error inesperado.'
+        });
+    }
+};
 
 
-}
 
 
 exports.addAgentSupplier=(req,res)=>{
@@ -878,3 +914,180 @@ exports.addMaintenance=(req,res)=>{
         })
 
 }
+
+
+exports.addBrand = async (req, res) => {
+  try {
+    const { Brand: brandName } = req.body;  // renombramos la variable para no confundir con el modelo
+    await Brand.create({ Brand: brandName });
+    res.redirect('/brand');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/brand',
+      message: 'No se pudo agregar la marca'
+    });
+  }
+};
+
+exports.addModel = async (req, res) => {
+  try {
+    const { Model: modelName, id_brand, Q1, Q2, Q3, Q4, Q5 } = req.body;
+
+    // Validación simple, puedes mejorarla
+    if (!modelName || !Q1 || !Q2 || !Q3 || !Q4 || !Q5) {
+      return res.status(400).render('error', {
+        layout: false,
+        pageTitle: 'Error',
+        href: '/model',
+        message: 'Todos los campos son obligatorios excepto id_brand.'
+      });
+    }
+
+    await Model.create({
+      Model: modelName,
+      id_brand: id_brand || null,
+      Q1,
+      Q2,
+      Q3,
+      Q4,
+      Q5
+    });
+
+    res.redirect('/model');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/model',
+      message: 'No se pudo agregar el modelo.'
+    });
+  }
+};
+
+exports.addNameEquipment = async (req, res) => {
+  try {
+    const { Id, Name, function: func, aplication } = req.body;
+
+    if (Id) {
+      // Editar registro existente
+      const ne = await NameEquipment.findByPk(Id);
+      if (ne) {
+        ne.Name = Name;
+        ne.function = func;
+        ne.aplication = aplication;
+        await ne.save();
+      } else {
+        // Si no existe, crear nuevo (opcional)
+        await NameEquipment.create({ Name, function: func, aplication });
+      }
+    } else {
+      // Crear nuevo registro (Id no enviado porque es auto-incremental)
+      await NameEquipment.create({ Name, function: func, aplication });
+    }
+
+    res.redirect('/nameEquipment');
+  } catch (error) {
+    console.error("ERROR AL GUARDAR NAMEEQUIPMENT", error);
+    res.status(500).send('Error al guardar tipo de equipo');
+  }
+};
+
+exports.addStopOrder = async (req, res) => {
+  const { description, punctuation } = req.body;
+  try {
+    await StopOrder.create({ description, punctuation });
+    res.redirect('/stoporder');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/stoporder',
+      message: 'No se pudo agregar la razón de finalización.'
+    });
+  }
+};
+
+exports.addStopReason = async (req, res) => {
+  const { description, punctuation } = req.body;
+  try {
+    await StopReason.create({ Reason: description, punctuation });
+    res.redirect('/stopreason');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/stopreason',
+      message: 'No se pudo agregar la razón de paro.'
+    });
+  }
+};
+
+exports.addOrderType = async (req, res) => {
+  const { name } = req.body;
+  try {
+    await OrderType.create({ Name: name });
+    res.redirect('/ordertype');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/ordertype',
+      message: 'No se pudo agregar el tipo de orden.'
+    });
+  }
+};
+
+exports.addRepairStage = async (req, res) => {
+  const { status, functionalStatus } = req.body;
+  try {
+    await RepairStage.create({ Status: status, FuntionalStatus: functionalStatus });
+    res.redirect('/repairstage');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/repairstage',
+      message: 'No se pudo agregar el estado de reparación.'
+    });
+  }
+};
+
+exports.addReceptionStatus = async (req, res) => {
+  const { name } = req.body;
+  try {
+    await ReceptionStatus.create({ Name: name });
+    res.redirect('/receptionstatus');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/receptionstatus',
+      message: 'No se pudo agregar el estado de recepción.'
+    });
+  }
+};
+
+exports.addAcquisitionType = async (req, res) => {
+  const { name } = req.body;
+  try {
+    await AcquisitionType.create({ Name: name });
+    res.redirect('/acquisitiontype');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/acquisitiontype',
+      message: 'No se pudo agregar el tipo de adquisición.'
+    });
+  }
+};

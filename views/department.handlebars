@@ -90,7 +90,7 @@
                 </button>
                 <div class="login-logo">
                     
-                    <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
+                    <img src="images/LogoMedical.png" alt="Logo" />
                 </div>
                 <div class="login-form">
                         <div class="form-group">
@@ -98,14 +98,10 @@
                             <input type="text" name="Code" placeholder="Ingrese Código"  required class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class=" form-control-label">Departamento</label>
-                            <select name="Name"required id="select" class="form-control">
-                                    <option value="OR">OR</option>
-                                    <option value="Radiology">Radiología</option> 
-                                    <option value="ICU">Unidad de Terapia Intensiva</option>
-                                    <option value="CSSD">CSSD</option>
-                            </select>
+                            <label class="form-control-label">Departamento</label>
+                            <input type="text" name="Name" placeholder="Ingrese nombre del departamento" required class="form-control">
                         </div>
+
                         <div class="form-group">
                             <label class=" form-control-label">Localización</label>
                             <input type="text" name="Location" placeholder="Enter Location" required class="form-control">
@@ -117,3 +113,14 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+{{#if errorMessage}}
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: '¡Error!',
+        text: '{{errorMessage}}'
+    });
+</script>
+{{/if}}

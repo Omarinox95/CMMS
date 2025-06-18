@@ -1,0 +1,66 @@
+<head>
+  <style>
+    table thead {
+      background-color: #d2d6d9 !important;
+    }
+
+    table thead th {
+      color: #009f48 !important;
+    }
+
+    table tbody td {
+      color: #303655 !important;
+    }
+  </style>
+</head>
+
+<div class="main-content">
+  <div class="section__content section__content--p30">
+    <div class="container-fluid">
+      <div class="table-data__tool">
+        <h2>
+          <img src="/images/{{image}}" style="height: 50px; width:50px; border-radius: 50%;">
+          {{#if name}} Ordenes de Trabajo de: {{ name }} - Modelo: {{ model }} {{/if}}
+        </h2>
+      </div>
+
+      <div class="table-responsive m-b-40">
+        <table class="table table-borderless table-data3">
+          <thead>
+            <tr>
+                <th>Código</th>
+                <th>Fecha Inicio</th>
+                <th>Fecha Fin</th>
+                <th>Descripción</th>
+                <th>Prioridad</th>
+                <th>Costo</th>
+                <th>Tipo de Orden</th>      <!-- nuevo -->
+                <th>Razón de Parada</th>    <!-- nuevo -->
+            </tr>
+            </thead>
+            <tbody>
+            {{#if workOrders.length}}
+            {{#each workOrders}}
+                <tr>
+                <td>{{this.Code}}</td>
+                <td>{{this.StartDate}}</td>
+                <td>{{this.EndDate}}</td>
+                <td>{{this.Description}}</td>
+                <td>{{this.Priority}}</td>
+                <td>{{this.Cost}}</td>
+                <td>{{this.order_type.Name}}</td>     <!-- nuevo -->
+                <td>{{this.stopOrder.description}}</td> <!-- nuevo -->
+                </tr>
+            {{/each}}
+            </tbody>
+
+          {{else}}
+            <tbody>
+              <tr><td colspan="6" class="text-center">No se encontraron órdenes de trabajo.</td></tr>
+            </tbody>
+          {{/if}}
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

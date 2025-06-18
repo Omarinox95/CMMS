@@ -11,8 +11,8 @@ router.get('/breakDown/delete/:id',deleteController.deleteBreakDown);
 router.get('/workOrder/delete/:id',deleteController.deleteWorkOrder);
 router.get('/maintenance/delete/:id',deleteController.deleteMaintenance);
 
-
-
-
+router.get('/brand/delete/:id_brand', deleteController.deleteBrand);
+router.post('/nameequipment/delete/:id_nameE', deleteController.deleteNameEquipment);
+router.get('/stoporder/delete/:id', deleteController.deleteStopOrder);
 
 module.exports=router;

@@ -137,7 +137,7 @@
                 </button>
                 <div class="login-logo">
                    
-                    <img src="images/icon/logo-mini.png" alt="Cool Admin" /> <strong>MMS</strong></a>
+                    <img src="images/LogoMedical.png" alt="Logo" />
                 </div>
                 <div class="login-form">
                         <div class="form-group">
@@ -153,9 +153,16 @@
                             <label class=" form-control-label">Descripción</label>
                             <input type="text" required name="Description" placeholder="Ingresa la Descripción" class="form-control">
                         </div>
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="leerRfidBtn">
+                                Leer RFID
+                            </button>
+                        </div>
+
                        <div class="form-group">
                             <label class=" form-control-label">CodigoEquipo</label>
-                                <select name="EquipmentCode"required id="select" class="form-control">
+                                <select name="EquipmentCode"required id="equipmentSelect" class="form-control">
                                 {{#each Equipments}}
                                     <option value="{{this.Code}}">{{this.Name}} {{this.Code}} {{this.DepartmentName}}</option>
                                 {{/each}}
@@ -233,4 +240,33 @@
         </div>
     </div>     
 </div>  
+<script>
+  document.getElementById("leerRfidBtn").addEventListener("click", async () => {
+    try {
+      const response = await fetch("/api/ultimo-rfid"); // Ruta de tu API
+      const data = await response.json();
+
+      if (data && data.equipment) {
+        const equipmentSelect = document.getElementById("equipmentSelect");
+
+        // Seleccionar automáticamente el equipo leído por RFID
+        const optionToSelect = Array.from(equipmentSelect.options).find(
+          opt => opt.value === data.equipment.toString()
+        );
+
+        if (optionToSelect) {
+          equipmentSelect.value = optionToSelect.value;
+          alert(`Equipo detectado: ${data.name} (${data.equipment})`);
+        } else {
+          alert("Equipo leído no está en la lista.");
+        }
+      } else {
+        alert("No se recibió un equipo válido desde el lector RFID.");
+      }
+    } catch (error) {
+      console.error("Error al leer RFID:", error);
+      alert("Error al obtener datos del lector RFID.");
+    }
+  });
+</script>
 

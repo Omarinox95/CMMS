@@ -1,42 +1,105 @@
-<h2>Configuración de Preguntas Diarias</h2>
+<head>
+  <style>
+    /* Estilos para la cabecera de formulario */
+    h2 {
+      color: #009f48;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
 
-<form id="modeloForm" method="POST">
-  <label for="modeloSelect">Selecciona un modelo:</label>
-  <select id="modeloSelect" class="form-control">
-    <option value="">-- Selecciona --</option>
-    {{#each modelos}}
-      <option value="{{this.id}}">{{this.Model}}</option>
-    {{/each}}
-  </select>
+    /* Contenedor principal con padding */
+    .container-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #f7f9fc;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgb(0 0 0 / 0.1);
+    }
 
-  <div id="preguntas" style="margin-top: 20px; display:none;">
-    {{!-- Campos de preguntas --}}
-    {{!-- Se rellenan con JS --}}
+    /* Estilo para cada grupo de formulario */
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    /* Etiquetas */
+    label {
+      font-weight: 600;
+      color: #303655;
+    }
+
+    /* Inputs */
+    input.form-control, select.form-control {
+      border: 1px solid #d2d6d9;
+      border-radius: 5px;
+      padding: 8px 12px;
+      font-size: 1rem;
+      color: #303655;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Botones */
+    button {
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    button#editarBtn {
+      background-color: #f0ad4e;
+      color: white;
+      margin-right: 10px;
+    }
+
+    button#editarBtn:hover {
+      background-color: #ec971f;
+    }
+
+    button#guardarBtn {
+      background-color: #009f48;
+      color: white;
+      display: none;
+    }
+
+    button#guardarBtn:hover {
+      background-color: #007a33;
+    }
+
+  </style>
+</head>
+
+<div class="container-form">
+  <h2>Configuración de Preguntas Diarias</h2>
+
+  <form id="modeloForm" method="POST">
     <div class="form-group">
-      <label>Pregunta 1:</label>
-      <input type="text" name="Q1" class="form-control" disabled>
-    </div>
-    <div class="form-group">
-      <label>Pregunta 2:</label>
-      <input type="text" name="Q2" class="form-control" disabled>
-    </div>
-    <div class="form-group">
-      <label>Pregunta 3:</label>
-      <input type="text" name="Q3" class="form-control" disabled>
-    </div>
-    <div class="form-group">
-      <label>Pregunta 4:</label>
-      <input type="text" name="Q4" class="form-control" disabled>
-    </div>
-    <div class="form-group">
-      <label>Pregunta 5:</label>
-      <input type="text" name="Q5" class="form-control" disabled>
+      <label for="modeloSelect">Selecciona un modelo:</label>
+      <select id="modeloSelect" name="modelId" class="form-control" required>
+        <option value="">-- Selecciona --</option>
+        {{#each modelos}}
+          <option value="{{this.id}}">{{this.Model}}</option>
+        {{/each}}
+      </select>
     </div>
 
-    <button type="button" id="editarBtn" class="btn btn-warning">Editar</button>
-    <button type="submit" id="guardarBtn" class="btn btn-success" style="display:none;">Guardar</button>
-  </div>
-</form>
+    <div id="preguntas" style="margin-top: 20px; display:none;">
+      {{!-- Preguntas --}}
+      {{#each [1,2,3,4,5] as |num|}}
+      <div class="form-group">
+        <label for="Q{{num}}">Pregunta {{num}}:</label>
+        <input type="text" id="Q{{num}}" name="Q{{num}}" class="form-control" disabled>
+      </div>
+      {{/each}}
+
+      <button type="button" id="editarBtn">Editar</button>
+      <button type="submit" id="guardarBtn">Guardar</button>
+    </div>
+  </form>
+</div>
 
 <script>
   const select = document.getElementById('modeloSelect');
@@ -46,9 +109,17 @@
 
   select.addEventListener('change', async function () {
     const id = this.value;
-    if (!id) return;
+    if (!id) {
+      preguntasDiv.style.display = 'none';
+      return;
+    }
 
     const res = await fetch(`/confDayliQuestion/${id}`);
+    if (!res.ok) {
+      alert('Error al cargar las preguntas del modelo');
+      return;
+    }
+
     const data = await res.json();
 
     form.action = `/confDayliQuestion/update/${id}`;
@@ -56,7 +127,7 @@
     preguntasDiv.style.display = 'block';
 
     ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'].forEach(q => {
-      form[q].value = data[q];
+      form[q].value = data[q] || '';
       form[q].disabled = true;
     });
 

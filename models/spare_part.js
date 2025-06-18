@@ -10,10 +10,10 @@ const Agent_supplier = require('./agent_supplier');  // Asegúrate de importar c
 
 const SparePart = sequelize.define('SparePart', {
     Id: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,  // si aplica
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,  // si aplica
     },
     Code: {
         type: Sequelize.STRING,

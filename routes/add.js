@@ -10,6 +10,15 @@ router.post('/sparePart/add',addController.addSpareParts)
 router.post('/breakDown/add',addController.addBreakDown)
 router.post('/workOrder/add',addController.addWorkOrder)
 router.post('/maintenance/add',addController.addMaintenance)
+router.post('/brand/add', addController.addBrand);
+router.post('/model/add', addController.addModel);
+router.post('/nameequipment/add', addController.addNameEquipment);
+router.post('/stoporder/add', addController.addStopOrder);
 
+router.post('/stopreason/add', addController.addStopReason);
+router.post('/ordertype/add', addController.addOrderType);
+router.post('/repairstage/add', addController.addRepairStage);
+router.post('/receptionstatus/add', addController.addReceptionStatus);
+router.post('/acquisitiontype/add', addController.addAcquisitionType);
 
 module.exports=router;

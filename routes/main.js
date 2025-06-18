@@ -87,6 +87,13 @@ router.get('/api/model-questions/:modelId', async (req, res) => {
   }
 });
 
-
-
+router.get('/brand', homeController.brand); // o como se llame tu controlador
+router.get('/model', homeController.model);
+router.get('/nameequipment', homeController.nameequipment);
+router.get('/stoporder', homeController.stoporder);
+router.get('/stopreason', homeController.stopreason);
+router.get('/ordertype', homeController.ordertype);
+router.get('/repairstage', homeController.repairstage);
+router.get('/receptionstatus', homeController.receptionstatus);
+router.get('/acquisitiontype', homeController.acquisitiontype);
 module.exports=router;

@@ -1,0 +1,118 @@
+<div class="main-content">
+  <div class="section__content section__content--p30">
+    <div class="container-fluid">
+      <div class="page-wrapper">
+        <div class="page-content--bge5">
+          <div class="container">
+            <div class="login-wrap">
+              <div class="login-content">
+                <div class="login-logo">
+                  <img src="/images/LogoMedical.png" alt="Logo" />
+                </div>
+
+                <!-- Botón de ayuda arriba -->
+                <button type="button" class="btn btn-info mb-3" data-toggle="modal" data-target="#ayudaModal">
+                  ❓ Ayuda
+                </button>
+
+                <div class="login-form">
+                  <form action="/nameequipment/edit/{{type.id_nameE}}" method="POST">
+
+                    <div class="form-group">
+                      <label>ID</label>
+                      <input type="text" value="{{type.id_nameE}}" class="form-control" disabled>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Nombre</label>
+                      <input type="text" name="Name" value="{{type.Name}}" required class="form-control" autofocus>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Función</label>
+                      <input type="number" name="function" value="{{type.function}}" class="form-control" min="2" max="10" step="1" placeholder="Ej: 10 para Terapéutico - Apoyo vital">
+                    </div>
+
+                    <div class="form-group">
+                      <label>Aplicación</label>
+                      <input type="number" name="aplication" value="{{type.aplication}}" class="form-control" min="1" max="5" step="1" placeholder="Ej: 5 para riesgo de muerte del paciente">
+                    </div>
+
+                    <button type="submit" class="au-btn au-btn--block au-btn--green m-b-20">Actualizar</button>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Ayuda (igual al que ya tienes) -->
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="ayudaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="ayudaModalLabel">Ayuda para completar los campos</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <h5>Tabla de Función del Equipo (OMS)</h5>
+        <p>Utiliza esta tabla para definir el valor correcto del campo <strong>Función</strong>:</p>
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th>Puntuación</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>10</td><td>Terapéutico</td><td>Apoyo vital</td></tr>
+              <tr><td>9</td><td>Terapéutico</td><td>Cirugía y cuidados intensivos</td></tr>
+              <tr><td>8</td><td>Terapéutico</td><td>Fisioterapia y tratamiento</td></tr>
+              <tr><td>7</td><td>Diagnóstico</td><td>Control de cirugía y cuidados intensivos</td></tr>
+              <tr><td>6</td><td>Diagnóstico</td><td>Control fisiológico adicional y diagnóstico</td></tr>
+              <tr><td>5</td><td>Analítico</td><td>Análisis del laboratorio</td></tr>
+              <tr><td>4</td><td>Analítico</td><td>Accesorios del laboratorio</td></tr>
+              <tr><td>3</td><td>Otros</td><td>Computadoras y afines</td></tr>
+              <tr><td>2</td><td>Otros</td><td>Relacionados con el paciente y otros</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr>
+        <h5>Tabla de Puntuación del Riesgo Durante el Uso</h5>
+        <p>Para llenar el campo <strong>Aplicación</strong> considera estos niveles de riesgo:</p>
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th>Puntuación</th>
+                <th>Descripción del riesgo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>5</td><td>Riesgo de muerte del paciente</td></tr>
+              <tr><td>4</td><td>Posible lesión del paciente o el operador</td></tr>
+              <tr><td>3</td><td>Tratamiento inapropiado o error de diagnóstico</td></tr>
+              <tr><td>2</td><td>Daño al equipo</td></tr>
+              <tr><td>1</td><td>Sin riesgo significativo identificado</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,212 @@
+<head>
+  <style>
+    table thead {
+      background-color: #d2d6d9 !important;
+    }
+    table thead th {
+      color: #009f48 !important;
+    }
+    table tbody td {
+      color: #303655 !important;
+    }
+    @media print {
+      .print-btn {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<div class="main-content">
+  <div class="section__content section__content--p30">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="title-5 m-b-35">Tipos de Equipos</h3>
+
+          <!-- Botón imprimir -->
+          <button class="print-btn" onclick="printTable()" style="background-color: #009f48; color: white; border: none; padding: 10px 20px; margin-bottom: 20px; cursor: pointer; border-radius: 5px;">
+            🖸️ Imprimir Tabla
+          </button>
+          <button type="button" class="btn btn-info btn-sm mb-3" data-toggle="modal" data-target="#ayudaModal" 
+            style="display: block;">
+            ❓ Ayuda para entender los valores de la tabla
+            </button>
+
+          <div class="table-data__tool-right">
+            <a href="#" data-toggle="modal" data-target="#modalType" class="au-btn au-btn-icon au-btn--green au-btn--small">
+              <i class="zmdi zmdi-plus"></i> Tipo de Equipo
+            </a>
+          </div>
+
+          <div class="table-responsive table-responsive-data2">
+            <table class="table table-data2" id="typeTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Función</th>
+                  <th>Aplicación</th>
+                  <th></th>
+                </tr>
+              </thead>
+              {{#if hasTypes}}
+              <tbody>
+                {{#each nameEquipments}}
+                <tr class="tr-shadow">
+                  <td>{{this.id_nameE}}</td>
+                  <td>{{this.Name}}</td>
+                  <td>{{this.function}}</td>
+                  <td>{{this.aplication}}</td>
+                  <td>
+                    <div class="table-data-feature">
+                      <a href="/nameequipment/edit/{{this.id_nameE}}" class="item" data-toggle="tooltip" title="Editar">
+                        <i class="zmdi zmdi-edit"></i>
+                      </a>
+                     <form action="/nameequipment/delete/{{this.id_nameE}}" method="POST" style="display:inline">
+                      <button type="submit" class="item" data-toggle="tooltip" data-placement="top" title="Eliminar" onclick="return confirm('¿Eliminar este tipo de equipo?')" style="background:none; border:none; padding:0; cursor:pointer;">
+                        <i class="zmdi zmdi-delete"></i>
+                      </button>
+                    </form>
+
+                    </div>
+                  </td>
+                </tr>
+                <tr class="spacer"></tr>
+                {{/each}}
+              </tbody>
+              {{/if}}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Agregar Tipo de Equipo -->
+<div class="modal fade" id="modalType" tabindex="-1" role="dialog" aria-labelledby="modalTypeLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <!-- Botón cerrar modal -->
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position:absolute; top:10px; right:15px; font-size: 1.5rem;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <form method="POST" action="/nameequipment/add">
+          <div class="login-logo text-center mb-3">
+            <img src="/images/LogoMedical.png" alt="Logo" />
+          </div>
+
+          <!-- Botón ayuda arriba del formulario -->
+          <div class="d-flex justify-content-end mb-2">
+            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#ayudaModal">
+              ❓ Ayuda
+            </button>
+          </div>
+
+          <div class="login-form">
+
+            <div class="form-group">
+              <label>Nombre del Tipo de Equipo</label>
+              <input type="text" name="Name" required placeholder="Ej: Monitor Multiparámetro" class="form-control" autofocus>
+            </div>
+
+            <div class="form-group">
+              <label>Función</label>
+              <input type="number" name="function" class="form-control" min="2" max="10" step="1" placeholder="Ej: 10 para Terapéutico - Apoyo vital">
+            </div>
+
+            <div class="form-group">
+              <label>Aplicación</label>
+              <input type="number" name="aplication" class="form-control" min="1" max="5" step="1" placeholder="Ej: 5 para riesgo de muerte del paciente">
+            </div>
+
+            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Agregar Tipo de Equipo</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Ayuda -->
+<div class="modal fade" id="ayudaModal" tabindex="-1" role="dialog" aria-labelledby="ayudaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title" id="ayudaModalLabel">Ayuda para completar los campos</h5>
+        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Cerrar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <h5>Tabla de Función del Equipo (OMS)</h5>
+        <p>Utiliza esta tabla para definir el valor correcto del campo <strong>Función</strong>:</p>
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th>Puntuación</th>
+                <th>Categoría</th>
+                <th>Descripción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>10</td><td>Terapéutico</td><td>Apoyo vital</td></tr>
+              <tr><td>9</td><td>Terapéutico</td><td>Cirugía y cuidados intensivos</td></tr>
+              <tr><td>8</td><td>Terapéutico</td><td>Fisioterapia y tratamiento</td></tr>
+              <tr><td>7</td><td>Diagnóstico</td><td>Control de cirugía y cuidados intensivos</td></tr>
+              <tr><td>6</td><td>Diagnóstico</td><td>Control fisiológico adicional y diagnóstico</td></tr>
+              <tr><td>5</td><td>Analítico</td><td>Análisis del laboratorio</td></tr>
+              <tr><td>4</td><td>Analítico</td><td>Accesorios del laboratorio</td></tr>
+              <tr><td>3</td><td>Otros</td><td>Computadoras y afines</td></tr>
+              <tr><td>2</td><td>Otros</td><td>Relacionados con el paciente y otros</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <hr>
+        <h5>Descripción del Riesgo físico asociado con la aplicación clínica</h5>
+        <div class="table-responsive">
+          <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+              <tr>
+                <th>Descripción de Aplicación</th>
+                <th>Puntuación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Riesgo de muerte del paciente</td><td>5</td></tr>
+              <tr><td>Posible lesión del paciente o el operador</td><td>4</td></tr>
+              <tr><td>Tratamiento inapropiado o error de diagnóstico</td><td>3</td></tr>
+              <tr><td>Daño al equipo</td><td>2</td></tr>
+              <tr><td>Sin riesgo significativo identificado</td><td>1</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function printTable() {
+    var tableContent = document.getElementById('typeTable').outerHTML;
+    var printWindow = window.open('', '', 'height=600, width=800');
+    printWindow.document.write('<html><head><title>Imprimir Tabla</title>');
+    printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+    printWindow.document.write('<style>body {font-family: Arial, sans-serif;} table {width: 100%; border-collapse: collapse;} th, td {border: 1px solid #ddd; padding: 8px;} thead {background-color: #d2d6d9;} thead th {color: #009f48;} tbody td {color: #303655;}</style>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(tableContent);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+  }
+</script>

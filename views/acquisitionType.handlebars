@@ -1,0 +1,109 @@
+<head> 
+    <style>
+        table thead {
+            background-color: #d2d6d9 !important;
+        }
+        table thead th {
+            color: #009f48 !important;
+        }
+        table tbody td {
+            color: #303655 !important;
+        }
+        @media print {
+            .print-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="title-5 m-b-35">Tipos de Adquisición</h3>
+                    <button class="print-btn" onclick="printTable()" style="background-color: #009f48; color: white; border: none; padding: 10px 20px; margin-bottom: 20px; cursor: pointer; border-radius: 5px;">
+                        🖸️ Imprimir Tabla
+                    </button>
+                    <div class="table-data__tool-right">
+                        <a href="#" data-toggle="modal" data-target="#modalAcquisitionType" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                            <i class="zmdi zmdi-plus"></i>Tipo</a>
+                    </div>
+                    <div class="table-responsive table-responsive-data2">
+                        <table class="table table-data2" id="acquisitionTypeTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            {{#if hasTypes}}
+                            <tbody>
+                                {{#each types}}
+                                <tr class="tr-shadow">
+                                    <td>{{this.id}}</td>
+                                    <td>{{this.name}}</td>
+                                    <td>
+                                        <div class="table-data-feature">
+                                            <a href="/acquisitiontype/edit/{{this.id}}" class="item" data-toggle="tooltip" title="Editar">
+                                                <i class="zmdi zmdi-edit"></i>
+                                            </a>
+                                            <a href="/acquisitiontype/delete/{{this.id}}" class="item" data-toggle="tooltip" title="Eliminar">
+                                                <i class="zmdi zmdi-delete"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                                {{/each}}
+                            </tbody>
+                            {{/if}}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal AcquisitionType -->
+<div class="modal fade" id="modalAcquisitionType" tabindex="-1" role="dialog" aria-labelledby="modalAcquisitionTypeLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form method="POST" action="/acquisitiontype/add">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="login-logo">
+                        <img src="/images/LogoMedical.png" alt="Logo" />
+                    </div>
+                    <div class="login-form">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" name="name" required placeholder="Ingresa el nombre del tipo" class="form-control">
+                        </div>
+                        <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function printTable() {
+        var tableContent = document.getElementById('acquisitionTypeTable').outerHTML;
+        var printWindow = window.open('', '', 'height=600, width=800');
+        printWindow.document.write('<html><head><title>Imprimir Tabla</title>');
+        printWindow.document.write('<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">');
+        printWindow.document.write('<style>body {font-family: Arial, sans-serif;} table {width: 100%; border-collapse: collapse;} th, td {border: 1px solid #ddd; padding: 8px;} thead {background-color: #d2d6d9;} thead th {color: #009f48;} tbody td {color: #303655;}</style>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(tableContent);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>

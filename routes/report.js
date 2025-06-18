@@ -16,5 +16,6 @@ router.get('/report/equipment/maintenance/:Id',reportController.equipmentMainten
 router.get('/report/equipment/spareParts/:Id',reportController.equipmentSparePartsReport);
 router.get('/report/ppm/:code',reportController.PpmReport);
 router.get('/report/equipment/indicadores/:code', reportController.indicadoresPorEquipo);
+router.get('/report/equipment/workorders/:Id', reportController.equipmentWorkOrderReport);
 
 module.exports=router;

@@ -6,6 +6,7 @@ const BreakDown=require('../models/break_down')
 const WorkOrder=require('../models/work_order')
 const Maintenance = require('../models/maintenance')
 
+const { StopReason, OrderType, StopOrder, RepairStage, Brand, NameEquipment } = require('../models');
 
 exports.deleteAgentSupplier=(req,res)=>{
     id=req.params.id
@@ -80,3 +81,81 @@ exports.deleteAgentSupplier=(req,res)=>{
    .catch(err => console.log("ERROR!!!!!!",err) )
 }
 
+
+exports.deleteModel = (req, res) => {
+    const id = req.params.id;
+
+    Model.findByPk(id).then(model => {
+        if (model) return model.destroy();
+    }).then(() => res.redirect('/model'))
+      .catch(err => console.log("ERROR AL ELIMINAR MODELO", err));
+};
+
+
+exports.deleteStopOrder = (req, res) => {
+  StopOrder.findByPk(req.params.id).then(so => so && so.destroy())
+    .then(() => res.redirect('/stopOrder'))
+    .catch(err => console.log("ERROR AL ELIMINAR STOPORDER", err));
+};
+
+
+exports.deleteBrand = async (req, res) => {
+  try {
+    const id = req.params.id_brand;
+
+    const brand = await Brand.findByPk(id);
+    if (!brand) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Marca no encontrada',
+        message: 'No se encontró la marca para eliminar.'
+      });
+    }
+
+    await brand.destroy();
+
+    res.redirect('/brand');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al eliminar la marca.'
+    });
+  }
+};
+
+exports.deleteNameEquipment = async (req, res) => {
+  const id = req.params.id_nameE; // toma el id desde params
+
+  try {
+    const deleted = await NameEquipment.destroy({
+      where: { id_nameE: id }
+    });
+
+    if (deleted) {
+      res.redirect('/nameequipment');
+    } else {
+      res.status(404).send('Tipo de equipo no encontrado');
+    }
+  } catch (error) {
+    console.error('Error al eliminar:', error);
+    res.status(500).send('Error interno del servidor');
+  }
+};
+
+exports.deleteStopOrder = async (req, res) => {
+  const id = req.params.id;
+  try {
+    await StopOrder.destroy({ where: { id } });
+    res.redirect('/stoporder');
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/stoporder',
+      message: 'No se pudo eliminar la razón de finalización.'
+    });
+  }
+};

@@ -18,6 +18,7 @@ const PreventiveTask = require('../models'); // si no está ya importado
 const { Brand, NameEquipment, Model } = require('../models');
 const { OrderType, StopReason, RepairStage, StopOrder } = require('../models'); // ajusta el path si es necesario
 const { Op } = require('sequelize');
+
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
 }
@@ -418,6 +419,7 @@ exports.sparePart = (req, res) => {
         console.log(JSON.stringify(spareparts, null, 2));
         const sp = spareparts.map(sparepart => {
             return {
+                Id: sparepart.Id,
                 Code: sparepart.Code,
                 Name: sparepart.Name,
                 Amount: sparepart.Amount,
@@ -1269,32 +1271,6 @@ exports.home = async (req, res) => {
   }
 };
 
-/*exports.home = async (req, res) => {
-  try {
-    // Indicadores principales
-    const totalEquipos = await Equipment.count();
-    const costoTotal = await Equipment.sum('Cost');
-
-    // Costos por año de instalación
-    const costosPorAnio = await Equipment.findAll({
-      attributes: [
-        [Sequelize.fn('YEAR', Sequelize.col('InstallationDate')), 'anio'],
-        [Sequelize.fn('SUM', Sequelize.col('Cost')), 'total']
-      ],
-      group: [Sequelize.fn('YEAR', Sequelize.col('InstallationDate'))],
-      raw: true
-    });
-
-    res.render('home', {
-      totalEquipos,
-      costoTotal,
-      costosPorAnio
-    });
-  } catch (error) {
-    console.error('Error en controlador home:', error);
-    res.status(500).send('Error interno del servidor');
-  }
-};*/
 
 // Mostrar vista con modelos y preguntas
 exports.getConfDayliQuestion = async (req, res) => {
@@ -1340,4 +1316,252 @@ exports.postConfDayliQuestion = async (req, res) => {
     console.error(error);
     res.status(500).send('Error al actualizar las preguntas');
   }
+};
+
+
+exports.brand = (req, res) => {
+    Brand.findAll()
+        .then(brands => {
+            const b = brands.map(brand => {
+                return {
+                     id_brand: brand.id_brand,  // ✅ Campo real
+                    Brand: brand.Brand 
+                };
+            });
+
+            res.render('brand', {
+                pageTitle: 'Brand',
+                Brands: true,
+                brands: b,
+                hasBrands: b.length > 0
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            res.render('error', {
+                layout: false,
+                pageTitle: 'Error',
+                href: '/home',
+                message: 'Lo sentimos, no se pudieron obtener las marcas.'
+            });
+        });
+};
+
+exports.model = async (req, res) => {
+  try {
+    // Obtener todos los modelos con su marca asociada
+    const models = await Model.findAll({
+      include: [{
+        model: Brand,
+        as: 'brand',
+        attributes: ['id_brand', 'Brand']  // traer id y nombre para mayor comodidad
+      }]
+    });
+
+    // Obtener todas las marcas para el dropdown
+    const brands = await Brand.findAll({
+      attributes: ['id_brand', 'Brand']
+    });
+
+    // Mapear modelos para enviar sólo datos simples
+    const m = models.map(model => {
+      return {
+        id: model.id,
+        Model: model.Model,
+        brandName: model.brand ? model.brand.Brand : 'Sin Marca',
+        Q1: model.Q1,
+        Q2: model.Q2,
+        Q3: model.Q3,
+        Q4: model.Q4,
+        Q5: model.Q5
+      };
+    });
+
+    // Convertir marcas a JSON plano (opcional, pero recomendado)
+    const brandsPlain = brands.map(b => b.toJSON());
+
+    res.render('model', {
+      pageTitle: 'Modelos',
+      Models: true,
+      models: m,
+      brands: brandsPlain,
+      hasModels: m.length > 0
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener los modelos y marcas.'
+    });
+  }
+};
+
+exports.nameequipment = async (req, res) => {
+  try {
+    // Obtener todos los tipos de equipo
+    const nameEquipments = await NameEquipment.findAll();
+
+    // Convertir a objetos planos (buena práctica para Handlebars)
+    const nameEquipmentsPlain = nameEquipments.map(type => type.toJSON());
+
+    res.render('nameequipment', {
+      pageTitle: 'Tipos de Equipos',
+      NameEquipment: true,
+      nameEquipments: nameEquipmentsPlain,
+      hasTypes: nameEquipmentsPlain.length > 0
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener los tipos de equipo.'
+    });
+  }
+};
+
+exports.stoporder = (req, res) => {
+  StopOrder.findAll()
+    .then(stoporders => {
+      const s = stoporders.map(so => {
+        return {
+          id: so.id,
+          description: so.description,
+          punctuation: so.punctuation
+        };
+      });
+
+      res.render('stopOrder', {
+        pageTitle: 'Stop Orders',
+        stopOrder: true,
+        stoporders: s,
+        hasStopOrders: s.length > 0
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      res.render('error', {
+        layout: false,
+        pageTitle: 'Error',
+        href: '/home',
+        message: 'Lo sentimos, no se pudieron obtener las razones de finalización.'
+      });
+    });
+};
+
+exports.stopreason = (req, res) => {
+  StopReason.findAll()
+    .then(reasons => {
+      const list = reasons.map(r => ({
+        id: r.id_StopReason,
+        description: r.Reason,
+        punctuation: r.punctuation
+      }));
+      res.render('stopReason', {
+        pageTitle: 'Razones de Paro',
+        stopReason: true,
+        reasons: list,
+        hasReasons: list.length > 0
+      });
+    })
+    .catch(err => res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener las razones de paro.'
+    }));
+};
+
+exports.ordertype = (req, res) => {
+  OrderType.findAll()
+    .then(types => {
+      const list = types.map(t => ({
+        id: t.id_typeW,
+        name: t.Name
+      }));
+      res.render('orderType', {
+        pageTitle: 'Tipos de Orden',
+        orderType: true,
+        types: list,
+        hasTypes: list.length > 0
+      });
+    })
+    .catch(err => res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener los tipos de orden.'
+    }));
+};
+
+exports.repairstage = (req, res) => {
+  RepairStage.findAll()
+    .then(stages => {
+      const list = stages.map(s => ({
+        id: s.id_RepairStage,
+        status: s.Status,
+        functionalStatus: s.FuntionalStatus
+      }));
+      res.render('repairStage', {
+        pageTitle: 'Estados de Reparación',
+        repairStage: true,
+        stages: list,
+        hasStages: list.length > 0
+      });
+    })
+    .catch(err => res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener los estados de reparación.'
+    }));
+};
+
+exports.receptionstatus = (req, res) => {
+  ReceptionStatus.findAll()
+    .then(statuses => {
+      const list = statuses.map(s => ({
+        id: s.Id,
+        name: s.Name
+      }));
+      res.render('receptionStatus', {
+        pageTitle: 'Estados de Recepción',
+        receptionStatus: true,
+        statuses: list,
+        hasStatuses: list.length > 0
+      });
+    })
+    .catch(err => res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener los estados de recepción.'
+    }));
+};
+
+exports.acquisitiontype = (req, res) => {
+  AcquisitionType.findAll()
+    .then(types => {
+      const list = types.map(t => ({
+        id: t.Id,
+        name: t.Name
+      }));
+      res.render('acquisitionType', {
+        pageTitle: 'Tipos de Adquisición',
+        acquisitionType: true,
+        types: list,
+        hasTypes: list.length > 0
+      });
+    })
+    .catch(err => res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'No se pudieron obtener los tipos de adquisición.'
+    }));
 };

@@ -1,3 +1,4 @@
+const OrderType = require('../models/OrderType')
 const Agent_supplier = require('../models/agent_supplier')
 const { sparePart } = require('./home')
 
@@ -13,9 +14,11 @@ PPM =require('../models/ppm')
 PPMQuestions=require('../models/ppm_questions')
 EquipmentSparePart = require('../models/equipmentsparepart');
 Model = require('../models/model');
+WorkOrder=require('../models/work_order');
+StopOrder = require('../models/stopOrder');
 //const { Equipment, SparePart, EquipmentSparePart, Agent_supplier } = require('../models');
 const { Op } = require('sequelize');
-
+StopReason = require('../models/StopReason');
 const calcularHorasTotales = (fechaInicio, fechaFin) => {
   const diffEnHoras = Math.abs(new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60);
   return diffEnHoras;
@@ -32,7 +35,7 @@ exports.indicadoresPorEquipo = async (req, res) => {
     if (!equipo) {
       return res.status(404).send('Equipo no encontrado');
     }
-
+    
     const fallas = await BreakDown.findAll({ where: { EquipmentCode: code } });
     console.log('Cantidad de fallas encontradas:', fallas.length);
     let tiempoTotalReparacion = 0;
@@ -63,19 +66,76 @@ exports.indicadoresPorEquipo = async (req, res) => {
       ? (Math.exp(-1 / (horasTotalesOperacion / numFallos)) * 100).toFixed(2)
       : '100';
 
+    const workOrders = await WorkOrder.findAll({ where: { EquipmentCode: code }, include:[{model: OrderType, attributes:['Name']}, { model: StopReason, attributes: ['Reason'] }] });
+    const conteoTipoW = {};
+    workOrders.forEach(wo => {
+      const tipo = wo.OrderType ? wo.OrderType.Name : 'Desconocido';
+      conteoTipoW[tipo] = (conteoTipoW[tipo] || 0) + 1;
+    });
+
+    let arregloTipoW = Object.entries(conteoTipoW)
+      .map(([tipo, cantidad]) => ({ tipo, cantidad }));
+
+    arregloTipoW.sort((a, b) => b.cantidad - a.cantidad);
+
+    const totalWorkOrders = workOrders.length;
+    let acumulado = 0;
+    arregloTipoW = arregloTipoW.map(item => {
+      acumulado += item.cantidad;
+      return {
+        ...item,
+        porcentaje: ((item.cantidad / totalWorkOrders) * 100).toFixed(2),
+        acumulado: ((acumulado / totalWorkOrders) * 100).toFixed(2)
+      };
+    });
+
+    const conteoRazones = {};
+workOrders.forEach(wo => {
+  const razon = wo.StopReason ? wo.StopReason.Reason : 'Sin razón registrada';
+  conteoRazones[razon] = (conteoRazones[razon] || 0) + 1;
+});
+
+let arregloRazones = Object.entries(conteoRazones)
+  .map(([tipo, cantidad]) => ({ tipo, cantidad }));
+
+arregloRazones.sort((a, b) => b.cantidad - a.cantidad);
+
+const total = arregloRazones.reduce((sum, item) => sum + item.cantidad, 0);
+let acumuladoRazones  = 0;
+arregloRazones = arregloRazones.map(item => {
+  acumuladoRazones  += item.cantidad;
+  return {
+    ...item,
+    porcentaje: ((item.cantidad / total) * 100).toFixed(2),
+    acumulado: ((acumuladoRazones  / total) * 100).toFixed(2)
+  };
+});
+
     // ================== NUEVO BLOQUE: Indicadores Mensuales ==================
        // Año actual para análisis
     const anioAnalisis = new Date().getFullYear();
+    const mesActual = new Date().getMonth(); // Mes actual (0-based)
 
     const indicadoresMensuales = {};
 console.log('Comenzando análisis mensual');
     for (let mes = 0; mes < 12; mes++) {
-    const fallasMes = fallas.filter(f => {
-        if (!f.DATE) return false; // Ignorar fallas sin fecha
-        const fecha = new Date(f.DATE);
-        console.log('Fecha falla:', f.DATE, '=> JS Date:', fecha, 'Mes esperado:', mes, 'Mes de fecha:', fecha.getMonth());
-        return fecha.getFullYear() === anioAnalisis && fecha.getMonth() === mes;
-    });
+      if (mes > mesActual) {
+        // Mes futuro: no calculamos, asignamos null o 0 para evitar problemas en frontend
+        indicadoresMensuales[mes] = {
+          mes,
+          MTBF: null,
+          MTTR: null,
+          disponibilidad: null,
+          confiabilidad: null
+        };
+      } else {
+        // Mes válido, calculamos indicadores
+        const fallasMes = fallas.filter(f => {
+          if (!f.DATE) return false; // Ignorar fallas sin fecha
+          const fecha = new Date(f.DATE);
+          console.log('Fecha falla:', f.DATE, '=> JS Date:', fecha, 'Mes esperado:', mes, 'Mes de fecha:', fecha.getMonth());
+          return fecha.getFullYear() === anioAnalisis && fecha.getMonth() === mes;
+        });
 console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
     let tiempoReparacionMes = 0;
     for (const falla of fallasMes) {
@@ -104,7 +164,7 @@ console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
         confiabilidad: parseFloat(confiabilidadMes)
     };
     }
-
+  }
     // ========================================================================
 
     res.render('indicadores', {
@@ -120,7 +180,8 @@ console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
       tiempoTotalReparacion: tiempoTotalReparacion.toFixed(2),
       code,
       //indicadoresMensuales: JSON.stringify(Object.values(indicadoresMensuales))
-
+      paretoData: arregloTipoW,
+      paretoStopReasonData: arregloRazones, // el nuevo
       indicadoresMensuales: Object.values(indicadoresMensuales)
     });
 
@@ -592,3 +653,69 @@ exports.equipmentSparePartsReport = (req, res) => {
     });
   };
   
+
+exports.equipmentWorkOrderReport = async (req, res) => {
+  const code = req.params.Id;
+  let name = null;
+  let model = null;
+  let image = null;
+
+  try {
+    const eq = await Equipment.findByPk(code, {
+      include: [{ model: Model, as: 'model', attributes: ['Model'] }] // para traer el nombre del modelo si quieres
+    });
+    if (!eq) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Equipo no encontrado',
+        href: '/equipment',
+        message: 'No se encontró el equipo solicitado.',
+      });
+    }
+
+    name = eq.Name;
+    model = eq.model ? eq.model.Model : null;
+    image = eq.Image;
+
+    const workorders = await WorkOrder.findAll({
+      where: { EquipmentCode: code },
+      include: [
+        { model: OrderType, attributes: ['Name'] },
+        { model: StopOrder, as: 'stopOrder', attributes: ['description'] }
+      ]
+    });
+
+    const wos = workorders.map(wo => ({
+      Code: wo.Code,
+      StartDate: wo.StartDate,
+      EndDate: wo.EndDate,
+      Description: wo.Description,
+      Cost: wo.Cost,
+      Priority: wo.Priority,
+      id_typeW: wo.id_typeW,         // 👈 añadimos esto
+      id_StopOrder: wo.id_StopOrder, 
+      OrderType: wo.OrderType,   // objeto con .Name
+      stopOrder: wo.stopOrder // 👈 y esto
+    }));
+
+    res.render('equipmentWorkOrderReport', {
+      layout: 'equipmentReportLayout',
+      pageTitle: 'Work Orders',
+      code,
+      WO: true,
+      workOrders: wos,
+      hasWorkOrders: wos.length > 0,
+      name,
+      model,
+      image
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/equipment',
+      message: 'Ocurrió un error al obtener las órdenes de trabajo.'
+    });
+  }
+};

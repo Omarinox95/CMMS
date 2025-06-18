@@ -7,7 +7,8 @@ const WorkOrder =require('../models/work_order');
 const Maintenance =require('../models/maintenance');
 const Category = require('../models/category');
 
-const { StopReason, OrderType, StopOrder, RepairStage } = require('../models');
+
+const { StopReason, OrderType, StopOrder, ReceptionStatus, AcquisitionType, RepairStage, Brand, Model, NameEquipment } = require('../models');
 
 
 
@@ -159,6 +160,7 @@ exports.editSparePart = (req, res) => {
 
       // Preparar los datos del repuesto
       const sp = {
+         Id : sparePart.Id,
          Name: sparePart.Name,
          Code: sparePart.Code,
          Amount: sparePart.Amount,
@@ -348,3 +350,452 @@ exports.editMaintenance=(req,res)=>{
      .catch(err=>console.log("errorrrrr",err))
 
 }
+
+
+exports.editNameEquipment = (req, res) => {
+  const id = req.params.id;
+  NameEquipment.findByPk(id).then(ne => {
+    if (!ne) throw new Error('No encontrado');
+    res.render('editNameEquipment', {
+      layout: 'main-layout.handlebars',
+      pageTitle: 'Editar Tipo de Equipo',
+      nameEquipment: ne,
+      NAMEEQUIPMENT: true
+    });
+  }).catch(err => res.render('error', {
+    layout: false,
+    pageTitle: 'Error',
+    href: '/nameEquipment',
+    message: 'No se pudo cargar el tipo de equipo'
+  }));
+};
+
+
+exports.getEditBrand = async (req, res) => {
+  try {
+    const id = req.params.id_brand;  // debe ser exactamente el nombre que usas en la ruta
+    const brand = await Brand.findByPk(id);
+    console.log(brand);
+    if (!brand) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Marca no encontrada',
+        message: 'La marca que intentas editar no existe.'
+      });
+    }
+
+    res.render('editBrand', {
+      pageTitle: 'Editar Marca',
+      brand: {
+        id_brand: brand.id_brand,
+        Brand: brand.Brand
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al cargar la marca.'
+    });
+  }
+};
+
+exports.postEditBrand = async (req, res) => {
+  try {
+    const id = req.params.id_brand;
+    const { Brand: newName } = req.body;
+
+    const brand = await Brand.findByPk(id);
+    if (!brand) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Marca no encontrada',
+        message: 'No se encontró la marca para actualizar.'
+      });
+    }
+
+    brand.Brand = newName;
+    await brand.save();
+
+    res.redirect('/brand');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al actualizar la marca.'
+    });
+  }
+};
+
+exports.getEditModel = async (req, res) => {
+  try {
+    const id = req.params.model_id;
+
+    const modelInstance = await Model.findByPk(id, {
+      include: [{
+        model: Brand,
+        as: 'brand',
+        attributes: ['id_brand', 'Brand']
+      }]
+    });
+
+    if (!modelInstance) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Modelo no encontrado',
+        message: 'El modelo que intentas editar no existe.'
+      });
+    }
+
+    // Obtener todas las marcas como objetos planos
+    const brandInstances = await Brand.findAll({ attributes: ['id_brand', 'Brand'] });
+    const brands = brandInstances.map(brand => brand.get({ plain: true }));
+
+    // Convertir modelo a objeto plano
+    const model = modelInstance.get({ plain: true });
+
+    res.render('editModel', {
+      pageTitle: 'Editar Modelo',
+      model: {
+        id: model.id,
+        Model: model.Model,
+        id_brand: model.id_brand,
+        Q1: model.Q1,
+        Q2: model.Q2,
+        Q3: model.Q3,
+        Q4: model.Q4,
+        Q5: model.Q5
+      },
+      brands
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al cargar el modelo.'
+    });
+  }
+};
+
+exports.postEditModel = async (req, res) => {
+  try {
+    const id = req.params.model_id;
+    const { Model: modelName, id_brand, Q1, Q2, Q3, Q4, Q5 } = req.body;
+
+    const model = await Model.findByPk(id);
+    if (!model) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Modelo no encontrado',
+        message: 'No se encontró el modelo para actualizar.'
+      });
+    }
+
+    // Actualizar campos
+    model.Model = modelName;
+    model.id_brand = id_brand || null;
+    model.Q1 = Q1;
+    model.Q2 = Q2;
+    model.Q3 = Q3;
+    model.Q4 = Q4;
+    model.Q5 = Q5;
+
+    await model.save();
+
+    res.redirect('/model');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al actualizar el modelo.'
+    });
+  }
+};
+
+exports.getEditNameequipment = async (req, res) => { 
+  try {
+    const id = req.params.id_nameE;
+
+    const type = await NameEquipment.findByPk(id);
+    if (!type) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Tipo de equipo no encontrado',
+        message: 'El tipo de equipo que intentas editar no existe.'
+      });
+    }
+
+    const typePlain = type.get({ plain: true });
+
+    res.render('editNameequipment', {
+      pageTitle: 'Editar Tipo de Equipo',
+      type: typePlain
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al cargar el tipo de equipo.'
+    });
+  }
+};
+
+exports.postEditNameequipment = async (req, res) => {
+  try {
+    const id = req.params.id_nameE;
+    // "function" es palabra reservada en JS, por eso renombramos aquí con "func"
+    const { Name, function: func, aplication } = req.body;
+
+    const type = await NameEquipment.findByPk(id);
+    if (!type) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Tipo de equipo no encontrado',
+        message: 'No se encontró el tipo de equipo para actualizar.'
+      });
+    }
+
+    // Actualizar campos
+    type.Name = Name;
+    type.function = func;
+    type.aplication = aplication;
+
+    await type.save();
+
+    res.redirect('/nameequipment'); // O la ruta que uses para listar
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al actualizar el tipo de equipo.'
+    });
+  }
+};
+
+exports.getEditStopOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const stoporder = await StopOrder.findByPk(id);
+    
+    if (!stoporder) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Razón no encontrada',
+        message: 'La razón que intentas editar no existe.',
+      });
+    }
+
+    const stopPlain = stoporder.get({ plain: true });
+
+    res.render('editStopOrder', {
+      pageTitle: 'Editar Razón de Finalización',
+      stoporder: stopPlain,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al cargar la razón de finalización.',
+    });
+  }
+};
+
+exports.postEditStopOrder = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { description, punctuation } = req.body;
+
+    const stoporder = await StopOrder.findByPk(id);
+    if (!stoporder) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Razón no encontrada',
+        message: 'No se encontró la razón para actualizar.',
+      });
+    }
+
+    stoporder.description = description;
+    stoporder.punctuation = punctuation;
+    await stoporder.save();
+
+    res.redirect('/stoporder');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      message: 'Error al actualizar la razón de finalización.',
+    });
+  }
+};
+
+exports.getEditStopReason = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const reason = await StopReason.findByPk(id);
+    if (!reason) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Razón no encontrada', message: 'La razón no existe.' });
+    }
+    res.render('editStopReason', { pageTitle: 'Editar Razón de Creación', stopreason: reason.get({ plain: true }) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al cargar la razón.' });
+  }
+};
+
+exports.postEditStopReason = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { Reason, punctuation } = req.body;
+    const reason = await StopReason.findByPk(id);
+    if (!reason) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Razón no encontrada', message: 'No se encontró la razón para actualizar.' });
+    }
+    reason.Reason = Reason;
+    reason.punctuation = punctuation;
+    await reason.save();
+    res.redirect('/stopreason');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al actualizar la razón.' });
+  }
+};
+
+// ---------------------------- ORDER TYPE ----------------------------
+exports.getEditOrderType = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const type = await OrderType.findByPk(id);
+    if (!type) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Tipo de Orden no encontrado', message: 'El tipo de orden no existe.' });
+    }
+    res.render('editOrderType', { pageTitle: 'Editar Tipo de Orden', ordertype: type.get({ plain: true }) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al cargar el tipo de orden.' });
+  }
+};
+
+exports.postEditOrderType = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { Name } = req.body;
+    const type = await OrderType.findByPk(id);
+    if (!type) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Tipo de Orden no encontrado', message: 'No se encontró el tipo de orden para actualizar.' });
+    }
+    type.Name = Name;
+    await type.save();
+    res.redirect('/ordertype');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al actualizar el tipo de orden.' });
+  }
+};
+
+// ---------------------------- REPAIR STAGE ----------------------------
+exports.getEditRepairStage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const stage = await RepairStage.findByPk(id);
+    if (!stage) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Etapa de reparación no encontrada', message: 'No existe la etapa de reparación.' });
+    }
+    res.render('editRepairStage', { pageTitle: 'Editar Estado de Reparación', repairstage: stage.get({ plain: true }) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al cargar el estado de reparación.' });
+  }
+};
+
+exports.postEditRepairStage = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { Status, FuntionalStatus } = req.body;
+    const stage = await RepairStage.findByPk(id);
+    if (!stage) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Etapa no encontrada', message: 'No se encontró la etapa para actualizar.' });
+    }
+    stage.Status = Status;
+    stage.FuntionalStatus = FuntionalStatus;
+    await stage.save();
+    res.redirect('/repairstage');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al actualizar la etapa.' });
+  }
+};
+
+// ---------------------------- RECEPTION STATUS ----------------------------
+exports.getEditReceptionStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const status = await ReceptionStatus.findByPk(id);
+    if (!status) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Estado no encontrado', message: 'No existe el estado de recepción.' });
+    }
+    res.render('editReceptionStatus', { pageTitle: 'Editar Estado de Recepción', receptionstatus: status.get({ plain: true }) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al cargar el estado de recepción.' });
+  }
+};
+
+exports.postEditReceptionStatus = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { Name } = req.body;
+    const status = await ReceptionStatus.findByPk(id);
+    if (!status) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Estado no encontrado', message: 'No se encontró el estado para actualizar.' });
+    }
+    status.Name = Name;
+    await status.save();
+    res.redirect('/receptionstatus');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al actualizar el estado.' });
+  }
+};
+
+// ---------------------------- ACQUISITION TYPE ----------------------------
+exports.getEditAcquisitionType = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const type = await AcquisitionType.findByPk(id);
+    if (!type) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Tipo no encontrado', message: 'No existe el tipo de adquisición.' });
+    }
+    res.render('editAcquisitionType', { pageTitle: 'Editar Tipo de Adquisición', acquisitiontype: type.get({ plain: true }) });
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al cargar el tipo de adquisición.' });
+  }
+};
+
+exports.postEditAcquisitionType = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { Name } = req.body;
+    const type = await AcquisitionType.findByPk(id);
+    if (!type) {
+      return res.status(404).render('error', { layout: false, pageTitle: 'Tipo no encontrado', message: 'No se encontró el tipo para actualizar.' });
+    }
+    type.Name = Name;
+    await type.save();
+    res.redirect('/acquisitiontype');
+  } catch (error) {
+    console.error(error);
+    res.status(500).render('error', { layout: false, pageTitle: 'Error', message: 'Error al actualizar el tipo.' });
+  }
+};
+
