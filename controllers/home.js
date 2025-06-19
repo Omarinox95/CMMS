@@ -14,7 +14,7 @@ const moment=require('moment')
 const Category = require('../models/category');
 const ReceptionStatus = require('../models/ReceptionStatus');  // Agrega esta línea
 const AcquisitionType = require('../models/AcquisitionType');  // Y esta línea
-const PreventiveTask = require('../models'); // si no está ya importado
+const PreventiveTask = require('../models/PreventiveTask'); // si no está ya importado
 const { Brand, NameEquipment, Model } = require('../models');
 const { OrderType, StopReason, RepairStage, StopOrder } = require('../models'); // ajusta el path si es necesario
 const { Op } = require('sequelize');
@@ -139,7 +139,8 @@ exports.ppmEngineer=(req,res) =>{
             return {
                 Name:report.Equipment.Name,
                 Code:report.Equipment.Code,
-                Department:report.Equipment.Department.Name
+                Department: report.Equipment.Department ? report.Equipment.Department.Name : 'Sin departamento'
+
             }
         })
         ClinicalEngineer.findByPk(engineerId).then(engineer => {
@@ -232,7 +233,7 @@ exports.ppmEngineerEquipmentPost = (req, res) => {
     const date = req.body.DATE;
     const equipmentId = req.params.Code;
     const engineerId = req.session.DSSN;
-
+  
     let q1 = req.body.Q1 == "on" ? "on" : "off";
     let q2 = req.body.Q2 == "on" ? "on" : "off";
     let q3 = req.body.Q3 == "on" ? "on" : "off";
@@ -245,6 +246,8 @@ exports.ppmEngineerEquipmentPost = (req, res) => {
     const n4 = req.body.N4;
     const n5 = req.body.N5;
 
+    const signature = req.body.signature;
+
     Equipment.findByPk(equipmentId).then(equipment => {
         if (equipment) {
             ClinicalEngineer.findByPk(engineerId).then(clinicalengineer => {
@@ -254,7 +257,8 @@ exports.ppmEngineerEquipmentPost = (req, res) => {
                         Q1: q1, Q2: q2, Q3: q3, Q4: q4, Q5: q5,
                         N1: n1, N2: n2, N3: n3, N4: n4, N5: n5,
                         EquipmentCode: equipmentId,
-                        ClinicalEnginnerDSSN: engineerId
+                        ClinicalEnginnerDSSN: engineerId,
+                        signature: signature
                     }).then(async ppm => {
                         // 🔁 Aquí actualizamos la tarea a "Finalizada"
                         await PreventiveTask.update(
@@ -266,13 +270,15 @@ exports.ppmEngineerEquipmentPost = (req, res) => {
                                 }
                             }
                         );
-                        res.redirect('/engineer/ppm');
+                        //res.redirect('/engineer/ppm');
+                        res.redirect('/preventive/clinical/calendar');
+
                     });
                 } else {
                     res.render('error', {
                         layout: false,
                         pageTitle: 'Error',
-                        href: '/engineer/ppm',
+                        href: '/preventive/clinical/calendar',
                         message: 'Sorry !!! Could Not Get this Engineer'
                     });
                 }
@@ -281,7 +287,7 @@ exports.ppmEngineerEquipmentPost = (req, res) => {
             res.render('error', {
                 layout: false,
                 pageTitle: 'Error',
-                href: '/engineer/ppm',
+                href: '/preventive/clinical/calendar',
                 message: 'Sorry !!! Could Not Get this Equipment'
             });
         }
@@ -974,7 +980,7 @@ PPM.findAll({include:[{model:Equipment,include:[{model:PpmQuestions}]},{model:Cl
         return {
         Code:report.Code,
         DATE:report.DATE,
-        Engineer:report.ClinicalEnginner.FName+' '+report.ClinicalEnginner.LName,
+        Engineer:report.ClinicalEngineer.FName+' '+report.ClinicalEngineer.LName,
         EquipmentName:report.Equipment.Name,
         EquipmentCode:report.Equipment.Code,
         EquipmentModel:report.Equipment.Model,

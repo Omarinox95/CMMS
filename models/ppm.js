@@ -52,7 +52,12 @@ N4:{
 N5:{
     type:Sequelize.TEXT,
     allowNull:true,
+},
+signature: {
+    type: Sequelize.TEXT,
+    allowNull: true
 }
+
 
 })
 module.exports=Ppm

@@ -92,6 +92,12 @@
                 <div class="section__content section__content--p30">
                     <div class="container-fluid">
                         <div class="header-wrap">
+                            <button class="hamburger hamburger--slider d-lg-none" type="button" data-toggle="collapse" data-target="#mobileMenu" aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+
                             <form class="form-header" action="" method="POST">
                                 
                             </form>
@@ -134,6 +140,28 @@
                 </div>
                 
             </header>
+            <div class="collapse d-lg-none bg-light" id="mobileMenu" style="padding: 1rem;">
+    <nav>
+        <ul class="list-unstyled navbar__list mb-0">
+            <li class="{{#if DI}}active{{/if}} has-sub">
+                <a href="/engineer/dialyInspection">
+                    <i class="fas fa-copy"></i> Inspecciones Diarias
+                </a>
+            </li>
+            <li class="{{#if PPMSchedule}}active{{/if}} has-sub">
+                <a href="/preventive/clinical/calendar">
+                    <i class="fas fa-calendar-alt"></i> Calendario MP
+                </a>
+            </li>
+            <li class="{{#if WO}}active{{/if}} has-sub">
+                <a href="/engineer/workOrder">
+                    <i class="fas fa-copy"></i> Ordenes de Trabajo
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
             <!-- HEADER DESKTOP-->
 
             <!-- MAIN CONTENT-->

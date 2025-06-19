@@ -25,7 +25,7 @@
                 <img src="images/LogoMedical.png" />
             </div>
             <h3 class="title-3 m-b-30">
-            <i class="zmdi zmdi-account-calendar"></i>PPM</h3>
+            <img src="images/LogoMedical.png" />
             <div class="card-body">
                   <div class="card-text">Fecha:  {{ report.DATE}}</div>
                 <div class="card-text">Equipo: {{ report.EquipmentName}} ,   Modelo: {{ report.EquipmentModel}}</div>
@@ -93,6 +93,15 @@
                                     </tr>
                                 </thead>
                     </table>
+                    <div class="text-center mt-4">
+                        <h5>Firma del Ingeniero Clínico</h5>
+                        {{#if report.signature}}
+                            <img src="{{report.signature}}" alt="Firma del técnico" style="border: 1px solid #000; max-width: 400px; padding: 5px; border-radius: 10px;">
+                        {{else}}
+                            <p><em>No se registró ninguna firma para este reporte.</em></p>
+                        {{/if}}
+                    </div>
+
                 </div>
             </div>
         </div>

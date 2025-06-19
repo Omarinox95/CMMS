@@ -36,14 +36,6 @@
                             <input type="date"  required name="DATE" placeholder="Enter Date" class="form-control">
                         </div>
                     </div>
-                    {{!-- <div class="row form-group">
-                        <div class="col col-md-3">
-                            <label for="text-input" class=" form-control-label">Device:</label>
-                        </div>
-                        <div class="col col-sm-3">
-                            <input type="text" required name="Device" placeholder="Enter Device Code" class="form-control">
-                        </div>
-                    </div> --}}
             </div>
             
             <div class="top-campaign">
@@ -118,12 +110,15 @@
                                 </tr>
                                 
                             </thead>
-                              <!--  <tr>
-                                    <td>
+                              <h5>Firma del Ingeniero Clínico:</h5>
+                                <canvas id="signature-pad" width="400" height="200" style="border: 1px solid #000;"></canvas>
+                                <br>
+                                <button type="button" id="clear">Limpiar</button>
+                                <button type="button" id="save-signature">Guardar Firma</button>
 
-                                        <button class="au-btn au-btn-load " style="margin-left: 0%;">Guardar</button>
-                                    </td>
-                                </tr> -->
+                                <!-- Campo oculto para enviar la firma al servidor -->
+                                <input type="hidden" name="signature" id="firma">
+
                                <tr>
                                     <td>
                                         <button type="submit" class="au-btn au-btn-load" style="margin-left: 0%;">Guardar</button>
@@ -137,3 +132,23 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
+<script>
+  const canvas = document.getElementById('signature-pad');
+  const signaturePad = new SignaturePad(canvas);
+
+  document.getElementById('clear').addEventListener('click', () => {
+    signaturePad.clear();
+  });
+
+  document.getElementById('save-signature').addEventListener('click', () => {
+    if (!signaturePad.isEmpty()) {
+      const dataURL = signaturePad.toDataURL();
+      document.getElementById('firma').value = dataURL;
+      alert('Firma capturada correctamente. Ya puedes enviar el formulario.');
+    } else {
+      alert('Por favor firma antes de continuar.');
+    }
+  });
+</script>
+
