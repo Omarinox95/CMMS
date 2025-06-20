@@ -52,7 +52,15 @@
                                                 <option value="ICU" {{#if clinicalEngineer.ICU}} selected {{/if}}>ICU</option>
                                                 <option value="CSSD" {{#if clinicalEngineer.CSSD}} selected {{/if}}>CSSD</option>
                                             </select>
-                                        </div>                                        
+                                        </div> 
+                                        <div class="form-group">
+                                            <label class="form-control-label">Rol</label>
+                                            <select name="role" class="form-control" required>
+                                                <option value="clinicalEngineer" {{#ifEquals clinicalEngineer.role "clinicalEngineer"}}selected{{/ifEquals}}>Ingeniero Clínico</option>
+                                                <option value="admin" {{#ifEquals clinicalEngineer.role "admin"}}selected{{/ifEquals}}>Administrador</option>
+                                            </select>
+                                        </div>
+                                       
                                         <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Añadir</button>
                                 
                                     </form>  

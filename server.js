@@ -57,6 +57,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(session({ secret: 'anysecret', resave: false, saveUninitialized: false }));
+app.use((req, res, next) => {
+  res.locals.sessionUser = req.session.user;
+  next();
+});
 
 const filestorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -89,8 +93,10 @@ const hbs = exphbs.create({
     },
     eq: function(a, b) {
       return a === b;
+    },
+    ifEquals: function(arg1, arg2, options) {
+      return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
     }
-    
   }
 });
 

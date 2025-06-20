@@ -6,6 +6,7 @@ const BreakDown =require('../models/break_down');
 const WorkOrder =require('../models/work_order');
 const Maintenance =require('../models/maintenance');
 const Category = require('../models/category');
+const MedicalStaff = require('../models/medicalstaff'); // ✅ Asegúrate de que el path esté bien
 
 
 const { StopReason, OrderType, StopOrder, ReceptionStatus, AcquisitionType, RepairStage, Brand, Model, NameEquipment } = require('../models');
@@ -49,7 +50,7 @@ exports.editClinicalEngineer=(req,res) => {
               Email:clinicalEngineer.Email,
               Age:clinicalEngineer.Age,
               Image:clinicalEngineer.Image,
-              
+              role: clinicalEngineer.role
             }
     
     console.log(cs)    
@@ -64,8 +65,45 @@ exports.editClinicalEngineer=(req,res) => {
  
  }
 
+exports.editMedicalStaff = (req, res) => {
+    const dssn = req.params.id;
 
+    MedicalStaff.findByPk(dssn)
+        .then(medicalStaff => {
+            if (!medicalStaff) {
+                return res.render('error', {
+                    layout: false,
+                    pageTitle: 'Error',
+                    href: '/medicalStaff',
+                    message: 'No se encontró al médico clínico con ese ID'
+                });
+            }
 
+            const ms = {
+                DSSN: medicalStaff.DSSN,
+                FName: medicalStaff.FName,
+                LName: medicalStaff.LName,
+                Email: medicalStaff.Email,
+                role: medicalStaff.role || 'medicalStaff' // valor por defecto si está vacío
+            };
+
+            res.render('editMedicalStaff', {
+                layout: 'main-layout.handlebars',
+                pageTitle: 'Editar Médico Clínico',
+                medicalStaff: ms,
+                MS: true // para activar el menú si lo usas
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            res.render('error', {
+                layout: false,
+                pageTitle: 'Error',
+                href: '/medicalStaff',
+                message: '¡Lo sentimos! No se pudo cargar el médico clínico'
+            });
+        });
+};
 
 
  exports.editEquipment=(req,res)=>{

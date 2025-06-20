@@ -2,40 +2,44 @@ const DirName=require('../util/path');
 const express = require('express');
 const router = express.Router();
 const homeController=require('../controllers/home')
-
+const { isLoggedIn, isAdmin, isClinicalEngineer, isMedicalStaff  } = require('../middlewares/auth');
 //añadido 11/05
 const preventiveController = require('../controllers/preventive');
-
-// Ver calendario preventivo
-router.get('/engineer/ppm/calendar', preventiveController.renderCalendar);
-
 const Model = require('../models/model');
 
-
-
-// app.get('/addDepartment',controller.addDepartment);
-router.get('/department',homeController.department);
-router.get('/breakdown',homeController.breakDown)
-router.get('/equipment',homeController.equipment)
-router.get('/workOrder',homeController.workOrder)
-router.get('/agentSupplier',homeController.agentSupplier)
-router.get('/sparePart',homeController.sparePart)
-router.get('/clinicalEngineer',homeController.clinicalEngineer)
-router.get('/maintenance',homeController.maintenance)
-router.get('/installation',homeController.installation)
-router.get('/ppm',homeController.ppm)
-router.get('/dialyInspection',homeController.dailyInspection)
-router.get('/home',homeController.home)
-router.get('/engineer/dialyInspection',homeController.dialyInspectionEngineer)
-router.post('/engineer/dialyInspection',homeController.dialyInspectionEngineerPost)
-router.get('/engineer/ppm',homeController.ppmEngineer)
-router.post('/engineer/ppm/equipment',homeController.ppmEngineerPost)
-router.post('/engineer/ppmEquipment/:Code',homeController.ppmEngineerEquipmentPost)
-router.get('/engineer/workOrder',homeController.workorder)
-router.get('/engineer/workOrder/description/:code',homeController.workorderDescription)
-router.get('/engineer/ppm/:code',homeController.ppmEngineerEquipment)
 router.post('/signIn',homeController.signIn);
 router.get('/',homeController.homeSignIn);
+
+// app.get('/addDepartment',controller.addDepartment);
+router.get('/department',isLoggedIn, isAdmin,homeController.department);
+router.get('/breakdown',isLoggedIn, isAdmin,homeController.breakDown)
+router.get('/equipment',isLoggedIn, isAdmin,homeController.equipment)
+router.get('/workOrder',isLoggedIn, isAdmin,homeController.workOrder)
+router.get('/agentSupplier',isLoggedIn, isAdmin,homeController.agentSupplier)
+router.get('/sparePart',isLoggedIn, isAdmin,homeController.sparePart)
+router.get('/clinicalEngineer',isLoggedIn, isAdmin,homeController.clinicalEngineer)
+router.get('/maintenance',isLoggedIn, isAdmin,homeController.maintenance)
+router.get('/installation',isLoggedIn, isAdmin,homeController.installation)
+router.get('/ppm',isLoggedIn, isAdmin,homeController.ppm)
+router.get('/dialyInspection',isLoggedIn, isAdmin,homeController.dailyInspection)
+//router.get('/home',homeController.home)
+router.get('/home', isLoggedIn, isAdmin, homeController.home);
+router.get('/engineer/dialyInspection', isLoggedIn, isClinicalEngineer, homeController.dialyInspectionEngineer);
+router.post('/engineer/dialyInspection', isLoggedIn, isClinicalEngineer, homeController.dialyInspectionEngineerPost);
+//router.get('/engineer/dialyInspection',homeController.dialyInspectionEngineer)
+//router.post('/engineer/dialyInspection',homeController.dialyInspectionEngineerPost)
+router.get('/engineer/ppm',isLoggedIn, isClinicalEngineer,homeController.ppmEngineer)
+router.post('/engineer/ppm/equipment',isLoggedIn, isClinicalEngineer,homeController.ppmEngineerPost)
+router.post('/engineer/ppmEquipment/:Code',isLoggedIn, isClinicalEngineer,homeController.ppmEngineerEquipmentPost)
+router.get('/engineer/workOrder', isLoggedIn, isClinicalEngineer,homeController.workorder)
+router.get('/engineer/workOrder/description/:code',isLoggedIn, isClinicalEngineer,homeController.workorderDescription)
+router.get('/engineer/ppm/:code',isLoggedIn, isClinicalEngineer,homeController.ppmEngineerEquipment)
+router.get('/medicalStaff', isLoggedIn, isAdmin, homeController.medicalStaff);
+// Ver calendario preventivo
+router.get('/engineer/ppm/calendar',isLoggedIn, isClinicalEngineer, preventiveController.renderCalendar);
+router.get('/home', isLoggedIn, isMedicalStaff, homeController.medicalStaffHome);
+router.get('/medicalStaff/workOrder', homeController.getMedicalStaffWorkOrders);
+router.post('/medicalStaff/workOrder/add', homeController.postMedicalStaffWorkOrder);
 
 // GET para renderizar el formulario
 router.get('/confDayliQuestion', async (req, res) => {
@@ -87,13 +91,13 @@ router.get('/api/model-questions/:modelId', async (req, res) => {
   }
 });
 
-router.get('/brand', homeController.brand); // o como se llame tu controlador
-router.get('/model', homeController.model);
-router.get('/nameequipment', homeController.nameequipment);
-router.get('/stoporder', homeController.stoporder);
-router.get('/stopreason', homeController.stopreason);
-router.get('/ordertype', homeController.ordertype);
-router.get('/repairstage', homeController.repairstage);
-router.get('/receptionstatus', homeController.receptionstatus);
-router.get('/acquisitiontype', homeController.acquisitiontype);
+router.get('/brand',isLoggedIn, isAdmin, homeController.brand); // o como se llame tu controlador
+router.get('/model',isLoggedIn, isAdmin, homeController.model);
+router.get('/nameequipment',isLoggedIn, isAdmin, homeController.nameequipment);
+router.get('/stoporder',isLoggedIn, isAdmin, homeController.stoporder);
+router.get('/stopreason',isLoggedIn, isAdmin, homeController.stopreason);
+router.get('/ordertype',isLoggedIn, isAdmin, homeController.ordertype);
+router.get('/repairstage',isLoggedIn, isAdmin, homeController.repairstage);
+router.get('/receptionstatus',isLoggedIn, isAdmin, homeController.receptionstatus);
+router.get('/acquisitiontype',isLoggedIn, isAdmin, homeController.acquisitiontype);
 module.exports=router;

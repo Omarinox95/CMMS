@@ -43,6 +43,11 @@ const Clinical_engineer=sequelize.define('ClinicalEngineer',{
     Password:{
         type:Sequelize.STRING,
         allowNull:false
+    },
+    role: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'clinicalEngineer'  // Por defecto
     }
 }, {
     tableName: 'clinicalenginners', // 👈 nombre real de tu tabla en MySQL

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const reportController=require('../controllers/report')
-
+const { isLoggedIn, isAdmin, isClinicalEngineer } = require('../middlewares/auth');
 
 router.get('/report/department/equipments/:code',reportController.departmentEquipmentsReport);
 router.get('/report/department/engineers/:code',reportController.departmentEngineersReport);

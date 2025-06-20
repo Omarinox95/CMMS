@@ -1,0 +1,102 @@
+<head> 
+    <style>
+        /* Estilo para los títulos dentro de card-text */
+        .card-text {
+            color: #009f48; /* Verde para los títulos */
+            margin-bottom: 5px;
+        }
+
+        /* Estilo para los valores dentro de span */
+        .card-text span {
+            color: #303655; /* Gris oscuro para los valores */
+        }
+
+        /* Para que los íconos de acción queden en línea y separados */
+        .table-data-feature a.item {
+            margin-right: 10px;
+            color: #009f48;
+        }
+    </style>
+</head>
+
+<div class="main-content">
+    <div class="section__content section__content--p30"> 
+        <div class="container-fluid">
+            <div class="table-data__tool">    
+                <a href="#" data-toggle="modal" data-target="#modalAddMedicalStaff" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                    <i class="zmdi zmdi-plus"></i> Añadir Médico Clínico
+                </a>
+            </div>
+
+            {{#if hasMedicalStaff}}
+            <div class="row">
+              {{#each medicalStaffs}}   
+                <div class="col-md-4 mb-3">
+                    <div class="card" style="width: auto;">
+                        <div class="card-body">
+                            <div class="card-text">DSSN: <span>{{this.DSSN}}</span></div>
+                            <div class="card-text">Nombre: <span>{{this.FName}} {{this.LName}}</span></div>
+                            <div class="card-text">Email: <span>{{this.Email}}</span></div>
+                            <div class="card-text">Rol: <span>{{this.role}}</span></div>
+                        </div>
+                        <div class="table-data-feature px-3 pb-3">
+                            <a href="/medicalStaff/edit/{{this.DSSN}}" class="item" data-toggle="tooltip" data-placement="top" title="Editar">
+                                <i class="zmdi zmdi-edit"></i>
+                            </a>
+                            <a href="/medicalStaff/delete/{{this.DSSN}}" class="item" data-toggle="tooltip" data-placement="top" title="Eliminar">
+                                <i class="zmdi zmdi-delete"></i>
+                            </a>
+                        </div>
+                    </div> 
+                </div>
+              {{/each}}
+            </div>
+            {{else}}
+                <p>No hay médicos clínicos registrados.</p>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<!-- MODAL PARA AÑADIR MÉDICO CLÍNICO -->
+<div class="modal fade" id="modalAddMedicalStaff" tabindex="-1" role="dialog" aria-labelledby="modalAddMedicalStaffLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          
+          <div class="modal-body">
+           <form method="POST" action="/medicalStaff/add">
+            <div class="form-group">
+                <label class="form-control-label">DSSN</label>
+                <input type="text" required name="DSSN" placeholder="Ingrese CI" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-control-label">Nombres</label>
+                <input type="text" required name="FName" placeholder="Ingrese Nombres" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-control-label">Apellidos</label>
+                <input type="text" required name="LName" placeholder="Ingrese Apellidos" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-control-label">Email</label>
+                <input type="email" required name="Email" placeholder="Ingrese Email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-control-label">Contraseña</label>
+                <input type="password" required name="Password" placeholder="Ingrese Contraseña" class="form-control">
+            </div>
+            <div class="form-group">
+                <label class="form-control-label">Rol</label>
+                <select name="role" required class="form-control">
+                    <option value="medicalStaff" selected>Médico Clínico</option>
+                    <option value="admin">Administrador</option>
+                    <option value="technician">Técnico</option>
+                    <!-- Agrega aquí otros roles que necesites -->
+                </select>
+            </div>
+            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">AÑADIR</button>
+           </form>
+          </div>  
+        </div>
+    </div>     
+</div>

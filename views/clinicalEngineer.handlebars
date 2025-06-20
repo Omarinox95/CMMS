@@ -33,6 +33,7 @@
                             <div class="card-text">Email: <span>{{ this.Email }}</span></div>
                             <div class="card-text">Dirección: <span>{{ this.Adress }}</span></div>
                             <div class="card-text">Horas de trabajo: <span>{{ this.WorkHours }}</span></div> 
+                            <div class="card-text">Rol: <span>{{ this.role }}</span></div>
 
                         </div>
                         <div class="table-data-feature">
@@ -102,6 +103,13 @@
                                 <div class="form-group">
                                     <label class=" form-control-label">Horas de trabajo</label>
                                     <input type="text" required name="workHours" placeholder="Ingrese Horas de Trabajo" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label">Rol</label>
+                                    <select name="role" class="form-control" required>
+                                        <option value="clinicalEngineer" selected>Ingeniero Clínico</option>
+                                        <option value="admin">Administrador</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label class=" form-control-label">Contraseña</label>

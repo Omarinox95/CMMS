@@ -17,7 +17,7 @@ const ReceptionStatus = require('../models/ReceptionStatus');
 const AcquisitionType = require('../models/AcquisitionType');
 const { Brand, NameEquipment, Model } = require('../models');
 const { Op } = require('sequelize');
-
+const MedicalStaff = require('../models/medicalstaff');
 exports.addDepartment = async (req, res) => {
     const code = req.body.Code;
     const name = req.body.Name;
@@ -65,8 +65,6 @@ exports.addDepartment = async (req, res) => {
 };
 
 
-
-
 exports.addAgentSupplier=(req,res)=>{
     id=req.body.Id
     name=req.body.Name
@@ -93,6 +91,130 @@ exports.addAgentSupplier=(req,res)=>{
    .catch(err => console.log("ERROR!!!!!!",err))
 }
 
+exports.getWorkOrders = async (req, res) => {
+  try {
+    const workorders = await WorkOrder.findAll({
+      where: { CreatedBy: req.session.user.DSSN },
+      include: [Equipment, Department, RepairStage, StopOrder],
+      order: [['StartDate', 'DESC']]
+    });
+
+    const equipment = await Equipment.findAll();
+    const departments = await Department.findAll();
+    const stopOrders = await StopOrder.findAll();
+    const repairStages = await RepairStage.findAll();
+
+    res.render('medical_workorder', {
+      layout: 'layout-staff',
+      pageTitle: 'Orden de Trabajo',
+      Workorders: workorders,
+      Equipments: equipment,
+      Departments: departments,
+      StopOrders: stopOrders,
+      RepairStages: repairStages,
+      hasWorkOrder: workorders.length > 0
+    });
+  } catch (err) {
+    console.error(err);
+    res.redirect('/medicalStaff/home');
+  }
+};
+
+exports.postWorkOrder = async (req, res) => {
+  try {
+    const {
+      Description,
+      EquipmentCode,
+      StartDate,
+      id_StopOrder,
+      id_Department,
+      id_RepairStage,
+      signature
+    } = req.body;
+
+    await WorkOrder.create({
+      Description,
+      EquipmentCode,
+      StartDate,
+      id_StopOrder,
+      id_Department,
+      id_RepairStage,
+      Signature: signature,
+      CreatedBy: req.session.user.DSSN,
+      Estado: 'Pendiente'
+    });
+
+    res.redirect('/medicalStaff/workOrder');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/medicalStaff/workOrder');
+  }
+};
+
+exports.addMedicalStaff = (req, res) => {
+    const dssn = req.body.DSSN;
+    const fname = req.body.FName;
+    const lname = req.body.LName;
+    const email = req.body.Email;
+    const role = req.body.role || 'medicalStaff'; // si lo usas para roles
+    const password = req.body.Password;
+
+    if (!password) {
+        return res.render('error', {
+            layout: false,
+            pageTitle: 'Error',
+            href: '/medicalStaff',
+            message: 'Debe proporcionar una contraseña para nuevos registros'
+        });
+    }
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) {
+            return res.render('error', {
+                layout: false,
+                pageTitle: 'Error',
+                href: '/medicalStaff',
+                message: 'Error al generar la contraseña'
+            });
+        }
+
+        bcrypt.hash(password, salt, (err, hash) => {
+            if (err) {
+                return res.render('error', {
+                    layout: false,
+                    pageTitle: 'Error',
+                    href: '/medicalStaff',
+                    message: 'Error al encriptar la contraseña'
+                });
+            }
+
+            const hashedPassword = hash;
+
+            MedicalStaff.findByPk(dssn).then(medical => {
+                if (medical) {
+                    // Actualizar existente
+                    medical.FName = fname;
+                    medical.LName = lname;
+                    medical.Email = email;
+                    medical.role = role;
+                    medical.Password = hashedPassword;
+                    medical.save().then(() => res.redirect('/medicalStaff'));
+                } else {
+                    // Crear nuevo
+                    MedicalStaff.create({
+                        DSSN: dssn,
+                        FName: fname,
+                        LName: lname,
+                        Email: email,
+                        role: role,
+                        Password: hashedPassword
+                    }).then(() => res.redirect('/medicalStaff'));
+                }
+            });
+        });
+    });
+};
+
 exports.addClinicalEngineer = (req, res) => {
     const dssn = req.body.DSSN;
     const fname = req.body.FName;
@@ -100,6 +222,7 @@ exports.addClinicalEngineer = (req, res) => {
     const address = req.body.Address;
     const phone = req.body.Phone;
     const email = req.body.Email;
+    const role = req.body.role || 'clinicalEngineer';
 
     let image;
     if (req.body.edit) {
@@ -147,6 +270,7 @@ exports.addClinicalEngineer = (req, res) => {
                         clinicalEngineer.Image = image;
                         clinicalEngineer.Age = age;
                         clinicalEngineer.WorkHours = workhours;
+                        clinicalEngineer.role = role;
                         clinicalEngineer.Password = pass;
                         clinicalEngineer.save().then(() => res.redirect('/clinicalEngineer'));
                     } else {
@@ -160,6 +284,7 @@ exports.addClinicalEngineer = (req, res) => {
                             Email: email,
                             Age: age,
                             WorkHours: workhours,
+                            role: role,
                             Password: pass
                         }).then(() => res.redirect('/clinicalEngineer'));
                     }
@@ -579,11 +704,6 @@ exports.addEquipment = async (req, res) => {
     res.render('error', { layout: false, pageTitle: 'Error', message: 'No se pudo crear el equipo' });
   }
 };
-
-
-
-
-
 
 
 

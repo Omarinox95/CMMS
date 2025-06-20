@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const preventiveController = require('../controllers/preventive');
+const { isLoggedIn, isAdmin, isClinicalEngineer } = require('../middlewares/auth');
 
 // Obtener tareas como eventos
 router.get('/api/ppm-events', preventiveController.getPPMEvents);

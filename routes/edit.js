@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const editController=require('../controllers/edit')
-
+const { isLoggedIn, isAdmin, isClinicalEngineer } = require('../middlewares/auth');
 
 router.get('/agentSupplier/edit/:id',editController.editAgentSupplier);
 router.get('/clinicalEngineer/edit/:id',editController.editClinicalEngineer);
@@ -18,6 +18,7 @@ router.get('/nameequipment/edit/:id_nameE', editController.getEditNameequipment)
 router.post('/nameequipment/edit/:id_nameE', editController.postEditNameequipment);
 router.get('/stoporder/edit/:id', editController.getEditStopOrder);
 router.post('/stoporder/edit/:id', editController.postEditStopOrder);
+router.get('/medicalStaff/edit/:id', editController.editMedicalStaff);
 
 router.get('/stopreason/edit/:id', editController.getEditStopReason);
 router.post('/stopreason/edit/:id', editController.postEditStopReason);

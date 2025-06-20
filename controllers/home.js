@@ -18,13 +18,13 @@ const PreventiveTask = require('../models/PreventiveTask'); // si no está ya im
 const { Brand, NameEquipment, Model } = require('../models');
 const { OrderType, StopReason, RepairStage, StopOrder } = require('../models'); // ajusta el path si es necesario
 const { Op } = require('sequelize');
-
+const MedicalStaff = require('../models/medicalstaff');
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
 }
 
 
-exports.signIn=(req,res) => {
+/*exports.signIn=(req,res) => {
    email=req.body.email
    pass=req.body.password
    if(email == 'admin@gmail.com' && pass==0000){
@@ -49,14 +49,106 @@ exports.signIn=(req,res) => {
        })
    }
    
-}
+}*/
+/*exports.signIn = (req, res) => {
+  const email = req.body.email;
+  const pass = req.body.password;
+
+  ClinicalEngineer.findOne({ where: { Email: email } }).then(clinicalengineer => {
+    if (!clinicalengineer) return res.redirect('/');
+
+    bcrypt.compare(pass, clinicalengineer.Password).then(result => {
+      if (result) {
+        // Usar el rol guardado en la BD
+        const role = clinicalengineer.role || 'clinicalEngineer';
+
+        // Guardar en sesión
+        req.session.user = {
+          DSSN: clinicalengineer.DSSN,
+          role: role,
+          FName: clinicalengineer.FName,
+          LName: clinicalengineer.LName,
+          Image: clinicalengineer.Image
+        };
+
+        // Redirigir según rol
+        if (role === 'admin') {
+          return res.redirect('/home');
+        } else {
+          return res.redirect('/engineer/dialyInspection');
+        }
+      } else {
+        return res.redirect('/');
+      }
+    });
+  }).catch(err => {
+    console.error(err);
+    res.redirect('/');
+  });
+};*/
+exports.signIn = async (req, res) => {
+  const email = req.body.email;
+  const pass = req.body.password;
+
+  try {
+    // Buscar en ClinicalEngineer primero
+    let user = await ClinicalEngineer.findOne({ where: { Email: email } });
+
+    // Si no encuentra, buscar en MedicalStaff
+    if (!user) {
+      user = await MedicalStaff.findOne({ where: { Email: email } });
+    }
+
+    // Si sigue sin encontrar
+    if (!user) {
+      return res.redirect('/');
+    }
+
+    const match = await bcrypt.compare(pass, user.Password);
+    if (!match) {
+      return res.redirect('/');
+    }
+
+    // Determinar rol (por defecto: clinicalEngineer o medicalStaff)
+    const role = user.role || (user instanceof ClinicalEngineer ? 'clinicalEngineer' : 'medicalStaff');
+
+    // Guardar en sesión
+    req.session.user = {
+      DSSN: user.DSSN,
+      role: role,
+      FName: user.FName,
+      LName: user.LName,
+      Image: user.Image || null
+    };
+
+    // Redirigir según rol
+    if (role === 'admin') {
+      return res.redirect('/home');
+    } else if (role === 'clinicalEngineer') {
+      return res.redirect('/engineer/dialyInspection');
+    } else if (role === 'medicalStaff') {
+      return res.redirect('/medicalStaff/workOrder'); // Aquí va el home que creamos
+    }
+
+    // Default fallback
+    res.redirect('/');
+  } catch (err) {
+    console.error(err);
+    res.redirect('/');
+  }
+};
+
+exports.medicalStaffHome = (req, res) => {
+  res.redirect('/medicalStaff/workOrder'); // Se carga directamente orden de trabajo
+};
+
 
 exports.home=(req,res) =>{
     res.render('home',{pageTitle:'Home',Home:true});
 }
 
 exports.dialyInspectionEngineer=(req,res) =>{
-    engineerId=req.session.DSSN
+    engineerId=req.session.user.DSSN
     Equipment.findAll({include:[{model:Department}, { model: Model, as: 'model' }]}).then(equipments => {
         const eqs=equipments.map(equipment => {
             return{
@@ -90,7 +182,7 @@ exports.dialyInspectionEngineerPost=(req,res) =>{
  q7 = req.body.Q7
  q8 = req.body.Q8
  equipmentId = req.body.Device
- engineerId=req.session.DSSN
+ engineerId=req.session.user.DSSN
 
 
  q1 = q1 == "on" ? "on": "off"
@@ -101,10 +193,6 @@ exports.dialyInspectionEngineerPost=(req,res) =>{
  q6 = q6 == "on" ? "on": "off"
  q7 = q7 == "on" ? "on": "off"
  q8 = q8 == "on" ? "on": "off"
-
- 
-     
-
  
  Equipment.findByPk(equipmentId).then(equipment => { 
      if(equipment){
@@ -133,7 +221,7 @@ exports.dialyInspectionEngineerPost=(req,res) =>{
 
 
 exports.ppmEngineer=(req,res) =>{
-    engineerId=req.session.DSSN
+    engineerId=req.session.user.DSSN
     PpmQuestions.findAll({include:[{model:Equipment,include:[{model:Department}]}]}).then(reports=>{
         const eqs=reports.map(report => {
             return {
@@ -163,7 +251,7 @@ exports.ppmEngineerPost=(req,res) =>{
 //MANTENIMIENTO PREVENTIVO
 exports.ppmEngineerEquipment =(req,res) => {
     code=req.params.code
-    engineerId=req.session.DSSN
+    engineerId=req.session.user.DSSN
     PpmQuestions.findOne({where:{EquipmentCode:code}}).then(ppm => {
         const Ppm={
             Q1:ppm.Q1,
@@ -230,9 +318,10 @@ exports.ppmEngineerEquipment =(req,res) => {
 */
 
 exports.ppmEngineerEquipmentPost = (req, res) => {
+  console.log('SESSION USER en POST:', req.session.user);
     const date = req.body.DATE;
     const equipmentId = req.params.Code;
-    const engineerId = req.session.DSSN;
+    const engineerId = req.session.user.DSSN;
   
     let q1 = req.body.Q1 == "on" ? "on" : "off";
     let q2 = req.body.Q2 == "on" ? "on" : "off";
@@ -399,6 +488,7 @@ exports.clinicalEngineer=(req,res)=>{
                 Email:clinicalengineer.Email,
                 Age:clinicalengineer.Age,
                 WorkHours:clinicalengineer.WorkHours,
+                role:clinicalengineer.role,
             }
 
         })
@@ -411,6 +501,34 @@ exports.clinicalEngineer=(req,res)=>{
     })
     
 }
+
+exports.medicalStaff = (req, res) => {
+  MedicalStaff.findAll().then(medicalStaffs => {
+    const mapped = medicalStaffs.map(m => ({
+      DSSN: m.DSSN,
+      FName: m.FName,
+      LName: m.LName,
+      Email: m.Email,
+      role: m.role || 'medicalStaff',
+    }));
+
+    res.render('medicalStaff', {
+      pageTitle: 'Médicos Clínicos',
+      MS: true,
+      medicalStaffs: mapped,
+      hasMedicalStaff: mapped.length > 0
+    });
+  }).catch(err => {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/home',
+      message: 'Sorry !!! Could Not Get Medical Staff'
+    });
+  });
+};
+
 
 //ultimo cambio de 03/03/25 20:52
 exports.sparePart = (req, res) => {
@@ -1031,7 +1149,7 @@ exports.dailyInspection=(req,res)=>{
 
 
 exports.workorder=(req,res) =>{
-dssn=req.session.DSSN
+dssn=req.session.user.DSSN
 WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
     var events=orders.map(order => {
         return{
@@ -1046,7 +1164,7 @@ WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
 
     })
 
-    ClinicalEngineer.findByPk(engineerId).then(engineer => {
+    ClinicalEngineer.findByPk(dssn).then(engineer => {
         const Engineer ={
             Image:engineer.Image,
             FName:engineer.FName,
@@ -1065,7 +1183,7 @@ WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
 
 exports.workorderDescription=(req,res)=>{
     code=req.params.code
-    engineerId=req.session.DSSN
+    engineerId=req.session.user.DSSN
     WorkOrder.findOne({where:{Code:code},include:[{model:Equipment},{ model: OrderType, /*attributes: ['work'] */},       // o el nombre que uses
     { model: StopReason, /*attributes: ['Description']*/ },
     { model: RepairStage, attributes: ['Status'] } ]}).then(order => {
@@ -1102,6 +1220,170 @@ exports.workorderDescription=(req,res)=>{
 
     })
 }
+
+
+//para los clinicos
+exports.getMedicalStaffWorkOrders = async (req, res) => {
+  const dssn = req.session.user?.DSSN;
+  if (!dssn) {
+    return res.redirect('/login');
+  }
+
+  try {
+    // Cargar órdenes del usuario
+    const workorders = await WorkOrder.findAll({
+      where: { ClinicalEnginnerDSSN: dssn },
+      include: [
+        { model: ClinicalEngineer },
+        { model: Equipment, include: ['Department'] },
+        { model: StopOrder, as: 'stopOrder' },
+        { model: RepairStage },
+        { model: OrderType },
+        { model: StopReason }
+      ],
+      order: [[{ model: RepairStage }, 'id_RepairStage', 'ASC']]
+    });
+
+    // Mapear órdenes para vista
+    const wd = workorders.map(w => ({
+      Code: w.Code,
+      Cost: w.Cost,
+      StartDate: w.StartDate,
+      EndDate: w.EndDate,
+      Priority: w.Priority,
+      med: w.Priority === 'Medium',
+      high: w.Priority === 'High',
+      low: w.Priority === 'Low',
+      EquipmentCode: w.Equipment?.Code || '',
+      EquipmentName: w.Equipment?.Name || '',
+      EquipmentImage: w.Equipment?.Image || '',
+      Department: w.Equipment?.Department?.Name || 'No asignado',
+      Description: w.Description,
+      ClinicalEngineer: w.ClinicalEngineer ? `${w.ClinicalEngineer.FName} ${w.ClinicalEngineer.LName}` : '',
+      ClinicalEngineerImage: w.ClinicalEngineer?.Image || '',
+      StopOrder: w.stopOrder?.Description || 'No especificado',
+      RepairStageStatus: w.RepairStage?.Status || 'No especificado',
+      RepairStageId: w.id_RepairStage || 0,
+      OrderTypeName: w.OrderType?.Name || 'N/A',
+      StopReason: w.StopReason?.Reason || 'N/A'
+    }));
+
+    // Cargar datos para selects del modal
+    const [equipments, departments, stopOrders, repairStages, orderTypes, stopReasons] = await Promise.all([
+      Equipment.findAll({ include: ['Department'] }),
+      Department.findAll(),
+      StopOrder.findAll(),
+      RepairStage.findAll(),
+      OrderType.findAll(),
+      StopReason.findAll()
+    ]);
+    // Mapear para vista
+    const eq = equipments.map(e => ({
+      Code: e.Code,
+      Name: e.Name
+    }));
+
+    const dep = departments.map(d => ({
+      id_Department: d.id_Department,
+      Name: d.Name
+    }));
+
+    const so = stopOrders.map(s => ({
+      id: s.id,
+      description: s.description
+    }));
+
+    const rs = repairStages.map(r => ({
+      id_RepairStage: r.id_RepairStage,
+      Status: r.Status
+    }));
+
+    const ot = orderTypes.map(o => ({
+      id_typeW: o.id_typeW,
+      Name: o.Name
+    }));
+
+    const sr = stopReasons.map(s => ({
+      id_StopReason: s.id_StopReason,
+      Reason: s.Reason
+    }));
+
+    // Renderizar vista con datos
+    res.render('medical_workOrder', {layout: 'layout-staff',
+      pageTitle: 'Mis Órdenes de Trabajo',
+      WorkOrder: true,
+      Workorders: wd,
+      hasWorkOrder: wd.length > 0,
+      WO: true,
+
+      Equipments: eq,
+      Departments: dep,
+      StopOrders: so,
+      RepairStages: rs,
+      OrderTypes: ot,
+      StopReasons: sr
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.render('error', {
+      layout: 'layout-staff',
+      pageTitle: 'Error',
+      href: '/workOrder',
+      message: 'No se pudieron cargar las órdenes de trabajo.'
+    });
+  }
+};
+
+exports.postMedicalStaffWorkOrder = (req, res) => {
+  const dssn = req.session.user?.DSSN;
+  if (!dssn) {
+    return res.redirect('/login');
+  }
+
+  const {
+    EquipmentCode,
+    Priority,
+    Description,
+    Cost = 0,       // valor por defecto 0 si no viene en req.body
+    Solution = '',  // valor por defecto cadena vacía si no viene
+    StartDate,
+    EndDate,
+    id_StopOrder,
+    id_RepairStage,
+    id_typeW,
+    id_StopReason
+  } = req.body;
+
+  WorkOrder.create({
+    ClinicalEnginnerDSSN: dssn,
+    EquipmentCode,
+    Priority,
+    Description,
+    Cost,
+    Solution,
+    StartDate,
+    EndDate,
+    id_StopOrder,
+    id_RepairStage,
+    id_typeW,
+    id_StopReason
+  })
+  .then(() => {
+    res.redirect('/workOrder');
+  })
+  .catch(err => {
+    console.error(err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/workOrder',
+      message: 'No se pudo crear la orden de trabajo.'
+    });
+  });
+};
+
+
 
 
 //añadido 09/05/25
@@ -1245,7 +1527,7 @@ exports.home = async (req, res) => {
     // 🔍 Buscar órdenes pendientes (RepairStageId 1-4)
     const workordersPendientes = await WorkOrder.findAll({
       where: {
-        id_RepairStage: { [Op.in]: [1, 2, 3, 4] }
+        id_RepairStage: { [Op.in]: [1, 2, 3, 4, 5, 6, 10, 11] }
       },
       include: [
         { model: Equipment },

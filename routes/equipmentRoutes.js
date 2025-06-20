@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const searchController = require('../search/search'); // Asegúrate de que la ruta sea correcta
-
+const { isLoggedIn, isAdmin, isClinicalEngineer } = require('../middlewares/auth');
 //añadido 03/03/25
 //const {SparePart} = require('../models');
 const { Agent, ReceptionStatus, AcquisitionType, SparePart } = require('../models');

@@ -1,0 +1,146 @@
+<!-- VISTA PARA PERSONAL MÉDICO - Orden de Trabajo -->
+<div class="main-content">
+  <div class="section__content section__content--p30">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <h3 class="title-5 m-b-35">Órdenes de Trabajo - Personal Médico</h3>
+          <div class="table-data__tool">
+            <div class="table-data__tool-right">
+              <a href="#" data-toggle="modal" data-target="#modalAppointment" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                <i class="zmdi zmdi-plus"></i>Crear Orden de Trabajo
+              </a>
+            </div>
+          </div>
+
+          <div class="table-responsive table-responsive-data2">
+            <table class="table table-data2">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Descripción</th>
+                  <th>Equipo</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              {{#if hasWorkOrder}}
+              <tbody>
+                {{#each Workorders}}
+                <tr class="tr-shadow">
+                  <td>{{this.Code}}</td>
+                  <td>{{this.Description}}</td>
+                  <td>{{this.EquipmentName}} ({{this.EquipmentCode}})</td>
+                  <td>{{this.StartDate}}</td>
+                  <td>{{this.RepairStageStatus}}</td>
+                </tr>
+                <tr class="spacer"></tr>
+                {{/each}}
+              </tbody>
+              {{/if}}
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ORDEN DE TRABAJO -->
+<div class="modal fade" id="modalAppointment" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form method="POST" action="/workOrder/add">
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
+          </button>
+          <div class="login-logo">
+            <img src="/images/LogoMedical.png" alt="Logo" />
+          </div>
+          <div class="login-form">
+
+            <div class="form-group">
+              <label>Descripción</label>
+              <input type="text" required name="Description" class="form-control" placeholder="Describe el problema">
+            </div>
+
+            <div class="form-group">
+              <label>Equipo</label>
+              <select name="EquipmentCode" required class="form-control">
+                {{#each Equipments}}
+                  <option value="{{this.Code}}">{{this.Name}} - {{this.Code}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Fecha de Solicitud</label>
+              <input type="datetime-local" name="StartDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label>Fecha Estimada de Fin</label>
+              <input type="datetime-local" name="EndDate" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label>Prioridad</label>
+              <select name="Priority" required class="form-control">
+                <option value="Low">Baja</option>
+                <option value="Medium">Media</option>
+                <option value="High">Alta</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Tipo de Orden</label>
+              <select name="id_typeW" required class="form-control">
+                {{#each OrderTypes}}
+                  <option value="{{this.id_typeW}}">{{this.Name}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Motivo de la Parada (StopOrder)</label>
+              <select name="id_StopOrder" required class="form-control">
+                {{#each StopOrders}}
+                  <option value="{{this.id_StopOrder}}">{{this.description}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Motivo de la Parada (StopReason)</label>
+              <select name="id_StopReason" required class="form-control">
+                {{#each StopReasons}}
+                  <option value="{{this.id_StopReason}}">{{this.Reason}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Estado de Reparación</label>
+              <select name="id_RepairStage" required class="form-control">
+                {{#each RepairStages}}
+                  <option value="{{this.id_RepairStage}}">{{this.Status}}</option>
+                {{/each}}
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Firma / Responsable</label>
+              <input type="text" name="signature" class="form-control" placeholder="Nombre del responsable o firma">
+            </div>
+
+            <input type="hidden" name="Cost" value="0" />
+            <input type="hidden" name="Solution" value="" />
+
+            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Enviar Orden</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
