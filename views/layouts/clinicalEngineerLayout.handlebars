@@ -60,6 +60,11 @@
                     <a class="js-arrow" href="/engineer/workOrder">
                         <i class="fas fa-copy"></i>Ordenes de Trabajo</a>
                 </li> 
+                <li class="{{#if WORequests}}active{{/if}} has-sub">
+                    <a href="/workOrder/requests">
+                        <i class="fas fa-envelope-open-text"></i> Solicitudes Nuevas
+                    </a>
+                </li>
                     </ul>
                 </nav>
             </div>
@@ -151,6 +156,11 @@
             <li class="{{#if PPMSchedule}}active{{/if}} has-sub">
                 <a href="/preventive/clinical/calendar">
                     <i class="fas fa-calendar-alt"></i> Calendario MP
+                </a>
+            </li>
+            <li class="{{#if WORequests}}active{{/if}} has-sub">
+                <a href="/workOrder/requests">
+                    <i class="fas fa-envelope-open-text"></i> Solicitudes Nuevas
                 </a>
             </li>
             <li class="{{#if WO}}active{{/if}} has-sub">

@@ -32,6 +32,8 @@ router.get('/acquisitiontype/edit/:id', editController.getEditAcquisitionType);
 router.post('/acquisitiontype/edit/:id', editController.postEditAcquisitionType);
 
 
+///etapa asignar tecnico
+router.post("/workOrder/asignar/:code", editController.assignTechnicianPost);
 
 
 module.exports=router;

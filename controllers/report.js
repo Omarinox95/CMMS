@@ -1,6 +1,8 @@
+const  RepairStage = require('../models/RepairStage')
 const OrderType = require('../models/OrderType')
 const Agent_supplier = require('../models/agent_supplier')
-const { sparePart } = require('./home')
+const { sparePart } = require('./home');
+const SparepartsWO = require('../models/SparepartsWO');
 
 Equipment=require('../models/equipment')
 AgentSupplier=require('../models/agent_supplier')
@@ -110,6 +112,34 @@ arregloRazones = arregloRazones.map(item => {
     acumulado: ((acumuladoRazones  / total) * 100).toFixed(2)
   };
 });
+// === Pareto de Mantenimientos por Descripción ===
+const mantenimientos = await Maintenance.findAll({
+  where: {
+    BreakDownCode: fallas.map(f => f.Code)
+  }
+});
+
+const conteoMantenimiento = {};
+mantenimientos.forEach(m => {
+  const tipo = m.Description?.trim() || 'No especificado';
+  conteoMantenimiento[tipo] = (conteoMantenimiento[tipo] || 0) + 1;
+});
+
+let arregloMantenimiento = Object.entries(conteoMantenimiento)
+  .map(([tipo, cantidad]) => ({ tipo, cantidad }));
+
+arregloMantenimiento.sort((a, b) => b.cantidad - a.cantidad);
+
+const totalMantenimientos = arregloMantenimiento.reduce((sum, item) => sum + item.cantidad, 0);
+let acumuladoMant = 0;
+arregloMantenimiento = arregloMantenimiento.map(item => {
+  acumuladoMant += item.cantidad;
+  return {
+    ...item,
+    porcentaje: ((item.cantidad / totalMantenimientos) * 100).toFixed(2),
+    acumulado: ((acumuladoMant / totalMantenimientos) * 100).toFixed(2)
+  };
+});
 
     // ================== NUEVO BLOQUE: Indicadores Mensuales ==================
        // Año actual para análisis
@@ -182,7 +212,9 @@ console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
       //indicadoresMensuales: JSON.stringify(Object.values(indicadoresMensuales))
       paretoData: arregloTipoW,
       paretoStopReasonData: arregloRazones, // el nuevo
-      indicadoresMensuales: Object.values(indicadoresMensuales)
+      indicadoresMensuales: Object.values(indicadoresMensuales),
+      paretoMaintenanceData: arregloMantenimiento,
+
     });
 
   } catch (error) {
@@ -844,8 +876,9 @@ exports.equipmentWorkOrderReport = async (req, res) => {
         { model: StopOrder, as: 'stopOrder', attributes: ['description'] }
       ]
     });
+//console.log(workorders.map(wo => wo.get({ plain: true })));
 
-    const wos = workorders.map(wo => ({
+   /* const wos = workorders.map(wo => ({
       Code: wo.Code,
       StartDate: wo.StartDate,
       EndDate: wo.EndDate,
@@ -856,7 +889,24 @@ exports.equipmentWorkOrderReport = async (req, res) => {
       id_StopOrder: wo.id_StopOrder, 
       OrderType: wo.OrderType,   // objeto con .Name
       stopOrder: wo.stopOrder // 👈 y esto
-    }));
+    }));*/
+    const wos = workorders.map(wo => {
+  const plain = wo.get({ plain: true });
+
+  return {
+    Code: plain.Code,
+    StartDate: plain.StartDate,
+    EndDate: plain.EndDate,
+    Description: plain.Description,
+    Cost: plain.Cost,
+    Priority: plain.Priority,
+    id_typeW: plain.id_typeW,
+    id_StopOrder: plain.id_StopOrder,
+    OrderType: OrderType.Name,   // ahora es plano y seguro
+    stopOrder: plain.stopOrder    // ahora es plano y seguro
+  };
+});
+
 
     res.render('equipmentWorkOrderReport', {
       layout: 'equipmentReportLayout',
@@ -876,6 +926,77 @@ exports.equipmentWorkOrderReport = async (req, res) => {
       pageTitle: 'Error',
       href: '/equipment',
       message: 'Ocurrió un error al obtener las órdenes de trabajo.'
+    });
+  }
+};
+
+exports.workorderInforme = async (req, res) => {
+  const code = req.params.code;
+
+  try {
+    const workOrderRaw = await WorkOrder.findOne({
+      where: { Code: code },
+      include: [
+        { model: Equipment, include: [{ model: Department }] },
+        { model: OrderType },
+        { model: StopOrder, as: 'stopOrder' },
+        { model: RepairStage }
+      ]
+    });
+
+    if (!workOrderRaw) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Error',
+        href: '/',
+        message: 'Orden de trabajo no encontrada.'
+      });
+    }
+
+    const repuestosRaw = await SparepartsWO.findAll({
+      where: { id_workorder: parseInt(code) }
+    });
+    const repuestos = repuestosRaw.map(r => r.get({ plain: true }));
+
+    const orderTypePlain = workOrderRaw.OrderType?.get({ plain: true });
+    const stopOrderPlain = workOrderRaw.StopOrder?.get({ plain: true });
+    const repairStagePlain = workOrderRaw.RepairStage?.get({ plain: true });
+
+    const order = {
+      Code: workOrderRaw.Code,
+      EquipmentName: workOrderRaw.Equipment.Name,
+      EquipmentModel: workOrderRaw.Equipment.Model,
+      EquipmentCode: workOrderRaw.Equipment.Code,
+      EquipmentSerial: workOrderRaw.Equipment.SerialNumber,
+      DepartmentName: workOrderRaw.Equipment.Department?.Name || 'N/A',
+      id_Department: workOrderRaw.Equipment.Department?.id || 'N/A',
+      Priority: workOrderRaw.Priority,
+      Cost: workOrderRaw.Cost,
+      StartDate: workOrderRaw.StartDate,
+      EndDate: workOrderRaw.EndDate,
+      Workdate: workOrderRaw.Workdate,
+      Description: workOrderRaw.Description,
+      Solution: workOrderRaw.Solution,
+      Type: orderTypePlain?.Name || 'N/A',
+      StopOrder: stopOrderPlain?.description || 'N/A',
+      RepairStage: repairStagePlain?.Status || 'N/A',
+      observaciones_entrega: workOrderRaw.observaciones_entrega || '',
+      FirmaTecnicoReparacion: workOrderRaw.Signature || null,
+      repuestos
+    };
+
+    res.render('workOrderInforme', {
+      layout: 'main-layout', // O layout: false si no quieres encabezados/menú
+      pageTitle: `Informe OT ${code}`,
+      order
+    });
+  } catch (err) {
+    console.error("Error al generar el informe:", err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/',
+      message: 'Error al generar el informe de la orden de trabajo.'
     });
   }
 };

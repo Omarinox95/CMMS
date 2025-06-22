@@ -106,6 +106,23 @@ Daily_inspection.belongsTo(ClinicalEngineer, {
   targetKey: 'DSSN'
 });
 
+////para wo nuevo
+WorkOrder.belongsTo(Equipment, {
+  foreignKey: 'EquipmentCode',
+  as: 'Equipment'
+});
+Equipment.hasMany(WorkOrder, {
+  foreignKey: 'EquipmentCode',
+  as: 'WorkOrders'
+});
+WorkOrder.belongsTo(Department, {
+  foreignKey: 'id_Department',
+  as: 'Department'
+});
+Department.hasMany(WorkOrder, {
+  foreignKey: 'id_Department',
+  as: 'WorkOrders'
+});
 
 
 module.exports = {

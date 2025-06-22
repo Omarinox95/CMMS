@@ -362,9 +362,47 @@ exports.editWorkOrder = async (req, res) => {
   }
 };
 
+///
+//primera etapa asignar tecnico
+// POST: Asignar técnico a una orden
+exports.assignTechnicianPost = async (req, res) => {
+  const { code } = req.params;
+  const { ClinicalEngineerDSSN } = req.body;
+
+  try {
+    // Validar que haya técnico
+    if (!ClinicalEngineerDSSN) {
+      return res.status(400).send("Debe seleccionar un técnico.");
+    }
+
+    // Actualizar la orden de trabajo
+    await WorkOrder.update(
+      {
+        ClinicalEnginnerDSSN: ClinicalEngineerDSSN,
+        id_RepairStage: 10 // pasa a etapa 10: asignada a técnico
+      },
+      { where: { Code: code } }
+    );
+
+    res.redirect("/workOrder/requests");
+  } catch (error) {
+    console.error("Error al asignar técnico:", error);
+    res.status(500).send("Error al asignar técnico a la orden de trabajo.");
+  }
+};
 
 
 
+
+
+
+
+
+
+
+
+
+/////
 exports.editMaintenance=(req,res)=>{
    id = req.params.id
    Maintenance.findByPk(id).then(maintenance=>{

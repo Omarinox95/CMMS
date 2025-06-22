@@ -40,6 +40,14 @@ router.get('/engineer/ppm/calendar',isLoggedIn, isClinicalEngineer, preventiveCo
 router.get('/home', isLoggedIn, isMedicalStaff, homeController.medicalStaffHome);
 router.get('/medicalStaff/workOrder', homeController.getMedicalStaffWorkOrders);
 router.post('/medicalStaff/workOrder/add', homeController.postMedicalStaffWorkOrder);
+///primera etapa
+router.get("/workOrder/requests", homeController.viewRequests);
+router.post('/engineer/workOrder/repair/:code', isLoggedIn, isClinicalEngineer, homeController.completeRepairPost);
+
+
+
+
+
 
 // GET para renderizar el formulario
 router.get('/confDayliQuestion', async (req, res) => {

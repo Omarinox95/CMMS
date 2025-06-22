@@ -87,7 +87,7 @@
         <canvas id="chartMTTR" width="300" height="200"></canvas>
         <canvas id="chartPareto" width="350" height="280"></canvas>
         <canvas id="chartParetoStopReason" width="350" height="280"></canvas>
-
+        
       </div>
 
       <div class="container mt-4">
@@ -106,6 +106,32 @@
             <!-- Aquí se llena con JS -->
           </tbody>
         </table>
+        <div class="flex justify-center my-4">
+          <canvas id="chartParetoMantenimiento" width="500" height="680"></canvas>
+        </div>
+
+        <h4 class="mt-4">Pareto de Mantenimientos Correctivos Realizados</h4>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Descripción</th>
+      <th>Cantidad</th>
+      <th>%</th>
+      <th>Acumulado %</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each paretoMaintenanceData}}
+    <tr>
+      <td>{{this.tipo}}</td>
+      <td>{{this.cantidad}}</td>
+      <td>{{this.porcentaje}}%</td>
+      <td>{{this.acumulado}}%</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
         
 </div>
 
@@ -315,6 +341,68 @@ console.log('Datos indicadoresMensuales:', datos);
         title: {
           display: true,
           text: 'Gráfico de Pareto - Razones de Parada (StopReason)'
+        },
+        legend: {
+          position: 'top'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: { display: true, text: 'Cantidad' }
+        },
+        y1: {
+          beginAtZero: true,
+          position: 'right',
+          ticks: {
+            callback: val => val + '%'
+          },
+          grid: { drawOnChartArea: false },
+          title: { display: true, text: '% Acumulado' }
+        }
+      }
+    }
+  });
+</script>
+<script>
+  const paretoMantenimientoData = {{{json paretoMaintenanceData}}};
+
+  const etiquetasMant = paretoMantenimientoData.map(item => item.tipo);
+  const cantidadesMant = paretoMantenimientoData.map(item => item.cantidad);
+  const porcentajeAcumuladoMant = paretoMantenimientoData.map(item => parseFloat(item.acumulado));
+
+  const ctxParetoMant = document.getElementById('chartParetoMantenimiento').getContext('2d');
+
+  new Chart(ctxParetoMant, {
+    data: {
+      labels: etiquetasMant,
+      datasets: [
+        {
+          type: 'bar',
+          label: 'Cantidad por tipo de mantenimiento',
+          data: cantidadesMant,
+          backgroundColor: 'rgba(0, 191, 165, 0.7)'
+        },
+        {
+          type: 'line',
+          label: '% Acumulado',
+          data: porcentajeAcumuladoMant,
+          yAxisID: 'y1',
+          borderColor: 'rgba(255, 99, 132, 1)',
+          borderWidth: 2,
+          fill: false,
+          tension: 0.3,
+          pointRadius: 3,
+          pointHoverRadius: 6
+        }
+      ]
+    },
+    options: {
+      responsive: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Gráfico de Pareto - Tipos de Mantenimiento'
         },
         legend: {
           position: 'top'

@@ -1,0 +1,61 @@
+<!-- ETAPA 1: CREACIÓN DE ORDEN DE TRABAJO -->
+<!-- NUEVA VISTA: workOrder_requests.handlebars -->
+
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="title-5 m-b-35">Solicitudes de Ordenes</h3>
+
+                    <div class="table-responsive table-responsive-data2">
+                        <table class="table table-data2">
+                            <thead>
+                                <tr>
+                                    <th>ID_OT</th>
+                                    <th>Equipo</th>
+                                    <th>Departamento</th>
+                                    <th>Prioridad</th>
+                                    <th>Solicitante</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each Workorders}}
+                                {{#ifCond this.RepairStage.id_RepairStage '==' 1}}
+                                <tr class="tr-shadow">
+                                    <td>{{this.Code}}</td>
+                                    <td>{{this.Equipment.Name}} - {{this.Equipment.Code}}</td>
+                                    <td>{{this.Department.Name}}</td> <!-- Departamento del solicitante -->
+                                    <td><span class="{{this.PriorityClass}}">{{this.Priority}}</span></td>
+                                    <td>{{this.SolicitanteNombre}}</td> <!-- Este aún es manual -->
+                                    <td><span class="status--process">Nueva</span></td>
+                                    <td>
+                                        <form method="POST" action="/workOrder/asignar/{{this.Code}}">
+                                            <select name="ClinicalEngineerDSSN" class="form-control" required>
+                                                <option value="">Seleccione Técnico</option>
+                                                {{#each ../Engineers}}
+                                                <option value="{{this.DSSN}}">{{this.FName}} {{this.LName}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <button type="submit" class="au-btn au-btn--green au-btn--small m-t-10">
+                                                Asignar Técnico
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <tr class="spacer"></tr>
+                                {{/ifCond}}
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Nota: requiere helper 'ifCond' definido en Handlebars para comparar -->

@@ -14,11 +14,14 @@ const moment=require('moment')
 const Category = require('../models/category');
 const ReceptionStatus = require('../models/ReceptionStatus');  // Agrega esta línea
 const AcquisitionType = require('../models/AcquisitionType');  // Y esta línea
-const PreventiveTask = require('../models/PreventiveTask'); // si no está ya importado
+//const PreventiveTask = require('../models/PreventiveTask'); // si no está ya importado
 const { Brand, NameEquipment, Model } = require('../models');
-const { OrderType, StopReason, RepairStage, StopOrder } = require('../models'); // ajusta el path si es necesario
+const { OrderType, StopReason, RepairStage, StopOrder, PreventiveTask } = require('../models'); // ajusta el path si es necesario
 const { Op } = require('sequelize');
+const SparepartsWO = require('../models/sparepartsWO');
 const MedicalStaff = require('../models/medicalstaff');
+const fs = require('fs');
+const path = require('path');
 exports.homeSignIn=(req,res) => {
     res.render('newHome',{layout:false});
 }
@@ -120,16 +123,19 @@ exports.signIn = async (req, res) => {
       LName: user.LName,
       Image: user.Image || null
     };
-
+    
     // Redirigir según rol
     if (role === 'admin') {
+      req.session.role = role;
       return res.redirect('/home');
     } else if (role === 'clinicalEngineer') {
+      req.session.role = role;
       return res.redirect('/engineer/dialyInspection');
     } else if (role === 'medicalStaff') {
+      req.session.role = role;
       return res.redirect('/medicalStaff/workOrder'); // Aquí va el home que creamos
     }
-
+    
     // Default fallback
     res.redirect('/');
   } catch (err) {
@@ -690,6 +696,7 @@ exports.agentSupplier=(req,res)=>{
     })
 
 }*/
+//workorders admin visualizacion completa
 exports.workOrder = (req, res) => {
   WorkOrder.findAll({ include: [{ model: ClinicalEngineer }, { model: Equipment }, {model: StopOrder, as: 'stopOrder'}, { model: RepairStage }],order: [[{ model: RepairStage }, 'id_Stage', 'ASC']] })
     .then(workorders => {
@@ -1147,7 +1154,7 @@ exports.dailyInspection=(req,res)=>{
 
 }
 
-
+//workorders del tecnico
 exports.workorder=(req,res) =>{
 dssn=req.session.user.DSSN
 WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
@@ -1181,11 +1188,11 @@ WorkOrder.findAll({where:{ClinicalEnginnerDSSN:dssn}}).then(orders => {
 
 }
 
-exports.workorderDescription=(req,res)=>{
+/*exports.workorderDescription=(req,res)=>{
     code=req.params.code
     engineerId=req.session.user.DSSN
-    WorkOrder.findOne({where:{Code:code},include:[{model:Equipment},{ model: OrderType, /*attributes: ['work'] */},       // o el nombre que uses
-    { model: StopReason, /*attributes: ['Description']*/ },
+    WorkOrder.findOne({where:{Code:code},include:[{model:Equipment},{ model: OrderType},       // o el nombre que uses
+    { model: StopReason},
     { model: RepairStage, attributes: ['Status'] } ]}).then(order => {
         console.log('Order raw data:', JSON.stringify(order, null, 2));
   console.log('OrderType:', order.OrderType);
@@ -1212,6 +1219,9 @@ exports.workorderDescription=(req,res)=>{
                 FName:engineer.FName,
                 LName:engineer.LName
             }
+        const isMine = order.ClinicalEnginnerDSSN === engineerId;
+        const RepairStageId = order.id_RepairStage; // asegúrate que venga del modelo
+
         res.render('workOrderDetails',{layout:'clinicalEngineerLayout',pageTitle:'Work Order',
                 WO:true,order:order,Engineer,Engineer})
         })    
@@ -1219,7 +1229,108 @@ exports.workorderDescription=(req,res)=>{
         res.render('error',{layout:false,pageTitle:'Error',href:'/',message:'Sorry !!! Could Not Get Work Orders'})
 
     })
-}
+}*/
+exports.workorderDescription = async (req, res) => {
+  const code = req.params.code;
+  const engineerId = req.session.user.DSSN;
+
+  try {
+    const workOrderRaw = await WorkOrder.findOne({
+      where: { Code: code },
+      include: [
+        { model: Equipment },
+        { model: OrderType },
+        { model: StopOrder, as: 'stopOrder'},
+        { model: RepairStage }
+      ]
+    });
+    
+    if (!workOrderRaw) {
+      return res.status(404).render('error', {
+        layout: false,
+        pageTitle: 'Error',
+        href: '/',
+        message: 'Orden de trabajo no encontrada.'
+      });
+    }
+    const repuestosRaw = await SparepartsWO.findAll({
+    where: { id_workorder: parseInt(code) }
+    });
+    const repuestos = repuestosRaw.map(r => r.get({ plain: true }));
+
+
+    const allSparePartsRaw = await SparePart.findAll();
+    const allSpareParts = allSparePartsRaw.map(sp => sp.get({ plain: true }));
+
+    const isMine = workOrderRaw.ClinicalEnginnerDSSN === engineerId;
+    const RepairStageId = workOrderRaw.id_RepairStage;
+
+    // Convertir a objetos planos para evitar errores de Handlebars
+    const orderTypePlain = workOrderRaw.OrderType?.get({ plain: true });
+    const stopOrderPlain = workOrderRaw.StopOrder?.get({ plain: true });
+    const repairStagePlain = workOrderRaw.RepairStage?.get({ plain: true });
+    console.log("🛠️ Repuestos registrados para la orden:", repuestos);
+
+    const order = {
+      Code: workOrderRaw.Code,
+      EquipmentName: workOrderRaw.Equipment.Name,
+      EquipmentModel: workOrderRaw.Equipment.Model,
+      EquipmentCode: workOrderRaw.Equipment.Code,
+      EquipmentSerial:workOrderRaw.Equipment.SerialNumber,
+      Priority: workOrderRaw.Priority,
+      Cost: workOrderRaw.Cost,
+      StartDate: workOrderRaw.StartDate,
+      EndDate: workOrderRaw.EndDate,
+      Description: workOrderRaw.Description,
+      Solution: workOrderRaw.Solution,
+      Type: orderTypePlain?.Name || 'N/A',
+      StopOrder: stopOrderPlain?.description || 'N/A',
+      RepairStage: repairStagePlain?.Status || 'N/A',
+      Signature: workOrderRaw.Signature || null,
+      IsMine: isMine,
+      RepairStageId: RepairStageId,
+      repuestos
+    };
+
+    const [engineer, orderTypesRaw, repairStagesRaw, stopOrdersRaw] = await Promise.all([
+      ClinicalEngineer.findByPk(engineerId),
+      OrderType.findAll(),
+      RepairStage.findAll({ where: { id_Stage: [2, 3, 4, 6] } }),
+      StopOrder.findAll()
+    ]);
+
+    const Engineer = {
+      Image: engineer.Image,
+      FName: engineer.FName,
+      LName: engineer.LName
+    };
+
+    // Convertimos a objetos planos
+    const orderTypes = orderTypesRaw.map(o => o.get({ plain: true }));
+    const repairStages = repairStagesRaw.map(r => r.get({ plain: true }));
+    const stopOrders = stopOrdersRaw.map(s => s.get({ plain: true }));
+
+    res.render('workOrderDetails', {
+      layout: 'clinicalEngineerLayout',
+      pageTitle: 'Work Order',
+      WO: true,
+      order,
+      Engineer,
+      orderTypes,
+      repairStages,
+      stopOrders,
+      allSpareParts
+    });
+  } catch (err) {
+    console.error("Error al obtener detalles de la orden:", err);
+    res.render('error', {
+      layout: false,
+      pageTitle: 'Error',
+      href: '/',
+      message: 'Error al obtener la orden de trabajo.'
+    });
+  }
+};
 
 
 //para los clinicos
@@ -1383,8 +1494,240 @@ exports.postMedicalStaffWorkOrder = (req, res) => {
   });
 };
 
+//primera etapa
+/*exports.viewRequests = async (req, res) => {
+  try {
+    console.log("Rol del usuario:", req.session.role); // Debug
+    const Workorders = await WorkOrder.findAll({
+      where: { id_RepairStage: 1 },
+      include: [
+      {
+        model: Equipment,
+        as: 'Equipment',
+        include: [
+          { model: Department, as: 'Department' } // si el equipo tiene su propio departamento
+        ]
+      },
+      {
+        model: Department,
+        as: 'Department' // este es el departamento del solicitante
+      },
+      {
+        model: RepairStage
+      }
+    ],order: [['StartDate', 'DESC']]
+    });
+
+    res.render("workOrder_requests", {
+    layout: req.session.role === "clinicalEngineer" ? "clinicalEngineerLayout" : "main-layout",
+    Workorders,
+    hasWorkOrder: Workorders.length > 0,
+    WORequests: true
+  });
+  } catch (error) {
+    console.error("Error cargando solicitudes:", error);
+    res.status(500).send("Error al cargar solicitudes");
+  }
+};*/
+exports.viewRequests = async (req, res) => {
+  try {
+    // Traer las órdenes con sus relaciones
+    const workorders = await WorkOrder.findAll({
+      where: { id_RepairStage: 1 },
+      include: [
+        {
+          model: Equipment,
+          as: 'Equipment',
+          include: [{ model: Department, as: 'Department' }]
+        },
+        { model: Department, as: 'Department' }, // Departamento del solicitante
+        { model: RepairStage }
+      ],
+      order: [['StartDate', 'DESC']]
+    });
+
+    // Traer todos los usuarios una sola vez
+    const [engineersRaw, staffRaw] = await Promise.all([
+      ClinicalEngineer.findAll(),
+      MedicalStaff.findAll()
+    ]);
+     const engineers = engineersRaw.map(e => e.toJSON());
+    const staff = staffRaw.map(s => s.toJSON());
+    // Crear mapas por DSSN para acceso rápido
+    const engineerMap = new Map(engineers.map(e => [e.DSSN, `${e.FName} ${e.LName}`]));
+    const staffMap = new Map(staff.map(s => [s.DSSN, `${s.FName} ${s.LName}`]));
+
+    // Asignar nombres
+    const workordersWithNames = workorders.map(wo => {
+      const plain = wo.toJSON();
+      let name = 'Otro';
+
+      if (plain.SolicitanteRole === 'MedicalStaff') {
+        name = staffMap.get(plain.SolicitanteID) || 'Desconocido';
+      } else if (plain.SolicitanteRole === 'ClinicalEngineer' || plain.SolicitanteRole === 'admin') {
+        name = engineerMap.get(plain.SolicitanteID) || 'Desconocido';
+      }
+
+      return { ...plain, SolicitanteNombre: name };
+    });
+  //  console.log("WORKORDERS CRUDO:", JSON.stringify(workordersWithNames, null, 2));
+//console.log("WORKORDERS CRUDO:", JSON.stringify(workorders, null, 2));
+console.log("Ingenieros:", engineers);
+
+    res.render('workOrder_requests', {
+      layout: req.session.role === 'clinicalEngineer' ? 'clinicalEngineerLayout' : 'main-layout',
+      Workorders: workordersWithNames,
+      Engineers:engineers,
+      hasWorkOrder: workordersWithNames.length > 0,
+      WORequests: true
+    });
+  } catch (error) {
+    console.error('Error cargando solicitudes:', error);
+    res.status(500).send('Error al cargar solicitudes');
+  }
+};
+
+//etapa 3 trabajo tecnico
+/*exports.completeRepairPost = async (req, res) => {
+  const code = req.params.code;
+  const {
+    WorkDate,
+    Solution,
+    Cost,
+    id_typeW,
+    id_RepairStage,
+    id_StopOrder,
+    signature
+  } = req.body;
+  const engineerId = req.session.user.DSSN;
+
+  try {
+    const order = await WorkOrder.findByPk(code);
+
+    // Validar autorización del técnico
+    if (!order || order.ClinicalEnginnerDSSN !== engineerId || order.id_RepairStage !== 10) {
+      return res.status(403).send("No autorizado.");
+    }
+
+    // Guardar firma si existe
+    let firmaPath = null;
+    if (signature && signature.startsWith("data:image")) {
+      const base64Data = signature.replace(/^data:image\/png;base64,/, "");
+      const fileName = `firma_reparacion_${code}_${Date.now()}.png`;
+      const filePath = path.join(__dirname, '..', 'public', 'signatures', fileName);
+      fs.writeFileSync(filePath, base64Data, 'base64');
+      firmaPath = `/signatures/${fileName}`; // guarda solo ruta relativa
+    }
+     console.log("🔍 Reparación recibida:");
+    console.log("id_RepairStage enviado:", id_RepairStage);
+    const parsedRepairStage = id_RepairStage ? parseInt(id_RepairStage) : null;
+
+    // Actualizar WorkOrder
+    await WorkOrder.update({
+      Workdate: WorkDate,
+      Solution,
+      Cost: parseFloat(Cost || 0),
+      id_typeW: parseInt(id_typeW) || null,
+      id_RepairStage: parsedRepairStage,
+      id_StopOrder: id_StopOrder ? parseInt(id_StopOrder) : null,
+      FirmaTecnicoReparacion: firmaPath
+    }, {
+      where: { Code: code }
+    });
+
+    res.redirect('/engineer/workOrder');
+  } catch (err) {
+    console.error("Error al guardar reparación:", err);
+    res.status(500).send("Error al guardar la reparación");
+  }
+};*/
+exports.completeRepairPost = async (req, res) => {
+  const code = req.params.code;
+  const {
+    WorkDate,
+    Solution,
+    Cost,
+    id_typeW,
+    id_RepairStage,
+    id_StopOrder,
+    signature,
+    spareParts
+  } = req.body;
+  const engineerId = req.session.user.DSSN;
+console.log("🔧 spareParts recibido:", spareParts);
+
+  try {
+    const order = await WorkOrder.findByPk(code);
+
+    // Validar autorización del técnico
+    if (!order || order.ClinicalEnginnerDSSN !== engineerId || order.id_RepairStage !== 10) {
+      return res.status(403).send("No autorizado.");
+    }
+
+    // Guardar firma si existe
+    let firmaPath = null;
+    if (signature && signature.startsWith("data:image")) {
+      const base64Data = signature.replace(/^data:image\/png;base64,/, "");
+      const fileName = `firma_reparacion_${code}_${Date.now()}.png`;
+      const filePath = path.join(__dirname, '..', 'public', 'signatures', fileName);
+      fs.writeFileSync(filePath, base64Data, 'base64');
+      firmaPath = `/signatures/${fileName}`; // guarda solo ruta relativa
+    }
+
+    console.log("🔍 Reparación recibida:");
+    console.log("id_RepairStage enviado:", id_RepairStage);
+    const parsedRepairStage = id_RepairStage ? parseInt(id_RepairStage) : null;
+
+    // Actualizar WorkOrder
+    await WorkOrder.update({
+      Workdate: WorkDate,
+      Solution,
+      Cost: parseFloat(Cost || 0),
+      id_typeW: parseInt(id_typeW) || null,
+      id_RepairStage: parsedRepairStage,
+      id_StopOrder: id_StopOrder ? parseInt(id_StopOrder) : null,
+      FirmaTecnicoReparacion: firmaPath
+    }, {
+      where: { Code: code }
+    });
+
+    // Guardar repuestos si existen
+    if (spareParts) {
+      const parsedParts = JSON.parse(spareParts);
+
+      if (Array.isArray(parsedParts)) {
+        for (const part of parsedParts) {
+          await SparepartsWO.create({
+            id_workorder: code,
+            nombre_repuesto: part.Name,
+            codigo_fabrica: part.CodeManufacter,
+            cantidad: part.Quantity,
+            costo: 0  // Puedes modificar esto si capturas el costo del repuesto
+          });
+        }
+      }
+    }
+
+    res.redirect('/engineer/workOrder');
+  } catch (err) {
+    console.error("Error al guardar reparación:", err);
+    res.status(500).send("Error al guardar la reparación");
+  }
+};
 
 
+
+
+
+
+
+
+
+
+
+
+
+///////////
 
 //añadido 09/05/25
 /*

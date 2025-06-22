@@ -72,6 +72,11 @@
                     <a href="/workOrder">
                         <i class="fas fa-table"></i>Ordenes de Trabajo</a>
                 </li>
+                 <li class="{{#if WORequests}}active{{/if}}">
+                    <a href="/workOrder/requests">
+                        <i class="fas fa-envelope-open-text"></i>Solicitudes de OT
+                    </a>
+                </li>
                 <li class="{{#if Equipment }}active{{/if}} has-sub">
                     <a href="/equipment">
                         <i class="fas fa-copy"></i>Equipos</a>
@@ -180,6 +185,11 @@
                 <li><a href="/sparePart"><i class="fas fa-copy"></i>Acc/Rep/Insum</a></li>
                 <li><a href="/agentSupplier"><i class="fas fa-table"></i>Agent/Proveedores</a></li>
                 <li><a href="/workOrder"><i class="fas fa-table"></i>Ordenes de Trabajo</a></li>
+                <li class="{{#if WORequests}}active{{/if}}">
+                    <a href="/workOrder/requests">
+                        <i class="fas fa-envelope-open-text"></i>Solicitudes de OT
+                    </a>
+                </li>
                 <li><a href="/equipment"><i class="fas fa-copy"></i>Equipos</a></li>
                 <li><a href="/department"><i class="fas fa-table"></i>Departamentos</a></li>
                 <li><a href="/maintenance"><i class="fas fa-table"></i>Mantenimientos</a></li>

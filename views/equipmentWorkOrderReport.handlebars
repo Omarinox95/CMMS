@@ -48,8 +48,11 @@
                 <td>{{this.Description}}</td>
                 <td>{{this.Priority}}</td>
                 <td>{{this.Cost}}</td>
-                <td>{{this.order_type.Name}}</td>     <!-- nuevo -->
+                <td>{{this.OrderType.Name}}</td>     <!-- nuevo -->
                 <td>{{this.stopOrder.description}}</td> <!-- nuevo -->
+                <td>
+                  <a href="/workorder/informe/{{this.Code}}" class="btn btn-sm btn-primary">Ver Informe</a>
+                </td>
                 </tr>
             {{/each}}
             </tbody>
