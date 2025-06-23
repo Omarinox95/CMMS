@@ -61,6 +61,16 @@
                 </div>
               </div>
             </div>
+            {{!-- Disponibilidad --}}
+            <div class="col-md-3">
+              <div class="card text-white bg-success mb-3">
+                <div class="card-header">Disponibilidad Teorica</div>
+                <div class="card-body">
+                  <h5 class="card-title">{{disponibilidadTeorica}} %</h5>
+                </div>
+              </div>
+            </div>
+
 
             {{!-- Confiabilidad --}}
             <div class="col-md-3">
@@ -96,9 +106,13 @@
           <thead class="bg-gray-100">
             <tr>
               <th class="border px-4 py-2">Mes</th>
+              <th class="border px-4 py-2">Horas de Operación</th> <!-- ✅ -->
+              <th class="border px-4 py-2">Tiempo Reparación (hrs)</th>
+              <th class="border px-4 py-2">Fallos</th> 
               <th class="border px-4 py-2">MTBF (hrs)</th>
               <th class="border px-4 py-2">MTTR (hrs)</th>
               <th class="border px-4 py-2">Disponibilidad (%)</th>
+              <th class="border px-4 py-2">Disp. Teórica (%)</th> 
               <th class="border px-4 py-2">Confiabilidad (%)</th>
             </tr>
           </thead>
@@ -147,12 +161,6 @@ console.log('Contenido:', datos);                 // inspecciona si es el espera
   const meses = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
   const etiquetas = datos.map(d => meses[d.mes] || ''); // etiqueta mes según índice mes
 console.log('Datos indicadoresMensuales:', datos);
- /* const indicadores = {
-    Disponibilidad: datos.map(d => d.disponibilidad),
-    Confiabilidad: datos.map(d => d.confiabilidad),
-    MTBF: datos.map(d => d.MTBF),
-    MTTR: datos.map(d => d.MTTR)
-  };*/
   const indicadores = {
     Disponibilidad: datos.map(d => d.disponibilidad || 0),
     Confiabilidad: datos.map(d => d.confiabilidad || 0),
@@ -187,28 +195,13 @@ console.log('Datos indicadoresMensuales:', datos);
             label: nombre,
             data: valores,
             backgroundColor: colores[nombre]
-          },
-          {
-            type: 'line',
-            label: '% Acumulado',
-            data: acumulado,
-            yAxisID: 'y1',
-            borderColor: 'rgba(255, 99, 132, 1)',
-            tension: 0.3
           }
         ]
       },
       options: {
         responsive: false,
         scales: {
-          y: { beginAtZero: true },
-          y1: {
-            beginAtZero: true,
-            position: 'right',
-            ticks: {
-              callback: val => val + '%'
-            }
-          }
+          y: { beginAtZero: true }
         }
       }
     });
@@ -229,9 +222,13 @@ console.log('Datos indicadoresMensuales:', datos);
 
     fila.innerHTML = `
       <td class="border px-4 py-2">${mesesNombre[dato.mes]}</td>
+      <td class="border px-4 py-2">${dato.horasOperacion ?? 'N/A'}</td>
+      <td class="border px-4 py-2">${dato.tiempoReparacion}</td>       <!-- ✅ -->
+      <td class="border px-4 py-2">${dato.fallos ?? 'N/A'}</td>
       <td class="border px-4 py-2">${dato.MTBF}</td>
       <td class="border px-4 py-2">${dato.MTTR}</td>
       <td class="border px-4 py-2">${dato.disponibilidad}</td>
+      <td class="border px-4 py-2">${dato.disponibilidadTeorica ?? 'N/A'}</td>
       <td class="border px-4 py-2">${dato.confiabilidad}</td>
     `;
 

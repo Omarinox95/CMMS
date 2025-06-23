@@ -56,7 +56,15 @@ exports.indicadoresPorEquipo = async (req, res) => {
 
     const MTBF = numFallos > 0 ? (horasTotalesOperacion / numFallos).toFixed(2) : 'N/A';
     const MTTR = numFallos > 0 ? (tiempoTotalReparacion / numFallos).toFixed(2) : 'N/A';
+    // Disponibilidad Teórica
+    let disponibilidadTeorica = '100';
+    if (MTBF !== 'N/A' && MTTR !== 'N/A') {
+      const mtbfNum = parseFloat(MTBF);
+      const mttrNum = parseFloat(MTTR);
+      disponibilidadTeorica = ((mtbfNum / (mtbfNum + mttrNum)) * 100).toFixed(2);
+    }
 
+    // Disponibilidad Real
     let disponibilidad = '100';
     if (numFallos > 0 && horasTotalesOperacion > 0) {
       disponibilidad = ((horasTotalesOperacion - tiempoTotalReparacion) / horasTotalesOperacion * 100).toFixed(2);
@@ -64,8 +72,9 @@ exports.indicadoresPorEquipo = async (req, res) => {
       disponibilidad = 'N/A';
     }
 
+    // Confiabilidad Anual (para 8760 horas de operación)
     const confiabilidad = numFallos > 0
-      ? (Math.exp(-1 / (horasTotalesOperacion / numFallos)) * 100).toFixed(2)
+      ? (Math.exp(-8760 / parseFloat(MTBF)) * 100).toFixed(2)
       : '100';
 
     const workOrders = await WorkOrder.findAll({ where: { EquipmentCode: code }, include:[{model: OrderType, attributes:['Name']}, { model: StopReason, attributes: ['Reason'] }] });
@@ -150,6 +159,8 @@ arregloMantenimiento = arregloMantenimiento.map(item => {
 console.log('Comenzando análisis mensual');
     for (let mes = 0; mes < 12; mes++) {
       if (mes > mesActual) {
+        const diasMes = new Date(anioAnalisis, mes + 1, 0).getDate();
+        const horasOperacionMes = diasMes * 24;
         // Mes futuro: no calculamos, asignamos null o 0 para evitar problemas en frontend
         indicadoresMensuales[mes] = {
           mes,
@@ -184,14 +195,24 @@ console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
     const MTBFmes = numFallosMes > 0 ? (horasOperacionMes / numFallosMes).toFixed(2) : 0;
     const MTTRmes = numFallosMes > 0 ? (tiempoReparacionMes / numFallosMes).toFixed(2) : 0;
     const disponibilidadMes = numFallosMes > 0 ? ((horasOperacionMes - tiempoReparacionMes) / horasOperacionMes * 100).toFixed(2) : 100;
-    const confiabilidadMes = numFallosMes > 0 ? (Math.exp(-1 / (horasOperacionMes / numFallosMes)) * 100).toFixed(2) : 100;
-
+    const confiabilidadMes = numFallosMes > 0 ? (Math.exp(-horasOperacionMes / (horasOperacionMes / numFallosMes)) * 100).toFixed(2) : 100;
+    // Disponibilidad teórica por mes
+    let disponibilidadTeoricaMes = 100;
+    if (numFallosMes > 0) {
+      const mtbfNum = parseFloat(MTBFmes);
+      const mttrNum = parseFloat(MTTRmes);
+      disponibilidadTeoricaMes = ((mtbfNum / (mtbfNum + mttrNum)) * 100).toFixed(2);
+    }
     indicadoresMensuales[mes] = {
         mes,
         MTBF: parseFloat(MTBFmes),
         MTTR: parseFloat(MTTRmes),
         disponibilidad: parseFloat(disponibilidadMes),
-        confiabilidad: parseFloat(confiabilidadMes)
+        disponibilidadTeorica: parseFloat(disponibilidadTeoricaMes),
+        confiabilidad: parseFloat(confiabilidadMes),
+        horasOperacion: horasOperacionMes,
+        fallos: numFallosMes,
+        tiempoReparacion: tiempoReparacionMes
     };
     }
   }
@@ -207,6 +228,7 @@ console.log(`Fallos encontrados para mes ${mes}: ${fallasMes.length}`);
       disponibilidad,
       confiabilidad,
       numFallos,
+      disponibilidadTeorica,
       tiempoTotalReparacion: tiempoTotalReparacion.toFixed(2),
       code,
       //indicadoresMensuales: JSON.stringify(Object.values(indicadoresMensuales))
