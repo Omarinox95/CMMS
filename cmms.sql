@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: May 25, 2020 at 01:17 PM
--- Server version: 8.0.18
--- PHP Version: 7.3.11
+-- Servidor: localhost
+-- Tiempo de generación: 16-07-2025 a las 12:55:38
+-- Versión del servidor: 8.0.39
+-- Versión de PHP: 8.2.22
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,20 +18,44 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `cmms`
+-- Base de datos: `cmms`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `agentsuppliers`
+-- Estructura de tabla para la tabla `acquisitiontype`
+--
+
+CREATE TABLE `acquisitiontype` (
+  `ID` int NOT NULL,
+  `Name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `acquisitiontype`
+--
+
+INSERT INTO `acquisitiontype` (`ID`, `Name`) VALUES
+(1, 'Nuevo'),
+(2, 'Comodato'),
+(3, 'Prestamo'),
+(4, 'Efectivo'),
+(5, 'Credito'),
+(6, 'Leasing'),
+(7, 'Segunda Mano');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `agentsuppliers`
 --
 
 CREATE TABLE `agentsuppliers` (
-  `Id` int(11) NOT NULL,
+  `Id` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Phone` bigint(20) NOT NULL,
+  `Phone` bigint NOT NULL,
   `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Notes` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
@@ -40,136 +63,196 @@ CREATE TABLE `agentsuppliers` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `agentsuppliers`
+-- Volcado de datos para la tabla `agentsuppliers`
 --
 
 INSERT INTO `agentsuppliers` (`Id`, `Name`, `Adress`, `Phone`, `Email`, `Notes`, `createdAt`, `updatedAt`) VALUES
-(11111, 'El Flwa', '10 El Kasr Al Eainy ,El syda zeinab ,Cairo', 2235651272, 'Fal_med@elfalwa.com', '', '2020-05-21 18:12:28', '2020-05-21 18:12:28'),
-(11112, 'The Egyption Group ', '19 Abd El Rahman st,Masr El Gdeda ,Cairo', 222687712, 'null@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11'),
-(11113, 'Gesca', '45 Abd El Kahlek tharwat st,Cairo', 223919696, 'info@gesca.com', '', '2020-05-21 18:16:55', '2020-05-21 18:16:55'),
-(11114, 'Medical Techology for Trading', '16 El Khartom st,Masr El Gdeda,Cairo', 1001908922, 'null@gmail.com', '', '2020-05-21 18:20:12', '2020-05-21 18:20:12'),
-(11115, 'Servomed', 'Sheraton El Matar , Cairo', 222680940, 'servomed@link.net', '', '2020-05-21 18:21:44', '2020-05-21 18:21:44'),
-(11116, 'Ghalioungui', 'El Kods Mosque , El Ebagya ,Cairo', 1001703154, 'mail@ghalioungui.com', '', '2020-05-21 18:23:56', '2020-05-21 18:23:56'),
-(11117, 'New Technology', '39 El Shahed Abd El Monem Hafz st, ALmaza ,Cairo', 223902736, 'New_technology45@yahoo.com', '', '2020-05-21 18:25:56', '2020-05-21 18:25:56'),
-(11118, 'General Electric', ' 14 Elmaza st ,Masr El Gdeda ,Cairo', 227267511, 'null@gmail.com', '', '2020-05-21 18:53:36', '2020-05-21 18:53:36'),
-(11119, 'Intermed Hospital', '15 El Sheikh Ali Mahmoud , Masr El Gdeda , Cairo', 226441554, 'null@gmail.com', '', '2020-05-21 18:54:38', '2020-05-21 18:54:38'),
-(11120, 'Mindray', '11 Mohamed metwally Imam st ,El Amerya ,Cairo', 222691046, 'service@mindray.com', '', '2020-05-21 18:56:27', '2020-05-21 18:56:27'),
-(11121, 'CX-Medical', '28 Mokhles El Alphy st,Nasr City ,Cairo', 224048410, 'cxmedical@gmailc.om', '', '2020-05-21 18:58:41', '2020-05-21 18:58:41'),
-(11122, 'Philips', 'C13, CFC Business Park, Cairo ', 233312726, 'null@gmail.com', '', '2020-05-21 18:59:41', '2020-05-21 18:59:41'),
-(11123, 'The Medical Trade', '15 Mostafa Kamel st,Cairo', 222687714, 'null@gmail.com', '', '2020-05-21 19:00:36', '2020-05-21 19:00:36'),
-(11124, 'Technoscientific', '178 Ter3a El zomr , El Haram ,Giza', 235734687, 'sales@technoscientific.net', '', '2020-05-21 19:01:49', '2020-05-21 19:01:49'),
-(11125, 'El Fanar Medical Center', ' 29 Italian Hospital st ,ALex', 34253062, 'null@gmail.com', '', '2020-05-21 19:02:53', '2020-05-21 19:02:53'),
-(11126, 'MD Medical Suppliers', 'Nasr City ,Cairo', 222756545, 'null@gmail.com', '', '2020-05-21 19:05:13', '2020-05-21 19:05:13'),
-(11127, 'Techno Ray ', '126 El Seka EL Hadid st , El Nozha , Cairo', 22468968, 'trabie@med-technology.net', '', '2020-05-21 19:07:51', '2020-05-21 19:07:51'),
-(11128, 'Delta Office', '2 El Sloly st Garden City, Cairo', 227956669, 'null@gmail.com', '', '2020-05-21 19:08:54', '2020-05-21 19:08:54'),
-(11129, 'International Company for Medical Equipment ', '24 Gam3a Eldol st,Giza ', 233050795, 'info@icme.com.eg', '', '2020-05-21 19:10:51', '2020-05-21 19:10:51'),
-(11130, 'El Kan Medical', '1 Wady El Nile  , El Agoza ,Giza', 233043511, 'alkanmedical@alkan.com', '', '2020-05-21 19:12:11', '2020-05-21 19:12:11');
+(11112, 'HP Medical', 'roca y coronado 2do y 3er anillo, SCZ', 222687712, 'null@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11'),
+(11113, 'Importadora San Martin de Porres', 'Cuellar #222', 3350047, 'percyherreraperez@hotmail.com', 'laboratorio', '2025-06-05 15:00:17', '2025-06-05 15:00:17'),
+(11114, 'Intercom', 'Prolongacion Buenos Aires #300', 3360969, 'intercom@gmail.com', 'laboratorio', '2025-06-05 15:01:10', '2025-06-05 15:01:10'),
+(11115, 'Biotecno', 'Pedro Velez #41', 3556750, 'info.santacruz@biotecno.com.bo', 'Laboratorio', '2025-06-05 15:01:50', '2025-06-05 15:01:50'),
+(11116, 'Jhag Tecnología Y Laboratorio', '21 de Mayo #51', 3267408, 'Johnaaguilar2005@gmail.com', 'Laboratorio', '2025-06-05 15:02:56', '2025-06-05 15:02:56'),
+(11117, 'Inter Science', 'Quintachiyu #76', 3421718, 'info@is-bolivia.com', 'Laboratorio', '2025-06-05 15:03:56', '2025-06-05 20:01:14'),
+(11118, 'ASC SRL', 'Bermejo #100', 3517197, 'notiene@gmail.com', 'Laboratorio\r\n', '2025-06-05 15:04:42', '2025-06-05 15:04:42'),
+(11119, 'ATS SRL', 'Quintachiyu #76', 3598546, 'notiene@gmail.com', 'Laboratorio\r\nFabian tiene buen servicio', '2025-06-05 15:08:36', '2025-06-05 15:09:41'),
+(11120, 'DISTECNO MEDICAL SRL', 'C. 25 DE MAYO 6250', 78148808, 'distecnosrl@gmail.com', 'microscopio quirurgico', '2025-06-05 17:51:16', '2025-06-05 19:50:03'),
+(11121, 'Rey medica', 'Calle Rafael Peña #250', 77683826, 'notiene@gmail.com', 'TORRE, No comprar equipos excepto si son único proveedor', '2025-06-05 17:59:46', '2025-06-05 19:35:58'),
+(11122, 'VG EQUIPMED', 'Calle Chuvi S/N -A 350M de la Av. Doctor Lucas Saucedo (tercer anillo)', 79003330, 'v.gsucursalls.c@gmail.com', 'Equipos clinica', '2025-06-05 19:45:25', '2025-06-05 19:45:25'),
+(11123, 'PROSERTEC', 'Av. 4to anillo 3880 y av. Roca y coronado', 3559618, 'notiene@gmail.com', 'GENERADOR DE OXIGENO', '2025-06-05 19:49:02', '2025-06-05 19:49:02'),
+(11124, 'INSUMEDIC', 'Av. Omar Chavez #1265 esq. Francisca Lopez', 71632529, 'insumedic.bo@gmail.com', 'Craneotomo', '2025-06-05 19:51:50', '2025-06-05 19:51:50'),
+(11125, 'SALUR SRL', 'Calle peru N82 esq. Av. Cristobal de Mendoza', 3372676, 'brenda.vidaurre@salursrl.com', 'Equipos Clinica', '2025-06-05 19:54:33', '2025-06-05 19:54:33'),
+(11126, 'INGEVIDA SRL', 'Av. Alemana 4to Anillo Calle Sofia Rodriguez N4490', 62299184, 'notiene@gmail.com', '', '2025-06-05 19:59:31', '2025-06-05 19:59:31'),
+(11127, 'MEDIANA', 'Av. 2 de agosto y 6to anillo Edificio Tusequis Nro 6200 planta baja ofi 4', 3459050, 'Adan.medina@medianabolivia.com', 'EEG', '2025-06-05 20:03:34', '2025-06-05 20:03:34'),
+(11128, 'PRAXAIR BOLIVIA SRL', 'N/A', 68939081, 'Laura.Melina.Garcia@linde.com', '3461838 int. 3024', '2025-06-05 20:06:08', '2025-06-05 20:06:08'),
+(11129, 'OPTONEX', 'Calle Pedro Alvarez Nro 1664, zona Pacata Baja - Sacaba, Cochabamba', 67542628, 'optonex@optonexgroup.com', 'pupinel', '2025-06-05 20:09:25', '2025-06-05 20:09:25'),
+(11130, 'SAE SA', 'Av. Cristo Redentor N3733', 3410044, 'saemkdigital@sae.bo', 'COMODATO', '2025-06-05 20:11:40', '2025-06-05 20:11:40'),
+(11131, 'Riomed', 'Av. Alameda Junin Nro301', 3333333333, 'rioma@gmail.com', '', '2020-05-21 18:15:03', '2020-05-21 18:17:11'),
+(11132, 'COSIN LTDA', 'Calle 8 Oeste (La Plata) Barrio Equipetrol', 33431840, 'info@grupocosin.com', 'Imagenes', '2025-06-12 19:41:55', '2025-06-12 19:41:55');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `breakdowns`
+-- Estructura de tabla para la tabla `brand`
+--
+
+CREATE TABLE `brand` (
+  `id_brand` int NOT NULL,
+  `Brand` varchar(50) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `brand`
+--
+
+INSERT INTO `brand` (`id_brand`, `Brand`) VALUES
+(1, '3M'),
+(2, 'Acon Laboratories'),
+(3, 'Activated Flowtron'),
+(4, 'AGFA'),
+(5, 'Airpumb'),
+(6, 'Apex'),
+(7, 'Avanteb'),
+(8, 'Awareness technology inc.'),
+(9, 'Barrfab'),
+(10, 'Baxter'),
+(11, 'Bayer'),
+(12, 'Boeco'),
+(13, 'Ca mi'),
+(14, 'Co-diagnostic inc.'),
+(15, 'Codonics'),
+(16, 'Contec'),
+(17, 'Corpuls'),
+(18, 'Dlab'),
+(19, 'Domus'),
+(20, 'Eppendorf'),
+(21, 'Fanem'),
+(22, 'Fresenius'),
+(23, 'GE'),
+(24, 'Human'),
+(25, 'Hwatime'),
+(26, 'Imax MV'),
+(27, 'Instramed'),
+(28, 'Jhang tecnologia y laboratorio'),
+(29, 'konika minolka'),
+(30, 'Leica'),
+(31, 'Leistug'),
+(32, 'Matachana'),
+(33, 'Medical device technology'),
+(34, 'Memer'),
+(35, 'Mindray'),
+(36, 'Neuation'),
+(37, 'Nihon khoden'),
+(38, 'Optonex'),
+(39, 'Penlon'),
+(40, 'Philips'),
+(41, 'Planmed'),
+(42, 'Puritan benett'),
+(43, 'Seca'),
+(44, 'Siemens'),
+(45, 'Sismatec'),
+(46, 'Spacelabs'),
+(47, 'Spectris'),
+(48, 'Stryker'),
+(49, 'Surgirs'),
+(50, 'Sysmex'),
+(51, 'Terumo'),
+(52, 'Welch Allyn'),
+(53, 'Yco-010 lsm'),
+(54, 'Yellowpack'),
+(55, 'Zehnder'),
+(56, 'Zimmer'),
+(135, 'Varios');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `breakdowns`
 --
 
 CREATE TABLE `breakdowns` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Reason` text COLLATE utf8mb4_general_ci NOT NULL,
   `DATE` text COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `breakdowns`
+-- Volcado de datos para la tabla `breakdowns`
 --
 
 INSERT INTO `breakdowns` (`Code`, `Reason`, `DATE`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
-(1, ' MRI helium level is low', '2020-02-15', '2020-05-21 20:08:26', '2020-05-21 20:08:26', 781396),
-(2, 'cracks/cuts on the probe lens or on the TEE probe tube.', '2020-05-04', '2020-05-21 20:09:36', '2020-05-21 20:09:45', 4573397),
-(3, 'cut on the probe lens or on the TEE probe tube.', '2020-04-06', '2020-05-21 20:10:45', '2020-05-21 20:10:45', 991415561),
-(4, 'X-ray tube failure ', '2019-12-28', '2020-05-21 20:11:28', '2020-05-21 20:11:28', 69690),
-(5, 'Tube need changes', '2020-04-12', '2020-05-21 20:12:23', '2020-05-21 20:12:23', 12220),
-(6, 'Some audible and visual alarms are not working properly.', '2019-05-02', '2020-05-23 03:46:22', '2020-05-23 04:16:10', 201923),
-(7, ' The cooling fan filter is not working', '2019-04-02', '2020-05-23 03:47:25', '2020-05-23 04:16:18', 405055),
-(8, 'There are cracks on the probe lens (Damaged Transducer)', '2019-03-02', '2020-05-23 03:48:28', '2020-05-23 04:16:26', 582997),
-(9, ' The bed wheels are corrupted', '2018-12-02', '2020-05-23 03:50:49', '2020-05-23 04:16:38', 108237),
-(10, 'The sound alarm of patient critical state is not working', '2020-05-02', '2020-05-23 03:51:49', '2020-05-23 04:17:01', 109683),
-(11, ' The infusion pump fails to generate an audible alarm for an occlusion in clamped tubing', '2018-01-02', '2020-05-23 03:53:00', '2020-05-23 11:27:59', 20370613),
-(12, '( “key bounce”)When programs an infusion rate of 10 mL/hour, but the device registers an infusion rate of 100 mL/hour.', '2020-04-02', '2020-05-23 03:53:45', '2020-05-23 11:29:50', 958488),
-(13, ' Leads wires are damaged ', '2019-05-05', '2020-05-23 03:57:30', '2020-05-23 04:17:34', 122663),
-(14, 'Printing not clear or not uniform', '2019-09-05', '2020-05-23 03:58:06', '2020-05-23 04:17:43', 122663),
-(15, ' Inacurrate measurement of heart rate', '2020-05-05', '2020-05-23 04:02:00', '2020-05-23 04:17:51', 414121),
-(16, ' The collimator lamp timer is not working', '2019-05-15', '2020-05-23 04:19:03', '2020-05-23 04:19:03', 670523),
-(17, ' Automatic clot detection failure', '2019-08-02', '2020-05-23 04:20:15', '2020-05-23 04:20:15', 140374),
-(18, ' The device for engaging and disengaging the motor drive mechanism is broken down', '2019-04-06', '2020-05-23 04:20:54', '2020-05-23 04:20:54', 199215),
-(19, ' There are tears in the cable (broken wires inside the transducer)', '2019-08-05', '2020-05-23 04:21:24', '2020-05-23 04:21:24', 100060),
-(20, 'Unexpected readings of SpO2', '2019-01-04', '2020-05-23 04:22:07', '2020-05-23 04:22:07', 501698),
-(21, 'Damaged Transducer', '2019-05-02', '2020-05-23 04:27:59', '2020-05-23 04:27:59', 444502),
-(22, 'The door is not closing well (leakage happens)', '2020-05-23', '2020-05-22 23:57:11', '2020-05-22 23:57:11', 318310),
-(23, 'Air filter problems', '2020-05-23', '2020-05-22 23:57:55', '2020-05-22 23:57:55', 361310),
-(24, 'The HEPA filter must be replaced', '2020-05-23', '2020-05-22 23:58:24', '2020-05-22 23:58:24', 210310),
-(25, 'Mineral deposits formed ', '2020-05-23', '2020-05-22 23:58:52', '2020-05-22 23:58:52', 11310),
-(26, ' The device for engaging and disengaging the motor drive mechanism is broken down', '2019-11-12', '2020-05-23 01:58:51', '2020-05-23 01:58:51', 9019),
-(27, 'Poor C-Arm cleaning habits', '2019-04-15', '2020-05-23 02:24:29', '2020-05-23 02:24:29', 680),
-(28, 'Poor electrical connections', '2019-10-03', '2020-05-23 02:26:42', '2020-05-23 02:26:42', 201),
-(29, 'Not cleaning dust of the inside of the equipment', '2020-05-23', '2020-05-23 02:29:27', '2020-05-23 02:29:27', 3223),
-(30, 'Accumulate dust from the air on the surface of the microscope slide', '2019-09-09', '2020-05-23 02:35:11', '2020-05-23 02:35:11', 5005),
-(31, 'Accumulate dust and debris from the air on the surface of the upper lens of the condenser', '2019-12-02', '2020-05-23 02:36:57', '2020-05-23 02:36:57', 9258),
-(32, 'Poor electrical connections', '2019-08-12', '2020-05-23 02:38:17', '2020-05-23 02:38:17', 2904),
-(33, 'Oxygenator breakdown  ', '2020-04-22', '2020-05-23 02:51:15', '2020-05-23 02:51:15', 2694),
-(34, 'The expiration of electrode pads', '2019-06-09', '2020-05-23 02:54:54', '2020-05-23 02:54:54', 4832),
-(35, 'Low Pressure', '2020-05-06', '2020-05-23 13:16:23', '2020-05-23 13:16:23', 2024),
-(36, 'Misaligned tighteners', '2019-03-13', '2020-05-23 13:17:50', '2020-05-23 13:17:50', 183006),
-(37, 'Not reading the operator\'s manual.', '2020-01-15', '2020-05-23 13:18:27', '2020-05-23 13:18:27', 183006),
-(38, 'Not replacing worn parts', '2017-06-21', '2020-05-23 13:19:12', '2020-05-23 13:19:12', 331003),
-(39, 'fluids are contained within the canister and have worked their way up into the vacuum line', '2020-03-11', '2020-05-23 13:20:27', '2020-05-23 13:20:27', 123235),
-(40, 'connect the unit from any power source prior while cleaning', '2014-10-23', '2020-05-23 13:20:59', '2020-05-23 13:20:59', 123235),
-(41, 'no lubrication for caster bearings', '2020-04-17', '2020-05-23 13:22:19', '2020-05-23 13:22:19', 157629),
-(42, 'Clean casters with a wrong solution.', '2018-11-08', '2020-05-23 13:23:22', '2020-05-23 13:23:22', 267857),
-(43, 'Clean casters with a wrong solution.', '2019-12-19', '2020-05-23 13:24:00', '2020-05-23 13:24:00', 210807);
+(47, 'Equipo con encendido intermitente', '2025-06-05T14:02', '2025-06-06 19:53:31', '2025-06-06 19:53:31', 10),
+(48, 'PRUEBA', '2025-06-09T14:02', '2025-06-11 04:05:03', '2025-06-11 04:05:03', 1),
+(49, 'encendido intermitente', '2025-06-10T12:41', '2025-06-11 13:38:43', '2025-06-11 13:38:43', 13),
+(50, 'SE DETIENE EN ESTUDIOS DE CABEZA', '2025-06-09T08:30', '2025-06-12 19:49:47', '2025-06-12 19:49:47', 72),
+(51, 'EQUIPO NO FUNCIONA', '2025-04-21', '2025-06-12 20:04:49', '2025-06-22 08:06:12', 72),
+(53, 'SCAN STOPPED DUE TO ERROR RECEIVER', '2025-04-14', '2025-06-12 20:07:56', '2025-06-22 08:06:44', 72),
+(54, 'TRACKBALL 1 Y 2 NO FUNCIONAN', '2025-04-14', '2025-06-12 20:08:24', '2025-06-22 08:07:09', 72),
+(56, 'FALLO MAGNET MONITOR', '2025-04-24T16:00', '2025-06-22 08:08:06', '2025-06-22 08:08:06', 72),
+(57, 'PRUEBA DEFENSA', '2025-06-24T17:27', '2025-06-24 21:27:37', '2025-06-24 21:27:37', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `clinicalenginners`
+-- Estructura de tabla para la tabla `categories`
 --
 
-CREATE TABLE `clinicalenginners` (
-  `DSSN` bigint(20) NOT NULL,
-  `FName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `LName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Phone` bigint(20) NOT NULL,
-  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Age` int(11) NOT NULL,
-  `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `WorkHours` int(11) DEFAULT NULL,
-  `Password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  `DepartmentCode` int(11) DEFAULT NULL
+CREATE TABLE `categories` (
+  `IdCat` int NOT NULL,
+  `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `clinicalenginners`
+-- Volcado de datos para la tabla `categories`
 --
 
-INSERT INTO `clinicalenginners` (`DSSN`, `FName`, `LName`, `Phone`, `Image`, `Age`, `Email`, `Adress`, `WorkHours`, `Password`, `createdAt`, `updatedAt`, `DepartmentCode`) VALUES
-(24697, 'Omar', 'Abdelzaher', 1125414586, 'Omar.jpeg', 22, 'omarzaher787@gmail.com', '24 Soliman Badwy', 7, '$2a$10$o9/wxciC2gi1oLzTe.LCtegbaP8aRR8reY702WJrUbmc9b3dIxI66', '2020-05-23 02:59:14', '2020-05-23 13:49:14', 3456),
-(31098, 'Sara', 'Adel', 1120592405, 'image_sara.jpeg', 21, 'sarahadel540@gmail.com', '15 May City', 8, '$2a$10$n9BqUSxMIs.uiQLP2Bhp3OJJ2e2JPfa0W6CIrKIF4XB2.d98igTs6', '2020-05-23 05:19:11', '2020-05-25 13:17:01', 7686),
-(29151719, 'Rawan', 'Sayed', 1210004644, 'image_Rawan.jpeg', 21, 'rawansayed2021@gmail.com', '6 October Street  Zahraa Nasr City', 8, '$2a$10$SEUBJeUSrX47p0e7fUxMBek46h1YINuMPlhotVthSZO0NliFMi2wm', '2020-05-23 02:15:56', '2020-05-23 02:15:56', 9119),
-(9921050746980, 'Remon', 'Albear', 1121963376, 'image_remon profile.jpg', 21, 'remonalbear522@gmail.com', '5 marzok shokry st giza', 8, '$2a$10$SqBzUGUAz1fLF.rsiU09N.b08FhgIJaLMtA78op8s/tZePEGEXUk.', '2020-05-21 18:03:56', '2020-05-25 13:17:11', 1010),
-(29809090102359, 'Salma', 'Ayman', 1120448157, 'image_IMG_20190318_154724_250.JPG', 21, 'soayman9@gmail.com', '15 Azam Mosque', 9, '$2a$10$Q1iScIY0CUR2OMTV2VZFX.v37oSZ2K023v8iSKL6vgfBuxk0c2NEK', '2020-05-23 13:33:26', '2020-05-23 13:33:26', 9119);
+INSERT INTO `categories` (`IdCat`, `Name`) VALUES
+(1, 'Accesorio'),
+(2, 'Repuesto'),
+(3, 'Insumo');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `departments`
+-- Estructura de tabla para la tabla `clinicalenginners`
+--
+
+CREATE TABLE `clinicalenginners` (
+  `DSSN` bigint NOT NULL,
+  `FName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `LName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Phone` bigint NOT NULL,
+  `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Age` int NOT NULL,
+  `Email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Adress` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `WorkHours` int DEFAULT NULL,
+  `Password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `role` varchar(50) COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'clinicalEngineer'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `clinicalenginners`
+--
+
+INSERT INTO `clinicalenginners` (`DSSN`, `FName`, `LName`, `Phone`, `Image`, `Age`, `Email`, `Adress`, `WorkHours`, `Password`, `createdAt`, `updatedAt`, `role`) VALUES
+(24697, 'Omar', 'Garrido', 1125414586, 'Omar.jpeg', 22, 'omarzaher787@gmail.com', 'medical center', 7, '$2a$10$o9/wxciC2gi1oLzTe.LCtegbaP8aRR8reY702WJrUbmc9b3dIxI66', '2020-05-23 02:59:14', '2020-05-23 13:49:14', 'clinicalEngineer'),
+(454567, 'Paula', 'Montero', 75599878, 'image_IMG-20250612-WA0014.jpg', 22, 'pau@gmail.com', 'Medical center', 8, '$2a$10$dZz/3/kRL11NHbdqvrcLKOy.QPpu65suId9pDkOkPwKO1.vfxF/Oy', '2025-06-13 19:13:04', '2025-06-13 19:13:04', 'clinicalEngineer'),
+(1111111, 'administrador', 'administrador', 77431131, 'image_jefecito.png', 26, 'admin@gmail.com', 'algun lugar del mundo', 8, '$2a$10$a7ouIcDbptaqcPvoia11zub6dZvPSR3MDgDyWzh1mdv8L/1lS9vrO', '2025-06-13 05:38:52', '2025-06-13 05:38:52', 'admin'),
+(6458161, 'Valeria', 'Toro', 77431131, 'image_DSC_9463 (Copiar).jpg', 26, 'valeriatorovargas531@gmail.com', 'sevilla2', 8, '$2a$10$eBru2lMXYeitp/MTdrNUM.7SVZYtHCHpf7hubZFzMU5RZxTGvvhlW', '2024-08-09 20:57:24', '2024-08-09 20:57:24', 'clinicalEngineer');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `departments`
 --
 
 CREATE TABLE `departments` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
@@ -177,23 +260,48 @@ CREATE TABLE `departments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `departments`
+-- Volcado de datos para la tabla `departments`
 --
 
 INSERT INTO `departments` (`Code`, `Name`, `Location`, `createdAt`, `updatedAt`) VALUES
-(1010, 'CSSD', 'Ground floor', '2020-05-21 18:01:44', '2020-05-21 18:01:44'),
-(3456, 'ICU', 'Second Floor', '2020-05-21 18:00:06', '2020-05-21 18:00:06'),
-(7686, 'Radiology', 'First floor', '2020-05-21 18:01:04', '2020-05-21 18:01:04'),
-(9119, 'OR', 'Third Floor', '2020-05-21 18:00:25', '2020-05-21 18:00:25');
+(1, 'Emergencia', 'PB', '2025-05-21 18:00:25', '2025-05-21 18:00:25'),
+(2, 'Imagenes', 'PB', '2025-05-21 18:10:25', '2025-05-21 18:10:25'),
+(3, 'Lab.Clinico', 'PB', '2025-05-21 18:05:25', '2025-05-21 18:05:25'),
+(4, 'Quirofano', 'P1', '2025-05-21 18:15:25', '2025-05-21 18:15:25'),
+(5, 'UTI', 'P1', '2025-05-21 18:25:25', '2025-05-21 18:25:25'),
+(6, 'Consultorios', 'P1', '2025-05-21 18:30:25', '2025-05-21 18:30:25'),
+(7, 'Recuperacion', 'P1', '2025-05-21 18:35:25', '2025-05-21 18:35:25'),
+(8, 'hospitalizacion', 'P2', '2025-05-21 18:40:25', '2025-05-21 18:40:25'),
+(9, 'Lab.Biomolecular', 'Cañoto', '2025-05-21 18:45:25', '2025-05-21 18:45:25'),
+(10, 'Externos', 'Externos', '2025-05-21 18:50:25', '2025-05-21 18:50:25'),
+(11, 'Ambulancia', 'Ambulancia', '2025-05-21 18:50:25', '2025-05-21 18:50:25');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `dialyinspections`
+-- Estructura de tabla para la tabla `departureorder`
+--
+
+CREATE TABLE `departureorder` (
+  `id_departure` int NOT NULL,
+  `id_workorder` int DEFAULT NULL,
+  `id_agentsupplier` int DEFAULT NULL,
+  `nombre_personal` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `id_tecnico_entrega` bigint DEFAULT NULL,
+  `firma_personal` text COLLATE utf8mb4_general_ci,
+  `firma_tecnico` text COLLATE utf8mb4_general_ci,
+  `fecha_entrega` datetime DEFAULT NULL,
+  `estado` enum('abierta','cerrada') COLLATE utf8mb4_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dialyinspections`
 --
 
 CREATE TABLE `dialyinspections` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `DATE` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -205,143 +313,424 @@ CREATE TABLE `dialyinspections` (
   `Q8` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `dialyinspections`
+-- Volcado de datos para la tabla `dialyinspections`
 --
 
 INSERT INTO `dialyinspections` (`Code`, `DATE`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `Q6`, `Q7`, `Q8`, `createdAt`, `updatedAt`, `EquipmentCode`, `ClinicalEnginnerDSSN`) VALUES
-(2, '2020-02-04', 'on', 'on', 'on', 'on', 'on', 'on', 'on', 'on', '2020-05-23 18:52:57', '2020-05-23 18:52:57', 781396, 9921050746980);
+(10, '2025-06-06', 'on', 'on', 'on', 'on', 'off', 'off', 'off', 'off', '2025-06-06 19:56:16', '2025-06-06 19:56:16', 3, 6458161),
+(11, '2025-06-01', 'on', 'on', 'on', 'on', 'on', 'on', 'off', 'off', '2025-06-06 20:08:48', '2025-06-06 20:08:48', 1, 6458161),
+(12, '2025-06-10', 'on', 'on', 'on', 'off', 'off', 'off', 'off', 'off', '2025-06-10 19:29:14', '2025-06-10 19:29:14', 8, 6458161),
+(13, '2025-06-13', 'on', 'on', 'on', 'on', 'on', 'off', 'off', 'off', '2025-06-13 08:17:11', '2025-06-13 08:17:11', 1, 6458161),
+(14, '2025-06-13', 'on', 'on', 'on', 'on', 'on', 'off', 'off', 'off', '2025-06-13 19:02:34', '2025-06-13 19:02:34', 1, 6458161),
+(15, '2025-06-13', 'on', 'on', 'on', 'on', 'on', 'off', 'off', 'off', '2025-06-13 19:14:29', '2025-06-13 19:14:29', 2, 454567),
+(16, '2025-06-13', 'on', 'on', 'on', 'off', 'off', 'off', 'off', 'off', '2025-06-13 19:20:01', '2025-06-13 19:20:01', 3, 454567),
+(17, '2025-06-13', 'on', 'on', 'on', 'on', 'on', 'off', 'off', 'off', '2025-06-13 19:46:32', '2025-06-13 19:46:32', 2, 454567),
+(18, '2025-06-19', 'on', 'on', 'on', 'on', 'on', 'off', 'off', 'off', '2025-06-20 03:06:01', '2025-06-20 03:06:01', 3, 6458161);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `equipment`
+-- Estructura de tabla para la tabla `entryorder`
+--
+
+CREATE TABLE `entryorder` (
+  `id` int NOT NULL,
+  `id_departure` int DEFAULT NULL,
+  `fecha_ingreso` datetime DEFAULT NULL,
+  `nombre_tecnico_proveedor` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tecnico_recepcion` bigint DEFAULT NULL,
+  `firma_proveedor` text COLLATE utf8mb4_general_ci,
+  `firma_tecnico` text COLLATE utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `equipment`
 --
 
 CREATE TABLE `equipment` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Cost` bigint(12) NOT NULL,
-  `Model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Cost` decimal(15,2) NOT NULL,
   `SerialNumber` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `InstallationDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `ArrivalDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `WarrantyDate` text COLLATE utf8mb4_general_ci NOT NULL,
+  `InstallationDate` date NOT NULL,
+  `ArrivalDate` date NOT NULL,
+  `WarrantyTime` int DEFAULT NULL,
+  `AssetInitialDate` date DEFAULT NULL,
+  `InsuranceInitialDate` date DEFAULT NULL,
   `Manufacturer` text COLLATE utf8mb4_general_ci,
   `Location` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `PM` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Notes` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `AgentSupplierId` int(11) DEFAULT NULL,
-  `DepartmentCode` int(11) DEFAULT NULL
+  `AgentSupplierId` int DEFAULT NULL,
+  `DepartmentCode` int DEFAULT NULL,
+  `Software` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `SoftwareVersion` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `SoftwarePass` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `NetworkAddress` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `AssetStatus` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `InsuranceStatus` varchar(15) COLLATE utf8mb4_general_ci NOT NULL,
+  `FuntionalStatus` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `ReceptionStatusId` int DEFAULT NULL,
+  `Active` tinyint(1) DEFAULT '1',
+  `F_record` int NOT NULL,
+  `Maintenance_Req` int DEFAULT NULL,
+  `GE` int DEFAULT '0',
+  `AcquisitionTypeID` int DEFAULT NULL,
+  `WarrantyDate` date DEFAULT NULL,
+  `NameEquipmentId` int DEFAULT NULL,
+  `ModelId` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `equipment`
+-- Volcado de datos para la tabla `equipment`
 --
 
-INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `Model`, `SerialNumber`, `InstallationDate`, `ArrivalDate`, `WarrantyDate`, `Manufacturer`, `Location`, `PM`, `Notes`, `createdAt`, `updatedAt`, `AgentSupplierId`, `DepartmentCode`) VALUES
-(201, 'C-ARM Monitor', 'image_carm monitor.jpg', 60000, 'BV-25 GOLD', '1004917.201', '2018-11-05', '2018-11-01', '2021-11-01', 'PHILIPS', 'Room 1', 'Monthly', '', '2020-05-22 21:45:32', '2020-05-22 21:45:32', 11122, 9119),
-(375, 'Lithotrispy', 'image_Lithotripsy SPHINIX 30 LITHO.jpg', 236823, '30 Litho', '375', '2020-02-21', '2020-02-21', '2025-01-07', 'SPHINIX', 'Room 25', 'Annualy', '', '2020-05-21 19:42:58', '2020-05-22 09:18:13', 11118, 7686),
-(680, 'C-ARM', 'image_carm1.jpg', 1000000, 'ZIEHM VISION R', '10680', '2018-03-15', '2018-03-01', '2023-03-01', 'ZIEHM IMAGUNG', 'Room 1', 'Monthly', '', '2020-05-22 21:38:06', '2020-05-22 21:38:06', 11121, 9119),
-(1280, 'Diathermy', 'image_diathermy2.jpg', 130000, 'ValleyLab LS10', 'L1512807GX', '2018-11-12', '2018-11-04', '2022-11-04', 'COVIDIEN', 'Room 2', 'Monthly', '', '2020-05-22 22:02:06', '2020-05-22 22:02:06', 11123, 9119),
-(2024, 'Anesthesia', 'image_aneathesia.jpg', 52000, 'AVANCE CS2', 'ANBQ02024', '2015-02-10', '2015-02-02', '2021-02-02', 'GE', 'Room 1', 'Monthly', '', '2020-05-22 14:24:30', '2020-05-22 14:24:30', 11118, 9119),
-(2694, 'Heart Lung Machine', 'image_HeartLungMachine.jpg', 5000000, 'Medtronic Biomedicus 560 Centrifugal Pump', 'HL2694', '2019-10-03', '2019-09-27', '2024-09-27', 'Medatronic', 'Room 2', 'Monthly', '', '2020-05-22 22:21:49', '2020-05-22 22:21:49', 11126, 9119),
-(2904, 'Drill', 'image_drill.jpg', 12500, 'D3000', 'BBB92904', '2019-04-23', '2022-04-20', '2025-04-20', 'CONMED', 'Room 1', 'Monthly', '', '2020-05-22 22:14:33', '2020-05-22 22:14:33', 11125, 9119),
-(3223, 'Diathermy', 'image_diathermy1.jpg', 125000, 'Force FX-8C', 'F4F73223AX', '2018-07-26', '2018-07-20', '2021-07-20', 'COVIDIEN', 'Room 1', 'Monthly', '', '2020-05-22 21:59:01', '2020-05-22 21:59:01', 11123, 9119),
-(4832, 'DC-Shock', 'image_dc shock.jpg', 40000, 'Reanibex 700', '2013/20024832', '2013-06-12', '2013-06-03', '2018-06-03', 'BEXEN', 'Room 1', 'Monthly', '', '2020-05-22 21:51:04', '2020-05-22 21:51:04', 11112, 9119),
-(5005, 'ENT Microscope', 'image_ENTmicroscope.jpg', 14000, 'OPMI1-H', '205005', '2019-02-15', '2019-02-10', '2024-02-10', 'CARL ZEISS', 'Room 1', 'Monthly', '', '2020-05-22 22:06:37', '2020-05-22 22:06:37', 11124, 9119),
-(9019, 'Syringe Pump', 'image_syringe.jpg', 6000, 'KH171', 'N7309019', '2019-01-12', '2019-01-09', '2023-01-09', 'K-MED', 'Room 1', 'Monthly', '', '2020-05-22 21:29:39', '2020-05-22 21:29:39', 11112, 9119),
-(9258, 'Microscope (Surgical)', 'image_surgicalmicroscope.jpg', 60000, 'VM 900', '258', '2019-08-17', '2019-08-12', '2024-08-12', 'Moller-Wedel', 'Room 2', 'Monthly', '', '2020-05-22 22:11:39', '2020-05-22 22:11:39', 11124, 9119),
-(11310, 'Steam Sterilizer', 'image_Steam Sterilizer AMSCO Eagle 3000 SERIES.jpg', 338600, 'Eagle 3000 SERIES', '0111690-03', '2020-04-27', '2020-05-22', '2025-04-01', 'AMSCO', 'Room1', 'Monthly', '', '2020-05-22 15:03:22', '2020-05-22 15:03:22', 11128, 1010),
-(12220, 'Mammography', 'image_Mammography GE Performa.jpg', 85650, 'Performa M Gf 110', '12220', '2019-06-19', '2019-05-28', '2024-05-28', 'GE', 'Room 9', 'Annualy', '', '2020-05-21 19:40:14', '2020-05-21 19:40:14', 11118, 7686),
-(69690, 'Desitometry', 'image_Densitometry GE Prodigy.jpg', 205170, 'Prodigy', '69690', '2019-11-05', '2019-10-04', '2024-11-05', 'GE', 'Room 16A', 'Annualy', '', '2020-05-21 19:32:47', '2020-05-21 19:32:47', 11127, 7686),
-(69891, 'CT-Scan', 'image_CT-scan GE Lightspeed Ultra advantage.png', 1578820, 'Lightspeed Ultra advantage', '69891HMO', '2019-06-16', '2019-06-16', '2024-05-01', 'GE', 'Room 15', 'Annualy', '', '2020-05-21 19:35:32', '2020-05-22 09:18:43', 11118, 7686),
-(100060, 'Ultrasound (Heart)', 'image_Ultrasound.jpg', 1300000, 'vivid55', 'FN000060', '2020-05-10', '2020-05-10', '2026-05-10', 'GE', 'Room4', 'Annualy', '', '2020-05-22 16:44:27', '2020-05-22 18:48:31', 11116, 3456),
-(108237, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-05', '2020-01-29', '2025-02-05', 'Malvestio', 'Room1', 'Annualy', '', '2020-05-22 18:38:27', '2020-05-22 18:38:27', 11113, 3456),
-(109683, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-05-02', '2020-04-28', '2025-05-02', 'Space labs', 'Room1', 'Annualy', '', '2020-05-22 18:47:57', '2020-05-22 18:47:57', 11113, 3456),
-(122663, 'ECG', 'image_ECG.jpg', 19950, 'Cardio Vit AT-102', '070-12266', '2020-05-05', '2020-05-05', '2023-05-05', 'Schiller', 'Room4', 'Monthly', '', '2020-05-22 18:04:56', '2020-05-22 18:48:58', 11116, 3456),
-(123235, 'Suction Unit', 'image_suction.jpg', 13000, 'HOSPIVAC 350', '12323', '2017-09-15', '2017-09-09', '2023-09-09', 'CA-MI', 'Room 9B', 'Annualy', '', '2020-05-22 14:46:10', '2020-05-22 14:46:10', 11119, 9119),
-(138723, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-02-02', '2020-01-28', '2025-02-02', 'Space labs', 'Room2', 'Annualy', '', '2020-05-22 18:57:21', '2020-05-22 18:57:21', 11113, 3456),
-(140374, 'Blood Gas Analyzer', 'image_Blood Gas Analyzer.jpg', 63250, 'Premier 4000', '14037474', '2020-04-02', '2020-03-28', '2023-04-02', 'GEM', 'lab1', 'Monthly', '', '2020-05-22 17:54:19', '2020-05-22 17:54:19', 11129, 3456),
-(157629, 'Table', 'image_table1.jpg', 473646, 'EASY220', '15762', '2012-12-10', '2012-12-04', '2017-12-04', 'STERIS', 'Room 4', 'Annualy', '', '2020-05-22 15:37:57', '2020-05-22 15:37:57', 11113, 9119),
-(160579, 'Portable Light', 'image_light1.jpg', 21000, 'X2C', 'H.16.05.1790', '2015-09-15', '2015-09-09', '2020-09-09', 'SURGIRIS', 'Room 10A', 'Annualy', '', '2020-05-22 15:47:58', '2020-05-22 15:47:58', 11120, 9119),
-(183006, 'Monitor', 'image_Monitor.jpg', 1000, 'CARESCAPE V100', 'SH61830060SA', '2016-06-09', '2016-06-05', '2021-06-05', 'GE', 'Room 9A', 'Monthly', '', '2020-05-22 14:42:00', '2020-05-22 14:42:00', 11113, 9119),
-(199215, 'Syringe Pump', 'image_Syringe Pump.jpg', 6000, 'INJECTOMAT AGILIA IS', '199215a1', '2020-05-06', '2020-05-01', '2023-05-06', 'Fresenius Kabi', 'Room1', 'Monthly', '', '2020-05-22 17:50:08', '2020-05-22 17:50:08', 11112, 3456),
-(201923, 'Ventilator', 'image_Ventilator.jpg', 145000, 'Extend XT', '2019', '2020-03-05', '2020-03-05', '2026-03-05', 'Airliquide', 'Room1', 'Annualy', '', '2020-05-22 18:07:37', '2020-05-22 18:30:09', 11112, 3456),
-(210310, 'Sterilization with Plasma', 'image_Sterilization with Plasma.jpg', 995000, 'STERRAD 100S', '21097130188', '2020-05-01', '2020-05-22', '2025-04-29', 'Johnson & Johnson', 'Room2', 'Monthly', '', '2020-05-22 15:01:39', '2020-05-22 15:01:39', 11128, 1010),
-(210807, 'Portable Light', 'image_light2.png', 21000, 'Hanaulux 2004 OP Lampe', '2108024', '2015-09-16', '2015-09-09', '2020-09-09', 'HERAEUS', 'Room 10A', 'Annualy', '', '2020-05-22 15:45:00', '2020-05-22 15:45:00', 11120, 9119),
-(233300, 'Infusion Pump', 'image_Infusion Pump.jpg', 37000, '3300', 'FN60-7265', '2020-05-02', '2020-04-29', '2025-05-02', 'TOP-3300', 'Room3', 'Monthly', '', '2020-05-22 19:10:53', '2020-05-22 19:10:53', 11111, 3456),
-(237346, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-02', '2020-01-29', '2025-02-02', 'Malvestio', 'Room3', 'Annualy', '', '2020-05-22 18:43:14', '2020-05-22 18:43:14', 11113, 3456),
-(237676, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-02', '2020-02-02', '2025-02-02', 'Malvestio', 'Room4', 'Annualy', '', '2020-05-22 18:44:38', '2020-05-22 18:49:25', 11113, 3456),
-(237760, 'Bed', 'image_Bed.jpg', 26800, 'H-rang 346760', '108', '2020-02-02', '2020-01-28', '2025-02-02', 'Malvestio', 'Room2', 'Annualy', '', '2020-05-22 18:41:23', '2020-05-22 18:41:23', 11113, 3456),
-(267857, 'Table', 'image_table2.jpg', 473646, '1132.02A1', '267', '2014-06-17', '2014-06-15', '2021-06-15', 'MAQUET-ALPHASTAR', 'Room 5', 'Monthly', '', '2020-05-22 15:41:02', '2020-05-22 15:41:02', 11113, 9119),
-(270023, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-02-02', '2020-01-28', '2025-02-02', 'Space labs', 'Room3', 'Annualy', '', '2020-05-22 18:59:02', '2020-05-22 18:59:02', 11113, 3456),
-(318310, 'Machine Washer', 'image_Machine Washer AMSCO 570.jpg', 145125, '570', '3618890251', '2020-04-04', '2020-05-22', '2025-04-01', 'AMSCO', 'Room1', 'Monthly', '', '2020-05-22 14:59:27', '2020-05-22 14:59:27', 11128, 1010),
-(331003, 'Monitor', 'image_monitor2.jpg', 9400, 'B850', 'DTL331J0031', '2020-01-03', '2020-01-01', '2025-01-01', 'GE', 'Room 3B', 'Monthly', '', '2020-05-22 14:36:53', '2020-05-22 14:36:53', 11113, 9119),
-(361310, 'Dryer', 'image_Dryer AMSCO 575.png', 20000, '575', '3618890281', '2020-03-02', '2020-05-22', '2025-03-01', 'AMSCO', 'Room2', 'Monthly', '', '2020-05-22 14:27:35', '2020-05-22 14:55:56', 11128, 1010),
-(405055, 'Portable Ventilator', 'image_Portable Ventilator.jpg', 85000, 'Trilogy 202', 'TV014050556', '2020-04-03', '2020-04-03', '2024-04-03', 'Philips RESPIRONICS', 'Room4', 'Annualy', '', '2020-05-22 18:14:27', '2020-05-22 18:51:49', 11115, 3456),
-(414121, 'DC-Shock', 'image_DC-Shock.jpg', 44500, 'heart start XL', 'US41412123', '2020-03-02', '2020-02-27', '2025-03-02', 'Philips ', 'Room3', 'Monthly', '', '2020-05-22 18:01:12', '2020-05-22 18:01:12', 11112, 3456),
-(444502, 'Echocardiogram', 'image_Echocardiogram.jpg', 982000, 'Vivid E9', '28042140400517', '2020-05-23', '2020-06-18', '2025-05-01', 'GE', 'Room1', 'Monthly', '', '2020-05-23 04:06:28', '2020-05-23 04:06:28', 11130, 3456),
-(501698, 'Pulse Oximeter', 'image_Pulse Oximeter.jpg', 7000, '7500', '501698347', '2020-04-28', '2020-04-28', '2022-04-28', 'Nonim', 'Room4', 'Monthly', '', '2020-05-22 16:42:09', '2020-05-22 18:52:53', 11115, 3456),
-(582997, 'Ultrasound (Abdominal & Heart)', 'image_Ultrasound.jpg', 269000, 'Aplio', 'DU582997', '2020-06-02', '2020-05-28', '2025-06-02', 'To-Shiba', 'Room1', 'Annualy', '', '2020-05-22 18:28:36', '2020-05-22 18:28:36', 11114, 3456),
-(670523, 'Portable X-ray', 'image_Portable X-Ray.jpg', 1973000, 'MR300', '6705CS142', '2020-05-15', '2020-05-15', '2026-05-15', 'APIK', 'Room2', 'Annualy', '', '2020-05-22 17:57:56', '2020-05-22 18:32:36', 11117, 3456),
-(712345, 'Infusion Pump', 'image_top-3300.jpg', 37000, '3300', 'FN60-7265', '2019-12-06', '2019-05-04', '2024-05-04', 'Top-3300', 'Room 12', 'Annualy', '', '2020-05-21 18:38:56', '2020-05-21 18:38:56', 11111, 3456),
-(781396, 'MRI', 'image_MRI philips INGENIA.jpg', 92002000, 'IGENIA', '781396', '2019-04-26', '2019-03-05', '2025-01-01', 'Philips', 'Room 1A', 'Annualy', '', '2020-05-21 19:23:16', '2020-05-21 19:23:16', 11122, 7686),
-(871023, 'Monitor', 'image_Monitor.jpg', 53800, 'ULTRAVIEW SL 2700', '1387-109683', '2020-02-02', '2020-02-27', '2025-02-02', 'Space labs', 'Room4', 'Annualy', '', '2020-05-22 19:00:00', '2020-05-22 19:00:00', 11113, 3456),
-(924540, 'Operating Light', 'image_light3.jpg', 24000, 'ZW- 500E NEW', 'N/A', '2018-05-14', '2018-05-02', '2023-05-02', 'Mplent', 'Room 9A', 'Annualy', '', '2020-05-22 15:51:26', '2020-05-22 15:51:26', 11120, 9119),
-(958488, 'Infusion Pump', 'image_Infusion Pump.jpg', 37000, '3300', 'FN60-7265', '2020-05-28', '2020-05-20', '2025-05-28', 'TOP-3300', 'Room4', 'Monthly', '', '2020-05-22 19:12:48', '2020-05-22 19:12:48', 11111, 3456),
-(4573397, 'Ultrasound', 'image_Ultrasound Toshiba NEMIO SSA.550A.jpg', 227900, 'NEMIO_SSA.550A', 'L4573397', '2019-01-05', '2018-12-05', '2024-01-05', 'Toshiba', 'Room 22', 'Annualy', '', '2020-05-21 19:26:34', '2020-05-21 19:28:42', 11114, 7686),
-(20370613, 'Infusion Pump', 'image_Infusion Pump.jpg', 37000, 'OPTIMA PT IS', '20370613', '2020-06-05', '2020-05-28', '2025-06-05', 'Fresenius Kabi', 'Room2', 'Monthly', '', '2020-05-22 19:07:04', '2020-05-22 19:07:04', 11112, 3456),
-(61242056, 'CT-Scan', 'image_CT-scan Toshiba Aquilion one.jpg', 8784240, 'AquillionOne', '6AA1242056', '2019-07-01', '2019-05-29', '2024-07-01', 'Toshiba', 'Room 18', 'Annualy', '', '2020-05-21 19:38:23', '2020-05-21 19:38:23', 11114, 7686),
-(991415561, 'Ultrasound', 'image_Ultrasound Toshiba Nemio MX.jpg', 227900, 'NEMIO MX', '99A1415561', '2019-05-06', '2018-11-26', '2024-05-06', 'Toshiba', 'Room 23', 'Annualy', '', '2020-05-21 19:30:33', '2020-05-21 19:30:33', 11114, 7686);
+INSERT INTO `equipment` (`Code`, `Name`, `Image`, `Cost`, `SerialNumber`, `InstallationDate`, `ArrivalDate`, `WarrantyTime`, `AssetInitialDate`, `InsuranceInitialDate`, `Manufacturer`, `Location`, `Notes`, `createdAt`, `updatedAt`, `AgentSupplierId`, `DepartmentCode`, `Software`, `SoftwareVersion`, `SoftwarePass`, `NetworkAddress`, `AssetStatus`, `InsuranceStatus`, `FuntionalStatus`, `ReceptionStatusId`, `Active`, `F_record`, `Maintenance_Req`, `GE`, `AcquisitionTypeID`, `WarrantyDate`, `NameEquipmentId`, `ModelId`) VALUES
+(1, 'MONITOR MODULAR', 'image_QUBE.jpg', 87870.25, '1390-204199', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 4, 'Si', '3.08.03', 'Biomed', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 12, 1, '2026-01-06', 23, 30),
+(2, 'MONITOR MODULAR', 'image_QUBE.jpg', 87870.25, '1390-204305', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 4, 'Si', '3.08.03', 'Biomed', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 12, 1, '2026-01-06', 23, 30),
+(3, 'MONITOR MODULAR', 'image_QUBE.jpg', 87870.25, '1390-204198', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '3.08.03', 'Biomed', '192.168.21.11', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 13, 1, '2026-01-06', 22, 30),
+(4, 'MONITOR MODULAR', 'image_QUBE.jpg', 87870.25, '1390-104582', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '3.06.00', 'Biomed', '192.168.21.12', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 13, 1, '2026-01-06', 22, 30),
+(5, 'MONITOR MODULAR', 'image_QUBE.jpg', 87870.25, '1390-104582', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '3.06.00', 'Biomed', '192.168.21.13', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 13, 1, '2026-01-06', 22, 30),
+(6, 'MONITOR MODULAR', 'image_C50.jpg', 20004.00, 'K5230324073', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '4.2.8', '5188/2016', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 12, 1, '2026-01-06', 23, 31),
+(7, 'MONITOR MODULAR', 'image_C50.jpg', 20004.00, 'K5230324071', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '4.2.8', '5188/2016', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 12, 1, '2026-01-06', 23, 31),
+(8, 'MONITOR DESFIBRILADOR', 'image_CORPULS_III.jpg', 139200.00, '20800714', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'CORPULS', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'Si', '', '3333', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 4, 18, 1, '2026-01-06', 33, 11),
+(9, 'MONITOR DESFIBRILADOR', 'image_CORPULS_I.jpg', 63179.10, '22300677', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'CORPULS', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 4, 'Si', 'C1-2.1.0', '1111/3333', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 4, 18, 1, '2026-01-06', 33, 10),
+(10, 'MONITOR DESFIBRILADOR', 'image_CORPULS_I.jpg', 63179.10, '22300673', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'CORPULS', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', 'C1-2.1', '1111/3333', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 4, 18, 1, '2026-01-06', 33, 10),
+(11, 'MONITOR SPOTCHECK', 'image_Connex.jpg', 24661.60, '100083053617', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Welch Allyn', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 2, 4, 15, 1, '2026-01-06', 23, 24),
+(12, 'MONITOR SPOTCHECK', 'image_Connex.jpg', 24661.60, '100083003617', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Welch Allyn', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 2, 4, 15, 1, '2026-01-06', 23, 24),
+(13, 'MONITOR SPOTCHECK', 'image_Connex.jpg', 24661.60, '100083003617', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Welch Allyn', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 8, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 2, 4, 15, 7, '2026-01-06', 23, 24),
+(14, 'MONITOR SPOTCHECK', 'image_Connex.jpg', 24661.60, '100083003617', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Welch Allyn', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 8, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 2, 4, 15, 7, '2026-01-06', 23, 24),
+(15, 'DEA', 'image_AED.jpg', 22532.00, '23323340', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'CORPULS', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 11, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 3, 18, 1, '2026-01-06', 33, 41),
+(16, 'BALANZA DIGITAL CON TALLIMETRO', 'image_SECA703.jpg', 5856.00, '5703184173954', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'SECA', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 10, 1, '2026-01-06', 2, 21),
+(17, 'Balanza digital con infantometro', 'image_374.jpeg', 6976.00, 'N', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Seca', 'Banzer', '', '2025-06-06 06:07:00', '2025-06-06 06:07:00', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-06-01', 2, 56),
+(18, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010263', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(19, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010271', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(20, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010258', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(21, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010265', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(22, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010261', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(23, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010277', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(24, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010266', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(25, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010278', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(26, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010272', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(27, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1906010271', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(28, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1706010184', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(29, 'BOMBA DE INFUSION', 'image_TELM800.jpg', 19317.00, '1704010216', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 42),
+(30, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010135', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(31, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010134', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(32, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010132', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(33, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010131', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(34, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010137', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(35, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010130', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(36, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010128', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(37, 'BOMBA DE INFUSION', 'image_TELF630.jpg', 19317.00, '2306010129', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'TERUMO', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 1, 3, 13, 1, '2026-01-06', 9, 43),
+(38, 'CENTRAL DE MONITOREO', 'image_xhibit.jpg', 115395.66, 'SLA0519F04578', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Spacelabs', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'Si', '1.3.5.4452', 'Biomed', '192.168.21.10', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 4, 1, '2026-01-06', 24, 32),
+(39, 'COLCHON ANTIESCARA', 'image_DOMUS1.jpg', 800.00, 'K012211085300078', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'APEX', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 4, 1, '2026-01-06', 34, 13),
+(40, 'COLCHON ANTIESCARA', 'image_domus3d.jpg', 3500.00, 'K012205064800004', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'APEX', 'BANZER', '', '2025-06-03 19:51:24', '2025-06-03 19:51:24', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 4, 1, '2026-01-06', 34, 14),
+(41, 'MAQUINA DE ANESTESIA', 'image_Prima465.jfif', 305996.00, '4650623-0005', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Penlon', 'Banzer', '', '2025-06-04 03:34:19', '2025-06-04 03:34:19', 11112, 4, 'Si', '1.00.37', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 27, 22),
+(42, 'MESA QUIRURGICA', 'image_BF683TDP.jpg', 131400.00, '4348150', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Barrfab', 'BANZER', '', '2025-06-04 17:20:14', '2025-06-04 17:20:14', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 15, 1, '2024-01-06', 27, 5),
+(43, 'MESA QUIRURGICA', 'image_BF683EH.jpg', 196376.40, '162200323', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Barrfab', 'BANZER', '', '2025-06-04 17:20:14', '2025-06-04 17:20:14', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 15, 1, '2024-01-06', 27, 6),
+(44, 'COMPRESOR DE MIEMBROS', 'image_900-ARJOHUNTLEIGH.jpg', 16000.00, '2200004493', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Activated Flowtron', 'BANZER', '', '2025-06-04 17:40:49', '2025-06-04 17:40:49', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 1, 5, 1, '2024-01-06', 34, 3),
+(45, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1004266-01', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(46, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1005706-01', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(47, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1005706-02', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(48, 'CUNA PANDA', 'image_PANDA.jpg', 4106.39, 'PC1005706-03', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 17:49:00', '2025-06-04 17:49:00', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 4, 1, '2024-01-06', 26, 19),
+(49, 'ELECTROBISTURI', 'image_SMART4.jpg', 83520.00, 'SD-1104621', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Avanteb', 'BANZER', '', '2025-06-04 18:01:06', '2025-06-04 18:01:06', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 2, 14, 1, '2024-01-06', 27, 44),
+(50, 'ELECTROBISTURI', 'image_SMART4.jpg', 83520.00, 'SD-1104623', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Avanteb', 'BANZER', '', '2025-06-04 18:01:06', '2025-06-04 18:01:06', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 2, 14, 1, '2024-01-06', 27, 44),
+(51, 'INCUBADORA DE TRANSPORTE', 'image_IT158TS.jpg', 95000.00, 'FAU013284', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 18:12:44', '2025-06-04 18:12:44', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 25, 18),
+(52, 'LAMPARA CIALITICA DOS SATELITES', 'image_X2MTX3MT.png', 38927.00, 'S22000008487/S22000008488', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Surgirs', 'BANZER', '', '2025-06-04 18:26:35', '2025-06-04 18:26:35', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 12, 1, '2024-01-06', 19, 45),
+(53, 'LAMPARA CIALITICA DOS SATELITES', 'image_X2MTX3MT.png', 200448.00, 'S22000003306/S22000003304', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Surgirs', 'BANZER', '', '2025-06-04 18:26:35', '2025-06-04 18:26:35', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 12, 1, '2024-01-06', 19, 45),
+(54, 'LAMPARA CIALITICA MOVIL', 'image_AUXILIAR3LE.png', 38927.28, '418842601', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Sismatec', 'BANZER', '', '2025-06-04 18:41:49', '2025-06-04 18:41:49', 11112, 1, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-01-06', 20, 47),
+(55, 'ASPIRADOR QUIRURGICO', 'image_HOSPIVAC 400.jpg', 18400.00, '21644', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Ca mi', 'BANZER', '', '2025-06-04 18:52:54', '2025-06-04 18:52:54', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 3, 13, 1, '2026-01-06', 1, 8),
+(56, 'MANTA TERMICA', 'image_BAIR HUGGER.jpg', 30000.00, '35552', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', '3M', 'BANZER', '', '2025-06-04 18:57:54', '2025-06-04 18:57:54', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-01-06', 32, 1),
+(57, 'SERVOCUNA', 'image_2085Ampla.jpg', 50056.32, 'FAU013290', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Fanem', 'BANZER', '', '2025-06-04 19:31:26', '2025-06-04 19:31:26', 11112, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 12, 1, '2026-01-06', 25, 17),
+(58, 'VENTILADOR MECANICO', 'image_980Purittan.jpg', 407243.63, '35B2004502', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Puritan benett', 'BANZER', '', '2025-06-04 19:37:21', '2025-06-04 19:37:21', 11112, 5, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 3, 17, 1, '2026-01-06', 35, 23),
+(59, 'MONITOR MULTIPARAMETRICO', 'image_H8.jpg', 7500.00, '210513628', '2024-08-28', '2024-08-28', NULL, '2024-08-28', '2024-08-28', 'Hwatime', 'BANZER', '', '2025-06-04 19:57:33', '2025-06-04 19:57:33', 11131, 11, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-08-28', 22, 48),
+(60, 'SISTEMA DE COMPRESION TORAXICA', 'image_CPR.jpg', 66239.00, '23400581', '2024-01-06', '2024-01-06', NULL, '2024-01-06', '2024-01-06', 'Corpuls', 'BANZER', '', '2025-06-04 20:27:44', '2025-06-04 20:27:44', 11112, 1, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 2, 17, 1, '2026-01-06', 33, 12),
+(61, 'MICROSCOPIO QUIRURGICO', 'image_OHS1.jpeg', 0.00, 'CH9435', '2024-10-28', '2024-10-28', NULL, '2024-10-28', '2024-10-28', 'Leica', 'Banzer', '', '2025-06-05 20:20:23', '2025-06-05 20:20:23', 11120, 10, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 3, '2024-10-28', 27, 50),
+(62, 'TORRE LAPAROSCOPIA', 'image_1488.jpg', 0.00, '-', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Stryker', 'Banzer', '', '2025-06-05 20:23:43', '2025-06-05 20:23:43', 11121, 10, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 3, '2024-06-01', 27, 51),
+(63, 'MONITOR', 'image_UMEC12.jpeg', 25000.00, 'KQ-17070347', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Mindray', 'Banzer', '', '2025-06-05 20:30:19', '2025-06-05 20:30:19', 11122, 1, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-06-01', 22, 39),
+(64, 'MONITOR', 'image_UMEC12.jpeg', 25000.00, 'KQ-17070348', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Mindray', 'Banzer', '', '2025-06-05 20:30:19', '2025-06-05 20:30:19', 11122, 1, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-06-01', 22, 39),
+(65, 'MONITOR', 'image_UMEC12.jpeg', 25000.00, 'KQ-17070351', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Mindray', 'Banzer', '', '2025-06-05 20:30:19', '2025-06-05 20:30:19', 11122, 1, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2026-06-01', 22, 39),
+(66, 'BOMBA TIVA', 'image_OrchestaBasePrimea.jpeg', 0.00, '23282770', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Fresenius', 'Banzer', '', '2025-06-05 21:00:11', '2025-06-05 21:00:11', 11130, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 2, '2024-06-01', 11, 52),
+(67, 'TORNIQUETE NEUMATICO', 'image_ATS2000.jpeg', 27900.00, 'FP050420', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Zimmer', 'Banzer', '', '2025-06-05 21:03:35', '2025-06-05 21:03:35', 11121, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 1, '2024-06-01', 27, 33),
+(68, 'RACK SYS', 'image_TERS700RACK.jpeg', 0.00, '1303010006-1', '2024-01-06', '2024-01-06', NULL, NULL, NULL, 'Terumo', 'Banzer', '', '2025-06-05 21:12:20', '2025-06-05 21:12:20', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 0, 0, 2, '2026-01-06', 1, 53),
+(69, 'RACK SYS', 'image_TERS700RACK.jpeg', 0.00, '1303010006-2', '2024-01-06', '2024-01-06', NULL, NULL, NULL, 'Terumo', 'Banzer', '', '2025-06-05 21:12:20', '2025-06-05 21:12:20', 11112, 5, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, -1, 0, 0, 2, '2026-01-06', 1, 53),
+(70, 'BOMBA TIVA', 'image_KAVI.jpeg', 0.00, '25779280', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Fresenius', 'Banzer', '', '2025-06-05 21:18:17', '2025-06-05 21:18:17', 11130, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 2, '2026-06-01', 11, 54),
+(71, 'BOMBA TIVA', 'image_KAVI.jpeg', 0.00, '25779281', '2024-06-01', '2024-06-01', NULL, NULL, NULL, 'Fresenius', 'Banzer', '', '2025-06-05 21:18:17', '2025-06-05 21:18:17', 11130, 4, 'No', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 0, 0, 0, 2, '2026-06-01', 11, 54),
+(72, 'RESONADOR MAGNETICO', 'image_SIGMA.jpeg', 90480000.00, 'MRUA2200', '2023-04-01', '2022-12-11', NULL, '2022-12-11', '2022-12-11', 'GE', 'Banzer', '', '2025-06-12 19:44:13', '2025-06-12 19:44:13', 11132, 2, 'Si', '', '', '', 'Activo', 'Activo', 'Funcionando', 2, 1, 2, 0, 0, 1, '2026-04-01', 7, 36);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `maintenances`
+-- Estructura de tabla para la tabla `equipmentspareparts`
+--
+
+CREATE TABLE `equipmentspareparts` (
+  `id_equipment` int NOT NULL,
+  `id_sparepart` int NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `quantity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `equipment_brand_model`
+--
+
+CREATE TABLE `equipment_brand_model` (
+  `id_equipment` int NOT NULL,
+  `id_brand` int NOT NULL,
+  `id_model` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `insuranceequipment`
+--
+
+CREATE TABLE `insuranceequipment` (
+  `id_Insurance` int NOT NULL,
+  `id_equipment` int DEFAULT NULL,
+  `updateDate` date DEFAULT NULL,
+  `endInsurance` date DEFAULT NULL,
+  `insuranceStatus` int DEFAULT NULL,
+  `descripcion_actualizacion` text COLLATE utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `maintenances`
 --
 
 CREATE TABLE `maintenances` (
-  `Id` int(11) NOT NULL,
-  `StartDate` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `EndDate` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `Id` int NOT NULL,
+  `StartDate` datetime DEFAULT NULL,
+  `EndDate` datetime DEFAULT NULL,
   `Description` text COLLATE utf8mb4_general_ci NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `BreakDownCode` int(11) DEFAULT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL
+  `BreakDownCode` int DEFAULT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `maintenances`
+-- Volcado de datos para la tabla `maintenances`
 --
 
 INSERT INTO `maintenances` (`Id`, `StartDate`, `EndDate`, `Description`, `createdAt`, `updatedAt`, `BreakDownCode`, `ClinicalEnginnerDSSN`) VALUES
-(4, '2019-10-25', '2019-10-28', 'The problem solved', '2020-05-23 18:40:44', '2020-05-23 18:40:44', 12, 24697),
-(5, '2019-05-04', '2019-05-05', 'changing lead wires', '2020-05-23 18:41:18', '2020-05-23 18:41:18', 13, 31098),
-(6, '2019-06-17', '2019-06-18', 'Helium level adjusted', '2020-05-23 18:41:58', '2020-05-23 18:41:58', 1, 24697),
-(7, '2019-07-12', '2019-07-14', 'changing tube', '2020-05-23 18:42:27', '2020-05-23 18:42:27', 5, 31098),
-(8, '2019-04-12', '2019-04-15', 'change tube', '2020-05-23 18:43:33', '2020-05-23 18:43:33', 4, 29151719),
-(9, '2019-12-06', '2019-12-07', 'change probes', '2020-05-23 18:44:30', '2020-05-23 18:44:30', 8, 29809090102359),
-(10, '2019-06-12', '2019-06-13', 'Calibrate Spo2 level', '2020-05-23 18:45:11', '2020-05-23 18:45:11', 20, 9921050746980),
-(11, '2019-07-24', '2019-07-25', 'fix the fan (change capacitor)', '2020-05-23 18:46:07', '2020-05-23 18:46:07', 7, 29151719),
-(12, '2019-11-01', '2019-11-02', 'Calibrate the device', '2020-05-23 18:46:55', '2020-05-23 18:46:55', 15, 29809090102359);
+(16, '2025-06-06 14:02:00', '2025-06-06 14:02:00', 'PRUEBA', '2025-06-06 19:54:23', '2025-06-06 19:54:23', 47, 6458161),
+(17, '2025-06-09 15:02:00', '2025-06-12 02:00:00', 'PRUEBA', '2025-06-11 04:05:43', '2025-06-11 04:05:43', 48, 6458161),
+(18, '2025-06-09 15:02:00', '2025-06-11 09:39:00', 'se llamo a la empresa, nos cambiaron la placa de...', '2025-06-11 13:39:51', '2025-06-11 13:39:51', 49, 6458161),
+(19, '2025-06-09 08:30:00', '2025-06-09 14:30:00', 'CAMBIO DE TRANSCEIVERS EN ICE JO2 Y DPP1 J9', '2025-06-12 19:50:17', '2025-06-12 19:52:35', 50, 6458161),
+(20, '2025-04-21 08:30:00', '2025-04-21 17:00:00', 'EQUIPO NO FUNCIONA', '2025-06-12 20:05:30', '2025-06-12 20:05:30', 51, 6458161),
+(21, '2025-04-14 08:30:00', '2025-04-14 16:30:00', 'SCAN STOPPED DUE TO ERROR RECEIVER', '2025-06-12 20:10:17', '2025-06-12 20:10:17', 53, 6458161),
+(22, '2025-04-18 12:30:00', '2025-04-18 16:30:00', 'TRACKBALL 1 Y 2 NO FUNCIONAN', '2025-06-12 20:10:54', '2025-06-12 20:10:54', 54, 6458161),
+(23, '2025-04-24 16:00:00', '2025-04-24 18:00:00', 'FALLO MAGNET MONITOR', '2025-06-22 08:08:56', '2025-06-22 08:08:56', 56, 6458161),
+(24, '2024-04-09 08:30:00', '2024-04-09 09:00:00', 'FALLO MAGNET MONITOR', '2025-06-22 08:09:40', '2025-06-22 08:09:40', 56, 454567);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ppmquestions`
+-- Estructura de tabla para la tabla `medicalstaffs`
+--
+
+CREATE TABLE `medicalstaffs` (
+  `DSSN` bigint NOT NULL,
+  `FName` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `LName` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `role` varchar(50) COLLATE utf8mb4_general_ci DEFAULT 'medicalStaff'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `medicalstaffs`
+--
+
+INSERT INTO `medicalstaffs` (`DSSN`, `FName`, `LName`, `Email`, `Password`, `createdAt`, `updatedAt`, `role`) VALUES
+(123456, 'prueba', 'prueba', 'prueba@gmail.com', '$2a$10$ELttG.dtjHwFHB/FsNoFuOVeGMzPlP9GQiJp4oOCr.CFDpchrYnNC', '2025-06-20 05:11:29', '2025-06-20 06:34:32', 'medicalStaff');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `models`
+--
+
+CREATE TABLE `models` (
+  `id` int NOT NULL,
+  `Model` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_brand` int DEFAULT NULL,
+  `Q1` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `Q2` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `Q3` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `Q4` varchar(500) COLLATE utf8mb4_general_ci NOT NULL,
+  `Q5` varchar(500) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `models`
+--
+
+INSERT INTO `models` (`id`, `Model`, `id_brand`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`) VALUES
+(1, 'Bair Hugger', 1, 'Prende sin problema', 'Opera en todos sus modos', 'El equipo no presenta deterioro', 'La manguera no tiene fuga', 'El acople para portasuero no presenta problema'),
+(2, 'Insight U120 smart', 2, '', '', '', '', ''),
+(3, '900-ARJOHUNTLEIGH', 3, '', '', '', '', ''),
+(4, 'DRYSTAR', 4, '', '', '', '', ''),
+(5, 'BF-683-TDP', 9, '', '', '', '', ''),
+(6, 'BF-683-EH', 9, '¿Enciende correctamente?', '¿La pantalla y los botones funcionan correctamente?', '¿El sistema de alarma se activa correctamente?', '¿El mecanismo interno (riel) esta sin desgaste ni roturas?', '¿La medición de prueba se realiza de forma correcta sin problemas de oclusión?'),
+(7, 'GS IV', 10, '', '', '', '', ''),
+(8, 'HOSPIVAC 400', 13, '', '', '', '', ''),
+(9, 'AED', 17, '', '', '', '', ''),
+(10, 'CORPULS I', 17, 'El equipo prende sin problemas', 'La prueba de desfibrilación para exitosamente', 'ECG no tiene problemas', 'Todos los botones y parlantes funcionan normalmente', 'Las paletas y parches estan en buen estado'),
+(11, 'CORPULS III', 17, '', '', '', '', ''),
+(12, 'RCP', 17, '¿El equipo puede prende sin problemas? ', '¿El equipo esta cargado y funcional?', '¿Puedes hacer los movimientos del brazo?', '¿El brazo hacer las compresiones coordinadas con el ritmo de rcp ?', '¿El equipo no presento ningún mensaje al apagarlo?'),
+(13, 'DOMUS 1', 19, '', '', '', '', ''),
+(14, 'DOMUS 3D', 19, '', '', '', '', ''),
+(15, '251', 21, '', '', '', '', ''),
+(16, 'Exelsa Baby li16x15', 21, '', '', '', '', ''),
+(17, 'AMPLA 2085', 21, '', '', '', '', ''),
+(18, 'IT-158.TS', 21, '', '', '', '', ''),
+(19, 'Panda', 21, '', '', '', '', ''),
+(20, 'Neuro fax JE-921A', 37, '', '', '', '', ''),
+(21, '7031321993', 43, '', '', '', '', ''),
+(22, 'Prima 465', 39, '', '', '', '', ''),
+(23, '980', 42, '¿Las mangueras estan en buen estado, sin fugas?', '¿El equipo paso su auto test de manera correcta?', '¿El compresor funciona de manera correcta?', '¿La pantalla funciona de manera correcta?', ''),
+(24, 'CONNEX', 52, '¿Enciende correctamente sin errores o códigos de fallo?', '¿Los cables, sensores y accesorios estan sin daños fisicos?', '¿El sensor de SpO2 realiza una medición correcta?', '¿El sensor de temperatura realiza una medición correcta?', '¿El sensor de PANI realiza una medición correcta?'),
+(25, 'Magnetos Essential', 44, '', '', '', '', ''),
+(26, 'MULTI P - X', 44, '', '', '', '', ''),
+(27, 'Mobilett XP Hybrid', 44, '', '', '', '', ''),
+(28, 'BFT II', 44, '', '', '', '', ''),
+(29, '19317', 51, '', '', '', '', ''),
+(30, 'QUBE', 46, '¿Enciende correctamente sin errores o códigos de fallo?', '¿La pantalla y los botones funcionan correctamente?', '¿El sensor de SpO2 realiza una medición correcta?', '¿El sensor de temperatura realiza una medición correcta?', '¿El sensor de PANI realiza una medicion correcta?'),
+(31, 'C50', 46, '', '', '', '', ''),
+(32, 'Xhibit', 46, '', '', '', '', ''),
+(33, 'ATS2000', 56, '', '', '', '', ''),
+(34, 'AMX II', 23, '', '', '', '', ''),
+(35, 'Prodigy Advance Serie 510493Ma', 23, '', '', '', '', ''),
+(36, 'Sigma Architecr 3T', 23, '', '', '', '', ''),
+(37, 'Revolution', 23, '', '', '', '', ''),
+(38, 'BV Libra', 40, '', '', '', '', ''),
+(39, 'UMEC12', 35, '¿Enciende correctamente sin errores o codigos de fallo?', '¿El sensor de SpO2 realiza una medición correcta?', '¿El sensor de temperatura realiza una medición correcta?', '¿El sensor de PANI realiza una medición correcta?', '¿El modulo de ECG realiza la medición de las señales de manera correcta?'),
+(40, 'DC-30', 35, '', '', '', '', ''),
+(41, 'CORPULS AED', 17, '', '', '', '', ''),
+(42, 'TE*LM800', 51, '', '', '', '', ''),
+(43, 'TE*LF630', 51, '¿Enciende correctamente?', '¿La pantalla y los botones funcionan correctamente?', '¿El sistema de alarma se activa correctamente?', '¿El mecanismo interno (riel) esta sin desgaste ni roturas?', '¿La medición de prueba se realiza de forma correcta sin problemas de oclusión?'),
+(44, 'SMART4', 7, '', '', '', '', ''),
+(45, 'X3MT/X2MT', 49, '', '', '', '', ''),
+(46, 'X2MT/X2MT', 49, '', '', '', '', ''),
+(47, '3-LE', 45, '', '', '', '', ''),
+(48, 'H8', 25, '', '', '', '', ''),
+(49, 'VAC PRO', 6, '', '', '', '', ''),
+(50, 'OHS-1', 30, '', '', '', '', ''),
+(51, '1488', 48, '', '', '', '', ''),
+(52, 'Orchesta Base Primea', 22, '', '', '', '', ''),
+(53, 'TE-RS-700', 51, '', '', '', '', ''),
+(54, 'KABI TIVA', 22, '', '', '', '', ''),
+(55, 'Varios', 135, '', '', '', '', ''),
+(56, '374', 43, '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `nameequipment`
+--
+
+CREATE TABLE `nameequipment` (
+  `id_nameE` int NOT NULL,
+  `Name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `function` int NOT NULL,
+  `aplication` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `nameequipment`
+--
+
+INSERT INTO `nameequipment` (`id_nameE`, `Name`, `function`, `aplication`) VALUES
+(1, 'Aspirador', 9, 2),
+(2, 'Balanza', 6, 2),
+(3, 'Ecografo', 6, 3),
+(4, 'Electrocardiografo', 6, 3),
+(5, 'Electroencefalografo', 6, 3),
+(6, 'Esterilizacion', 2, 1),
+(7, 'Imagenes Grandes', 6, 2),
+(8, 'Imagenes Pequeñas', 2, 2),
+(9, 'Infusion simple', 6, 3),
+(10, 'infusion inteligente', 2, 1),
+(11, 'infusion Tiva', 7, 3),
+(12, 'termociclador completo', 5, 3),
+(13, 'termociclador simple', 4, 1),
+(14, 'Laboratorio Hematologia', 5, 3),
+(15, 'Laboratorio Orina', 5, 3),
+(16, 'Laboratorio proceso grande', 5, 3),
+(17, 'Laboratorio proceso pequeño', 4, 1),
+(18, 'Laboratorio Quimica sanguinea', 5, 3),
+(19, 'Lampara grande', 9, 7),
+(20, 'Lampara mediana', 7, 2),
+(21, 'Lampara pequeña', 2, 2),
+(22, 'Monitor alto riesgo', 7, 3),
+(23, 'Monitor mediano riesgo', 6, 3),
+(24, 'Central de monitorizacion', 2, 1),
+(25, 'Neonatologia', 7, 3),
+(26, 'Neonatologia Muebles', 2, 1),
+(27, 'Quirofano alto riesgo Nivel 1', 9, 5),
+(28, 'Quirofano alto riesgo Nivel 2', 9, 4),
+(29, 'Quirofano alto riesgo Nivel 3', 9, 3),
+(30, 'Quirofano mediano riesgo Nivel 1', 7, 4),
+(31, 'Quirofano mediano riesgo Nivel 2', 7, 3),
+(32, 'Quirofano bajo riesgo', 6, 3),
+(33, 'Reanimacion', 10, 5),
+(34, 'Terapia', 2, 2),
+(35, 'Ventilacion', 9, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ordertype`
+--
+
+CREATE TABLE `ordertype` (
+  `id_typeW` int NOT NULL,
+  `work` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ordertype`
+--
+
+INSERT INTO `ordertype` (`id_typeW`, `work`) VALUES
+(1, 'Correctivo/Falla Equipo'),
+(2, 'Capacitación'),
+(3, 'Traslado de área'),
+(4, 'Compra insumo'),
+(5, 'Compra accesorio'),
+(6, 'Config/Ade'),
+(7, 'Diagnostico'),
+(8, 'Correctivo/Por Percance');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ppmquestions`
 --
 
 CREATE TABLE `ppmquestions` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `Q1` text COLLATE utf8mb4_general_ci,
   `Q2` text COLLATE utf8mb4_general_ci,
   `Q3` text COLLATE utf8mb4_general_ci,
@@ -349,38 +738,36 @@ CREATE TABLE `ppmquestions` (
   `Q5` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ppmquestions`
+-- Volcado de datos para la tabla `ppmquestions`
 --
 
 INSERT INTO `ppmquestions` (`Code`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `createdAt`, `updatedAt`, `EquipmentCode`) VALUES
-(1, 'All connections of the components for tightness examine.\r\n\r\n\r\n', 'Surfaces of the units on damages of lacquer and scrapes examine.', 'All parts on transport damages, depressions, tears, or breaks examine.', 'All cable and connectors on outward damages examine.', 'Control whether all mechanical safety devices are in the prescribed position.\r\n', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 680),
-(2, 'Make sure that the connectors, patient cables, and paddles are not damaged nor\r\nexpired.\r\n\r\n', 'Make sure that the memory card is inserted into the device and that it has a sufficient\r\nmemory capacity.', 'Connect the device to an external power supply and check that the corresponding\r\nindicator on the front panel is illuminated.\r\n', 'Check that the recorder has paper and that it prints correctly.\r\n', 'Check that the battery is charged and that it does not present any signs of damage.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 4832),
-(3, 'Make sure that the connectors, patient cables, and paddles are not damaged nor\r\nexpired.\r\n\r\n', 'Make sure that the memory card is inserted into the device and that it has a sufficient\r\nmemory capacity.', 'Connect the device to an external power supply and check that the corresponding\r\nindicator on the front panel is illuminated.\r\n', 'Check that the recorder has paper and that it prints correctly.\r\n', 'Check that the battery is charged and that it does not present any signs of damage.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 414121),
-(4, 'Check the power cord each time the generator is used.\r\n', 'Check the monopolar and bipolar high-frequency leakage current.\r\n', 'Check the output of the cut modes.\r\n', 'Check the output of the coag modes.\r\n', 'Check the fuses to be replaced if the generator stopped functioning.', '2019-12-22 07:44:22', '2019-12-22 06:27:36', 1280),
-(5, 'Check the power cord each time the generator is used.\r\n', 'Check the monopolar and bipolar high-frequency leakage current.\r\n', 'Check the output of the cut modes.\r\n', 'Check the output of the coag modes.\r\n', 'Check the fuses to be replaced if the generator stopped functioning.', '2019-12-22 07:44:22', '2019-12-22 06:27:36', 3223),
-(6, 'Gantry ceiling fan operational check.\r\n', 'Checking that the rotating unit is firmly secured.\r\n', 'Console DC power-supply voltage check.\r\n', 'Checking for interference to cables inside the couch.\r\n', 'Lubrication of vertical motion gear of the couch.', '2019-12-22 06:27:36', '2019-12-22 07:44:22', 61242056),
-(7, 'Gantry ceiling fan operational check.\r\n', 'Checking that the rotating unit is firmly secured.\r\n', 'Console DC power-supply voltage check.\r\n', 'Checking for interference to cables inside the couch.\r\n', 'Lubrication of vertical motion gear of the couch.', '2019-12-22 06:27:36', '2019-12-22 07:44:22', 69891),
-(8, 'Check Half Value Layer (HVL) of the tube.\r\n', 'Check Breast Thickness Measurement of the gantry.\r\n', 'Check for correct collimation.\r\n', 'Check Gantry emergency stop buttons.\r\n', 'Check DICOM Printer.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 12220),
-(9, 'Inspecting and adjusting the radiofrequency (RF) power output\r\n', 'Inspecting the gradient calibration\r\n', 'Performing a rotational surface coil test\r\n', 'Checking the operation of the workspace fans, intakes, and monitor\r\n', 'Performing head signal-to-noise ratio (SNR)', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 781396),
-(10, 'Check the oxygen mixer function.\r\n', 'Check leakage absence.\r\n', 'Check the low pressure/apnea alarm.\r\n', 'Check the gas supply alarm.\r\n', 'Check the power supply failure alarm.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 201923),
-(11, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 20370613),
-(12, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 958488),
-(13, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 712345),
-(14, 'Check the infusion rate.\r\n', 'Check the Door-Open alarm.\r\n', 'Check the occlusion alarm.\r\n', 'Check the air-in-line alarm.\r\n', 'Check the flow rate sensor.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 233300),
-(15, 'Check the electrodes for dirt and rust.\r\n', 'Check the power cord and lead cable for damage.\r\n', 'Check the AC operation and battery operation.\r\n', 'Check the recorder test.\r\n', 'Check the power fuses for a breakdown.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 122663);
+(1, 'Examine todas las conexiones de los componentes para verificar su ajuste.', 'Examine las superficies de las unidades en busca de daños en el barniz y raspaduras.', 'Examine todas las partes en busca de daños de transporte, depresiones, desgarros o roturas.', 'Examine todos los cables y conectores en busca de daños externos.', 'Controle que todos los dispositivos de seguridad mecánicos estén en la posición prescrita.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 1),
+(2, 'Asegúrese de que los conectores, cables del paciente y palas no estén dañados ni vencidos.', 'Asegúrese de que la tarjeta de memoria esté insertada en el dispositivo y tenga suficiente capacidad de almacenamiento.', 'Conecte el dispositivo a una fuente de alimentación externa y verifique que el indicador correspondiente en el panel frontal esté iluminado.', 'Verifique que el grabador tenga papel y que imprima correctamente.', 'Verifique que la batería esté cargada y que no presente signos de daño.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 3),
+(3, 'Verifique el cable de alimentación cada vez que se use el generador.', 'Verifique la corriente de fuga de alta frecuencia monopolar y bipolar.', 'Verifique la salida de los modos de corte.', 'Verifique la salida de los modos de coagulación.', 'Verifique los fusibles a reemplazar si el generador dejó de funcionar.', '2019-12-22 07:44:22', '2019-12-22 06:27:36', NULL),
+(4, 'Verificación operativa del ventilador del techo del gantry.', 'Comprobación de que la unidad giratoria esté firmemente asegurada.', 'Verificación de voltaje de la fuente de alimentación de CC de la consola.', 'Comprobación de interferencias en los cables dentro de la camilla.', 'Lubricación del engranaje de movimiento vertical de la camilla.', '2019-12-22 06:27:36', '2019-12-22 07:44:22', NULL),
+(5, 'Verifique la Capa de Media Valor (HVL) del tubo.', 'Verifique la medición del grosor del seno del gantry.', 'Verifique la colimación correcta.', 'Verifique los botones de parada de emergencia del gantry.', 'Verifique la impresora DICOM.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', NULL),
+(6, 'Inspección y ajuste de la potencia de salida de radiofrecuencia (RF).', 'Inspección de la calibración del gradiente.', 'Realización de una prueba de bobina de superficie rotacional.', 'Comprobación del funcionamiento de los ventiladores del área de trabajo, entradas y monitor.', 'Realización de la prueba de relación señal-ruido (SNR) en la cabeza.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', NULL),
+(7, 'Verifique la función del mezclador de oxígeno.', 'Verifique la ausencia de fugas.', 'Verifique la alarma de baja presión/apnea.', 'Verifique la alarma de suministro de gas.', 'Verifique la alarma de fallo de alimentación.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', NULL),
+(8, 'Verifique la velocidad de infusión.', 'Verifique la alarma de puerta abierta.', 'Verifique la alarma de oclusión.', 'Verifique la alarma de aire en línea.', 'Verifique el sensor de tasa de flujo.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 66),
+(9, 'Verifique los electrodos en busca de suciedad y óxido.', 'Verifique que el cable de alimentación y el cable de conexión no estén dañados.', 'Verifique el funcionamiento en corriente alterna y batería.', 'Verifique la prueba del grabador.', 'Verifique los fusibles de alimentación para evitar averías.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', NULL),
+(10, 'Verifique la velocidad de infusión.', 'Verifique la alarma de puerta abierta.', 'Verifique la alarma de oclusión.', 'Verifique la alarma de aire en línea.', 'Verifique el sensor de tasa de flujo.', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 67),
+(16, 'Comprobaciones de modo servicio', 'Testeo y limpieza de todos los sensores', 'Testeo de la pantalla táctil', 'Comprobación de movimientos del brazo', 'Inspección de batería', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 63),
+(17, 'Comprobaciones de modo servicio', 'Testeo y limpieza de todos los sensores', 'Testeo de la pantalla táctil', 'Comprobación de movimientos del brazo', 'Inspección de batería', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 64),
+(18, 'Comprobaciones de modo servicio', 'Testeo y limpieza de todos los sensores', 'Testeo de la pantalla táctil', 'Comprobación de movimientos del brazo', 'Inspección de batería', '2019-12-22 06:27:36', '2019-12-22 06:27:36', 65);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ppms`
+-- Estructura de tabla para la tabla `ppms`
 --
 
 CREATE TABLE `ppms` (
-  `Code` int(11) NOT NULL,
+  `Code` int NOT NULL,
   `DATE` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q1` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Q2` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -394,216 +781,665 @@ CREATE TABLE `ppms` (
   `N5` text COLLATE utf8mb4_general_ci,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL
+  `EquipmentCode` int DEFAULT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL,
+  `signature` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `ppms`
+-- Volcado de datos para la tabla `ppms`
 --
 
-INSERT INTO `ppms` (`Code`, `DATE`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `N1`, `N2`, `N3`, `N4`, `N5`, `createdAt`, `updatedAt`, `EquipmentCode`, `ClinicalEnginnerDSSN`) VALUES
-(1, '2020-05-22', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2020-05-23 18:53:29', '2020-05-23 18:53:29', 781396, 9921050746980);
+INSERT INTO `ppms` (`Code`, `DATE`, `Q1`, `Q2`, `Q3`, `Q4`, `Q5`, `N1`, `N2`, `N3`, `N4`, `N5`, `createdAt`, `updatedAt`, `EquipmentCode`, `ClinicalEnginnerDSSN`, `signature`) VALUES
+(12, '2025-06-18', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2025-06-18 17:10:01', '2025-06-18 17:10:01', 63, 6458161, NULL),
+(18, '2025-06-19', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2025-06-19 05:02:07', '2025-06-19 05:02:07', 64, 6458161, ''),
+(19, '2025-06-19', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2025-06-19 05:14:52', '2025-06-19 05:14:52', 63, 6458161, 'data:image/png;base64,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'),
+(20, '2025-06-19', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2025-06-20 03:36:50', '2025-06-20 03:36:50', 66, 6458161, 'data:image/png;base64,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'),
+(21, '2025-06-24', 'on', 'on', 'on', 'on', 'on', '', '', '', '', '', '2025-06-24 04:44:59', '2025-06-24 04:44:59', 63, 6458161, '');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `spareparts`
+-- Estructura de tabla para la tabla `preventivetasks`
+--
+
+CREATE TABLE `preventivetasks` (
+  `id` int NOT NULL,
+  `EquipmentCode` int NOT NULL,
+  `ScheduledDate` date NOT NULL,
+  `Status` varchar(20) COLLATE utf8mb4_general_ci DEFAULT 'Programada',
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `preventivetasks`
+--
+
+INSERT INTO `preventivetasks` (`id`, `EquipmentCode`, `ScheduledDate`, `Status`, `createdAt`, `updatedAt`) VALUES
+(184, 1, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(185, 1, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(186, 1, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(187, 2, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(188, 2, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(189, 2, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(190, 3, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(191, 3, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(192, 3, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(193, 4, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(194, 4, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(195, 4, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(196, 5, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(197, 5, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(198, 5, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(199, 6, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(200, 6, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(201, 6, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(202, 7, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(203, 7, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(204, 7, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(205, 8, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(206, 8, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(207, 8, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(208, 9, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(209, 9, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(210, 9, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(211, 10, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(212, 10, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(213, 10, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(214, 11, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(215, 11, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(216, 11, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(217, 12, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(218, 12, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(219, 12, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(220, 13, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(221, 13, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(222, 13, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(223, 14, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(224, 14, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(225, 14, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(226, 15, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(227, 15, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(228, 15, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(229, 16, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(230, 16, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(231, 16, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(232, 17, '2025-06-02', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(233, 17, '2026-06-02', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(234, 18, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(235, 18, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(236, 18, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(237, 19, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(238, 19, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(239, 19, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(240, 20, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(241, 20, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(242, 20, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(243, 21, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(244, 21, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(245, 21, '2027-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(246, 22, '2025-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(247, 22, '2026-01-06', 'Programada', '2025-06-06 19:51:12', '2025-06-06 19:51:12'),
+(248, 22, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(249, 23, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(250, 23, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(251, 23, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(252, 24, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(253, 24, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(254, 24, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(255, 25, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(256, 25, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(257, 25, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(258, 26, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(259, 26, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(260, 26, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(261, 27, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(262, 27, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(263, 27, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(264, 28, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(265, 28, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(266, 28, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(267, 29, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(268, 29, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(269, 29, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(270, 30, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(271, 30, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(272, 30, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(273, 31, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(274, 31, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(275, 31, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(276, 32, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(277, 32, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(278, 32, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(279, 33, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(280, 33, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(281, 33, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(282, 34, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(283, 34, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(284, 34, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(285, 35, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(286, 35, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(287, 35, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(288, 36, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(289, 36, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(290, 36, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(291, 37, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(292, 37, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(293, 37, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(294, 38, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(295, 38, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(296, 38, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(297, 39, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(298, 39, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(299, 39, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(300, 40, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(301, 40, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(302, 40, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(303, 41, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(304, 41, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(305, 41, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(306, 42, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(307, 42, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(308, 42, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(309, 43, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(310, 43, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(311, 43, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(312, 44, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(313, 44, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(314, 44, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(315, 45, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(316, 45, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(317, 45, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(318, 46, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(319, 46, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(320, 46, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(321, 47, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(322, 47, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(323, 47, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(324, 48, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(325, 48, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(326, 48, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(327, 49, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(328, 49, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(329, 49, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(330, 50, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(331, 50, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(332, 50, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(333, 51, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(334, 51, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(335, 51, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(336, 52, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(337, 52, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(338, 52, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(339, 53, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(340, 53, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(341, 53, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(342, 54, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(343, 54, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(344, 54, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(345, 55, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(346, 55, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(347, 55, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(348, 56, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(349, 56, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(350, 56, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(351, 57, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(352, 57, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(353, 57, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(354, 58, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(355, 58, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(356, 58, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(357, 59, '2025-08-28', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(358, 59, '2026-08-28', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(359, 59, '2027-08-30', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(360, 60, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(361, 60, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(362, 60, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(363, 61, '2025-10-28', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(364, 61, '2026-10-28', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(365, 61, '2027-10-28', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(366, 62, '2025-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(367, 62, '2026-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(368, 63, '2025-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-19 05:14:53'),
+(369, 63, '2026-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-19 05:14:53'),
+(370, 64, '2025-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-19 05:02:07'),
+(371, 64, '2026-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-19 05:02:07'),
+(372, 65, '2025-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-19 04:55:56'),
+(373, 65, '2026-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-19 04:55:56'),
+(374, 66, '2025-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-20 03:36:50'),
+(375, 66, '2026-06-02', 'Finalizada', '2025-06-06 19:51:13', '2025-06-20 03:36:50'),
+(376, 67, '2025-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(377, 67, '2026-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(378, 68, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(379, 68, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(380, 68, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(381, 69, '2025-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(382, 69, '2026-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(383, 69, '2027-01-06', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(384, 70, '2025-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(385, 70, '2026-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(386, 71, '2025-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13'),
+(387, 71, '2026-06-02', 'Programada', '2025-06-06 19:51:13', '2025-06-06 19:51:13');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `receptionstatus`
+--
+
+CREATE TABLE `receptionstatus` (
+  `ID` int NOT NULL,
+  `Name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `receptionstatus`
+--
+
+INSERT INTO `receptionstatus` (`ID`, `Name`) VALUES
+(1, 'Pendiente de recepción'),
+(2, 'Recibido'),
+(3, 'En almacén'),
+(4, 'En tránsito'),
+(5, 'Rechazado'),
+(6, 'En evaluación técnica'),
+(7, 'Recibido con observaciones');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `repairstage`
+--
+
+CREATE TABLE `repairstage` (
+  `id_Stage` int NOT NULL,
+  `Status` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `FuntionalStatus` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `repairstage`
+--
+
+INSERT INTO `repairstage` (`id_Stage`, `Status`, `FuntionalStatus`) VALUES
+(1, 'Solicitud nueva', 0),
+(2, 'En reparación', 0),
+(3, 'En espera de repuesto', 0),
+(4, 'Espera de proveedor', 0),
+(5, 'Baja', 0),
+(6, 'Reparado ', 1),
+(7, 'Pausa', 1),
+(8, 'Equipo entregado en área', 1),
+(9, 'Entregado a Almacen', 1),
+(10, 'En espera de reparación', 0),
+(11, 'En ingreso', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `spareparts`
 --
 
 CREATE TABLE `spareparts` (
-  `Code` int(11) NOT NULL,
+  `Id` int NOT NULL,
+  `Code` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `Image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Amount` int(11) NOT NULL,
+  `Amount` int NOT NULL,
   `createdAt` datetime NOT NULL,
   `updatedAt` datetime NOT NULL,
-  `AgentSupplierId` int(11) DEFAULT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+  `AgentSupplierId` int DEFAULT NULL,
+  `CodeManufacter` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `CategoryId` int DEFAULT NULL,
+  `id_brand` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `spareparts`
+-- Volcado de datos para la tabla `spareparts`
 --
 
-INSERT INTO `spareparts` (`Code`, `Name`, `Image`, `Amount`, `createdAt`, `updatedAt`, `AgentSupplierId`, `EquipmentCode`) VALUES
-(942, 'X-ray tubes', 'image_X-ray tubes.jpg', 1, '2020-05-21 21:25:12', '2020-05-21 21:25:12', 11114, 61242056),
-(1465, 'Perfusion System Components', 'image_images_Perfusion.jpg', 2, '2020-05-23 01:30:24', '2020-05-23 01:30:24', 11126, 2694),
-(1555, 'Beam Splitter dual port ', 'image_beamsplitterdual.jpg', 1, '2020-05-23 00:38:28', '2020-05-23 00:38:28', 11124, 9258),
-(1599, 'Replacement Battery', 'image_Replacement Battery.jpg', 2, '2020-05-22 23:45:06', '2020-05-22 23:45:06', 11112, 9019),
-(1929, 'AC Plug Holder', 'image_AC plug holder.jpg', 1, '2020-05-23 00:02:11', '2020-05-23 00:02:11', 11122, 201),
-(2588, 'Carl Zeiss Light guide 1,5m', 'image_carlzeisslightguide.jpg', 1, '2020-05-23 00:39:20', '2020-05-23 00:39:20', 11124, 9258),
-(2629, '5 Leads ECG Cable', 'image_5 Lead ECG Cable, IEC.jpg', 5, '2020-05-23 00:19:02', '2020-05-23 00:19:02', 11112, 4832),
-(2995, 'Zeiss Fiber Optic Cable', 'image_zeiss-fiber-optic-cable.jpg', 1, '2020-05-23 00:34:48', '2020-05-23 00:34:48', 11124, 5005),
-(3218, 'AC Adaptor', 'image_AC adaptor.jpg', 1, '2020-05-23 00:00:44', '2020-05-23 00:00:44', 11122, 201),
-(3563, 'Canister', 'image_Canister .jpg', 2, '2020-05-22 23:48:05', '2020-05-22 23:48:05', 11119, 123235),
-(3574, 'CCD Camera', 'image_CCD-camera.png', 2, '2020-05-22 23:54:11', '2020-05-22 23:54:11', 11121, 680),
-(3578, 'Halogen Lamp 12V 100W', 'image_halogenlamp.jpg', 1, '2020-05-23 00:39:49', '2020-05-23 00:39:49', 11124, 9258),
-(3684, 'External Paddles water resistant', 'image_External Paddles water resistant.jpg', 2, '2020-05-23 00:19:36', '2020-05-23 00:19:36', 11112, 4832),
-(4198, 'Isoflurane Vaporiser', 'image_isofluranevaporiser.jpg', 5, '2020-05-22 23:30:38', '2020-05-22 23:30:38', 11118, 2024),
-(4199, 'Fogger Machine', 'image_fogger-machine.jpg', 3, '2020-05-22 23:30:09', '2020-05-22 23:30:09', 11118, 2024),
-(4472, 'Welch Allyn LumiView Portable Binocular', 'image_welch-allyn-lumiview-portable-binocular-microscope.jpg', 1, '2020-05-23 00:33:15', '2020-05-23 00:33:15', 11124, 5005),
-(4595, 'X-Ray Tubes', 'image_X-ray tubes.png', 1, '2020-05-22 23:49:48', '2020-05-22 23:49:48', 11121, 680),
-(4637, 'Bacterial Filter', 'image_Bacterial Filter, Reusable.jpg', 4, '2020-05-22 23:46:31', '2020-05-22 23:46:31', 11119, 123235),
-(5312, 'Roller Pump Blood Analyzer ', 'images_Roller Pump.jpg', 3, '2020-05-23 01:06:29', '2020-05-23 01:06:29', 11126, 2694),
-(5441, 'Water Hose Assembly ', 'image_Water Hose Assembly .jpg', 1, '2020-05-21 21:32:27', '2020-05-21 21:32:27', 11114, 12220),
-(5511, 'POWER FACTOR 5000 P.F', 'image_POWER FACTOR 5000 P.F 5kv-DC.W..jpg', 3, '2020-05-23 00:27:25', '2020-05-23 00:27:25', 11123, 1280),
-(5626, 'Pediatric Pads', 'image_Pediatric Pads HS-4000, 5 sets-case.jpg', 5, '2020-05-23 00:17:24', '2020-05-23 00:17:24', 11112, 4832),
-(5655, 'Surgical Drill Stand', 'image_Surgical Drill Stand.jpg', 2, '2020-05-23 00:42:49', '2020-05-23 00:42:49', 11125, 2904),
-(5725, 'Trephine Bur 3.0/2.0mm', 'image_Trephine Bur 3.0-2.0mm.jpg', 2, '2020-05-23 00:42:10', '2020-05-23 00:42:10', 11125, 2904),
-(5891, 'Valve Base for 250 Watt (S.W.D)', 'image_VALVE BASE FOR 250 WATT S.W.D (shot wave diathermy unit).jpg', 1, '2020-05-23 00:25:58', '2020-05-23 00:25:58', 11123, 1280),
-(5942, 'condor power supply', 'image_condor power supply .jpg', 1, '2020-05-21 21:12:07', '2020-05-21 21:12:07', 11127, 69690),
-(5984, 'Capacitors 110 P.F', 'image_CAPECITORS.jpg', 2, '2020-05-23 00:08:20', '2020-05-23 00:26:48', 11123, 1280),
-(6195, 'DC Cable', 'image_DC cable.jpg', 1, '2020-05-23 00:01:28', '2020-05-23 00:01:28', 11122, 201),
-(6461, 'Seiler 10X Lockable Eyepiece', 'image_seiler-10x-lockable-eyepiece.jpg', 1, '2020-05-23 00:34:18', '2020-05-23 00:34:18', 11124, 5005),
-(6578, 'Oxygen Flow meter', 'image_oxygenflowmeter.jpg', 3, '2020-05-22 23:29:31', '2020-05-22 23:29:31', 11118, 2024),
-(6586, 'Image Intensifier', 'image_image-intensifier.png', 1, '2020-05-22 23:52:32', '2020-05-22 23:52:32', 11121, 680),
-(6687, 'Electro-surgical Diathermy Pencil', 'image_electrosurgical diathermy pencil.jpg', 2, '2020-05-23 00:27:59', '2020-05-23 00:27:59', 11123, 1280),
-(6698, 'Zumax 250 mm Objective Lens with Fine Focusing', 'image_zumax-250-mm-objective-lens-with-fine-focusing.jpg', 1, '2020-05-23 00:33:48', '2020-05-23 00:33:48', 11124, 5005),
-(7521, 'Lindeman Drill 2.6mm - Short', 'image_Lindeman Drill 2.6mm - Short.jpg', 1, '2020-05-23 00:40:49', '2020-05-23 00:40:49', 11125, 2904),
-(7758, 'Operating Theatre Table Cords', 'image_Operating Theatre Table Cords.jpg', 6, '2020-05-22 23:52:48', '2020-05-22 23:52:48', 11113, 157629),
-(7842, 'Mammography Lamp Set  ', 'image_Mammography Lamp Set.jpg', 1, '2020-05-21 21:31:03', '2020-05-21 21:31:03', 11118, 12220),
-(8457, 'Suction Liner', 'Suction Liner.jpg', 3, '2020-05-22 23:43:07', '2020-05-22 23:43:07', 11119, 123235),
-(8486, 'Patient Adhesives', 'image_Patient Adhesives (pkg. 10 x 3).jpg', 20, '2020-05-23 00:10:16', '2020-05-23 00:10:16', 11112, 4832),
-(8489, 'Adult Electrode Pads', 'image_Adult Electrode Pads 5 pairs.jpg', 5, '2020-05-23 00:16:16', '2020-05-23 00:16:16', 11112, 4832),
-(9385, 'Operating Theatre Table Foot Controls', 'image_Operating Theatre Table Foot Controls.jpg', 6, '2020-05-22 23:51:55', '2020-05-22 23:51:55', 11113, 157629),
-(9492, 'High Voltage Cables', 'image_high-voltages-cables.png', 2, '2020-05-22 23:57:48', '2020-05-22 23:57:48', 11121, 680),
-(9998, 'Ac PlugHolder', 'AC plug holder.jpg', 5, '2020-05-22 23:35:48', '2020-05-22 23:35:48', 11113, 183006),
-(15541, 'Programmed PL 103 CPU Board ', 'image_Programmed PL 103 CPU Board.jpg', 1, '2020-05-21 21:32:00', '2020-05-21 21:32:00', 11114, 12220),
-(18122, 'Single Gas Spring 450mm 2550 Newtons', 'image_Single Gas Spring 450mm 2550 Newtons.jpg', 1, '2020-05-21 21:29:50', '2020-05-21 21:29:50', 11114, 12220),
-(23798, 'Ac Adapter ', 'AC adaptor.jpg', 5, '2020-05-22 23:34:16', '2020-05-22 23:34:16', 11113, 183006),
-(31098, 'DC Cable ', 'DC cable.jpg', 5, '2020-05-22 23:35:09', '2020-05-22 23:35:09', 11113, 183006),
-(34123, 'Hand Control', 'image_handcontrol.jpg', 2, '2020-05-22 23:50:58', '2020-05-22 23:50:58', 11113, 157629),
-(44547, 'Power Supply', 'image_Power supply.jpg', 3, '2020-05-21 21:08:07', '2020-05-21 21:10:45', 11114, 4573397),
-(44582, 'Monitor', 'image_Monitor.jpg', 2, '2020-05-21 21:09:48', '2020-05-21 21:10:52', 11114, 4573397),
-(58912, 'CCA board', 'image_CCA board .jpg', 1, '2020-05-21 21:17:53', '2020-05-21 21:17:53', 11127, 69690),
-(76648, 'Suction Jar', 'image_suction jar.jpg', 1, '2020-05-22 23:48:49', '2020-05-22 23:48:49', 11119, 123235),
-(78155, 'X-ray Generator', 'image_X-ray Generator.png', 1, '2020-05-21 21:22:29', '2020-05-21 21:22:29', 11118, 69891),
-(78226, 'Tube head', 'image_Tube head .jpg', 1, '2020-05-21 21:18:24', '2020-05-21 21:18:24', 11127, 69690),
-(79189, 'Monitor', 'image_Monitor.jpg', 1, '2020-05-21 21:21:35', '2020-05-21 21:21:35', 11118, 69891),
-(87812, 'Probes', 'image_Probes.png', 2, '2020-05-21 21:38:43', '2020-05-21 21:38:43', 11114, 375),
-(87942, 'Power cord', 'image_Power cord.jpg', 2, '2020-05-21 21:38:17', '2020-05-21 21:38:17', 11118, 375),
-(95553, 'collimator', 'image_collimator .jpg', 1, '2020-05-21 21:17:16', '2020-05-21 21:17:16', 11127, 69690),
-(98412, ' acquisition computer ', 'image_acquisition computer.jpg', 1, '2020-05-21 21:18:57', '2020-05-21 21:18:57', 11127, 69690),
-(145557, 'Footswitch', 'image_Footswitch.jpg', 2, '2020-05-21 21:37:38', '2020-05-21 21:37:38', 11114, 375),
-(181588, 'high voltage tank', 'image_High voltage tank.jpg', 2, '2020-05-21 21:24:12', '2020-05-21 21:24:12', 11114, 61242056),
-(291501, 'Drop Sensor', 'image_Drop Sensor.jpg', 50, '2020-05-22 23:16:29', '2020-05-22 23:16:29', 11111, 233300),
-(291502, 'AC power cable', 'image_AC power cable.png', 50, '2020-05-22 23:29:23', '2020-05-22 23:29:23', 11111, 233300),
-(291503, 'AC adaptor ', 'image_AC adaptor.jpg', 50, '2020-05-22 23:31:40', '2020-05-22 23:31:40', 11113, 138723),
-(291504, 'DC cable', 'image_DC cable.jpg', 50, '2020-05-22 23:37:51', '2020-05-22 23:37:51', 11113, 138723),
-(291505, 'AC plug holder', 'image_AC plug holder.jpg', 50, '2020-05-22 23:38:26', '2020-05-22 23:38:26', 11113, 138723),
-(291506, 'Traction frame support', 'image_Traction frame support.jpg', 5, '2020-05-22 23:40:00', '2020-05-22 23:40:00', 11113, 108237),
-(291507, 'Patient helper support', 'image_Patient helper support.jpg', 6, '2020-05-22 23:40:55', '2020-05-22 23:40:55', 11113, 108237),
-(291508, 'IV pole', 'image_IV pole.jpg', 5, '2020-05-22 23:41:57', '2020-05-22 23:41:57', 11113, 108237),
-(291509, 'Rectangular Probe', 'image_Rectangular Probe.jpg', 5, '2020-05-22 23:43:56', '2020-05-22 23:43:56', 11114, 582997),
-(291510, 'Curved Probe', 'image_Curved Probe.jpg', 5, '2020-05-22 23:46:00', '2020-05-22 23:46:00', 11114, 582997),
-(291511, 'Scan Ultrasound Gel', 'image_Scan Ultrasound Gel.jpg', 5, '2020-05-22 23:46:30', '2020-05-22 23:46:30', 11114, 582997),
-(291512, 'Exhalation flow sensor', 'image_Exhalation flow sensor.png', 6, '2020-05-22 23:48:11', '2020-05-22 23:48:11', 11115, 405055),
-(291513, ' Air and Oxygen hoses ', 'image_Air and Oxygen hoses .jpg', 3, '2020-05-22 23:49:01', '2020-05-22 23:49:01', 11115, 405055),
-(291514, 'Air and Oxygen inlet water traps', 'image_Air and Oxygen inlet water traps.jpg', 3, '2020-05-22 23:49:48', '2020-05-22 23:49:48', 11115, 405055),
-(291515, 'Disposable bacteria filters', 'image_Disposable bacteria filters.jpg', 5, '2020-05-22 23:50:38', '2020-05-22 23:50:38', 11115, 405055),
-(291516, 'Air compressor', 'image_Air compressor.jpg', 3, '2020-05-22 23:51:13', '2020-05-22 23:51:13', 11115, 405055),
-(291517, 'Battery', 'image_Battery.jpg', 5, '2020-05-22 23:51:52', '2020-05-22 23:51:52', 11115, 405055),
-(291518, ' Mains cable', 'image_Main cables.jpg', 10, '2020-05-22 23:58:07', '2020-05-22 23:58:07', 11116, 122663),
-(291519, 'Limb electrodes', 'image_Limb electrodes.jpg', 10, '2020-05-22 23:58:59', '2020-05-22 23:58:59', 11116, 122663),
-(291520, 'Chest electrodes', 'image_Chest electrodes.jpg', 6, '2020-05-23 00:00:14', '2020-05-23 00:00:14', 11116, 122663),
-(291521, 'Self-Adhesive electrodes', 'image_Self-Adhesive electrodes.jpg', 10, '2020-05-23 00:00:50', '2020-05-23 00:00:50', 11116, 122663),
-(291522, ' BTL patient cable', 'image_BTL patient cable.jpg', 6, '2020-05-23 00:01:23', '2020-05-23 00:01:23', 11116, 122663),
-(291523, 'Adult/Pediatrics External Reusable Paddles', 'image_External Resuable Paddles.jpg', 3, '2020-05-23 00:03:08', '2020-05-23 00:03:08', 11112, 414121),
-(291524, 'Internal Resuable Paddles', 'image_Internal Resuable Paddles.jpg', 3, '2020-05-23 00:04:38', '2020-05-23 00:04:38', 11112, 414121),
-(291525, '4 Lead Patient Cable', 'image_4 Lead Patient Cable.jpg', 3, '2020-05-23 00:05:38', '2020-05-23 00:05:38', 11112, 414121),
-(291526, 'Single-Use monitoring electrodes', 'image_Single-Use monitoring electrodes.jpg', 3, '2020-05-23 00:06:19', '2020-05-23 00:08:46', 11112, 414121),
-(291527, 'collimator', 'image_Collimator.jpg', 2, '2020-05-23 00:11:30', '2020-05-23 00:11:30', 11117, 670523),
-(291528, 'Power Supply', 'image_Power Supply .jpg', 3, '2020-05-23 00:12:26', '2020-05-23 00:12:58', 11117, 670523),
-(291529, 'pCO2 Electrode', 'image_pCO2 Electrode.jpg', 2, '2020-05-23 02:35:59', '2020-05-23 03:27:13', 11129, 140374),
-(291530, 'pO2 Electrode', 'image_pO2 Electrode.jpg', 2, '2020-05-23 03:32:07', '2020-05-23 03:32:07', 11129, 140374),
-(291531, 'pH Electrode', 'image_PH Electrode.jpg', 2, '2020-05-23 03:32:37', '2020-05-23 03:32:37', 11129, 140374),
-(291532, 'Replacement Battery', 'image_Replacement Battery.jpg', 1, '2020-05-23 03:41:39', '2020-05-23 03:41:39', 11112, 199215),
-(291533, 'Rectangular Probe', 'image_Rectangular Probe.jpg', 1, '2020-05-23 03:46:09', '2020-05-23 03:46:09', 11116, 100060),
-(291534, 'Curved Probe', 'image_Curved Probe.jpg', 1, '2020-05-23 03:47:18', '2020-05-23 03:47:18', 11116, 100060),
-(291535, 'Scan Ultrasound Gel', 'image_Scan Ultrasound Gel.jpg', 2, '2020-05-23 03:48:04', '2020-05-23 03:48:04', 11116, 100060),
-(291536, 'Extension Cable', 'image_Extension Cable.jpg', 2, '2020-05-23 03:52:13', '2020-05-23 03:52:13', 11115, 501698),
-(291537, 'Sticky Tapes', 'image_Sticky Tapes.jpg', 2, '2020-05-23 03:53:49', '2020-05-23 03:53:49', 11115, 501698),
-(291538, 'Earlobe Clip', 'image_Earlobe Clip.jpg', 3, '2020-05-23 03:54:32', '2020-05-23 03:54:32', 11115, 501698),
-(291539, 'Rectangular probe', 'image_Rectangular Probe.jpg', 2, '2020-05-23 04:09:13', '2020-05-23 04:09:13', 11130, 444502),
-(291540, 'Curved probe', 'image_Curved Probe.jpg', 1, '2020-05-23 04:09:57', '2020-05-23 04:09:57', 11130, 444502),
-(310123, 'Relay Solid State ', 'image_Relay Solid State.jpg', 2, '2020-05-22 23:29:26', '2020-05-22 23:29:26', 11128, 318310),
-(310321, 'KIT Valve Repair ', 'image_KIT VALVE REPAIR.jpg', 3, '2020-05-22 23:34:12', '2020-05-22 23:34:12', 11128, 318310),
-(310456, 'Fuse 20A 250V', 'image_Fuse 20A 250V.jpg', 2, '2020-05-22 23:38:49', '2020-05-22 23:38:49', 11128, 361310),
-(310546, 'Delay Timer ', 'image_Delay Timer.jpg', 1, '2020-05-22 23:40:30', '2020-05-22 23:40:30', 11128, 361310),
-(310654, 'Element heater ', 'image_Element heater.jpg', 1, '2020-05-22 23:39:47', '2020-05-22 23:39:47', 11128, 361310),
-(310789, 'Tray', 'image_Tray.jpg', 2, '2020-05-22 23:44:11', '2020-05-22 23:44:11', 11128, 210310),
-(310879, 'Valve Check', 'image_Valve Check.jpg', 2, '2020-05-22 23:48:53', '2020-05-22 23:48:53', 11128, 11310),
-(310897, 'Repair KIT', 'image_Repair KIT.jpg', 1, '2020-05-22 23:49:28', '2020-05-22 23:49:28', 11128, 11310),
-(310987, 'Door Gasket', 'image_Door Gasket.jpg', 1, '2020-05-22 23:47:36', '2020-05-22 23:47:36', 11128, 11310),
-(742189, 'Rotation Potentiometer ', 'image_Rotation Potentiometer .jpg', 1, '2020-05-21 21:29:04', '2020-05-21 21:29:04', 11118, 12220),
-(781229, 'Transducer probe', 'image_Transducer probe.jpg', 4, '2020-05-21 21:07:26', '2020-05-21 21:10:59', 11114, 4573397),
-(785632, 'Power Supply', 'image_Power Supply.jpg', 1, '2020-05-21 21:01:06', '2020-05-21 21:01:06', 11122, 781396),
-(845316, ' RF Amplifier', 'image_RF Amplifier.jpg', 2, '2020-05-21 21:00:26', '2020-05-21 21:00:26', 11122, 781396),
-(941389, 'UPS Battery', 'image_UPS Battery.jpg', 1, '2020-05-21 21:31:33', '2020-05-21 21:31:33', 11114, 12220),
-(968946, 'Gradient Amplifier', 'image_Gradient Amplifier.jpg', 2, '2020-05-21 20:59:49', '2020-05-21 20:59:49', 11122, 781396),
-(1234458, 'Keyboard', 'image_Keyboard.jpg', 1, '2020-05-21 21:10:21', '2020-05-21 21:10:21', 11114, 4573397),
-(4573397, 'Breast Coil', 'image_Breast Coil.jpg', 2, '2020-05-21 20:34:38', '2020-05-21 20:49:12', 11122, 781396),
-(7801255, 'Face Shield Assembly', 'image_Face Shield Assembly.jpg', 1, '2020-05-21 21:30:28', '2020-05-21 21:30:28', 11114, 12220),
-(7919411, 'KA connecting cable', 'image_KA connecting cable.jpg', 1, '2020-05-21 21:37:12', '2020-05-21 21:37:12', 11118, 375),
-(991415561, 'Head Coil', 'image_Head Coil.jpg', 1, '2020-05-21 20:59:11', '2020-05-21 20:59:11', 11122, 781396);
+INSERT INTO `spareparts` (`Id`, `Code`, `Name`, `Image`, `Amount`, `createdAt`, `updatedAt`, `AgentSupplierId`, `CodeManufacter`, `CategoryId`, `id_brand`) VALUES
+(991415565, 'as-56-as', 'piernera', 'image_Pierneras_Barrfab1.jpg', 2, '2025-06-04 05:05:02', '2025-06-04 05:05:02', 11112, 'b-25-3', 1, 9),
+(991415566, '02-c', 'ELECTRODOS PRECORDIALES', 'image_Chest electrodes.jpg', 6, '2025-06-05 18:05:57', '2025-06-05 18:05:57', 11112, 'C3215', 1, 135),
+(991415567, 'H8-OX-MON', 'Sensor oximetro completo HWA', 'image_OXIMETRO_COMPLETO_HWA.jpg', 1, '2025-06-05 21:29:59', '2025-06-05 21:29:59', 11131, 'h', 1, 25),
+(991415568, 'C-AC-AM', 'Cable AC norma Americana', 'image_cable_AC_Americana.jpg', 1, '2025-06-05 21:33:14', '2025-06-05 21:33:14', 11112, 'Cable AC', 1, 135),
+(991415569, 'C-AC-SC', 'Cable AC norma Schuko', 'image_cable_schuko.jpg', 1, '2025-06-05 21:33:48', '2025-06-05 21:33:48', 11112, 'Cable AC', 1, 135),
+(991415570, 'C-ECG-5-HW', 'Cable ECG 5 vías HWA', 'image_Cable ECG_5_HWATime.jpeg', 1, '2025-06-05 21:36:50', '2025-06-05 21:36:50', 11131, 'cable ecg 5', 1, 25),
+(991415571, 'F-M-Q-V', 'FUENTE DE ALIMENTACIÓN MONITOR', 'image_fuente_spacelabs.jpg', 1, '2025-06-15 03:29:01', '2025-06-15 03:29:01', 11112, '119-0480-00-20', 1, 46);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `workorders`
+-- Estructura de tabla para la tabla `sparepartswos`
 --
 
-CREATE TABLE `workorders` (
-  `Code` int(11) NOT NULL,
-  `StartDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `EndDate` text COLLATE utf8mb4_general_ci NOT NULL,
-  `Description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `Cost` int(11) NOT NULL,
-  `Priority` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `sparepartswos` (
+  `id` int NOT NULL,
+  `id_workorder` int DEFAULT NULL,
+  `nombre_repuesto` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `codigo_fabrica` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `cantidad` int DEFAULT NULL,
+  `costo` decimal(10,2) DEFAULT NULL,
   `createdAt` datetime NOT NULL,
-  `updatedAt` datetime NOT NULL,
-  `ClinicalEnginnerDSSN` bigint(20) DEFAULT NULL,
-  `EquipmentCode` int(11) DEFAULT NULL
+  `updatedAt` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `workorders`
+-- Volcado de datos para la tabla `sparepartswos`
 --
 
-INSERT INTO `workorders` (`Code`, `StartDate`, `EndDate`, `Description`, `Cost`, `Priority`, `createdAt`, `updatedAt`, `ClinicalEnginnerDSSN`, `EquipmentCode`) VALUES
-(5, '2020-05-23', '2020-05-25', 'Urgent', 1500, 'High', '2020-05-23 18:48:05', '2020-05-23 18:48:05', 24697, 2694),
-(6, '2020-05-22', '2020-05-26', 'claibration', 500, 'Low', '2020-05-23 18:49:26', '2020-05-23 18:49:26', 31098, 122663),
-(7, '2019-05-22', '2019-05-26', 'Calibrate the device', 500, 'Medium', '2020-05-23 18:50:05', '2020-05-23 18:52:01', 29151719, 4832),
-(8, '2020-05-24', '2020-05-27', 'Urgent', 15000, 'High', '2020-05-23 18:50:36', '2020-05-23 18:50:36', 29809090102359, 1280),
-(9, '2020-05-24', '2020-05-26', 'UnKnown', 15000, 'High', '2020-05-23 18:51:52', '2020-05-23 18:51:52', 9921050746980, 781396);
+INSERT INTO `sparepartswos` (`id`, `id_workorder`, `nombre_repuesto`, `codigo_fabrica`, `cantidad`, `costo`, `createdAt`, `updatedAt`) VALUES
+(1, 49, 'ELECTRODOS PRECORDIALES', 'C3215', 6, 0.00, '2025-06-22 01:04:02', '2025-06-22 01:04:02'),
+(2, 49, 'Cable ECG 5 vías HWA', 'cable ecg 5', 1, 0.00, '2025-06-22 01:04:02', '2025-06-22 01:04:02'),
+(4, 50, 'ELECTRODOS PRECORDIALES', 'C3215', 1, 0.00, '2025-06-24 04:42:27', '2025-06-24 04:42:27'),
+(5, 51, 'Cable AC norma Americana', 'Cable AC', 1, 0.00, '2025-06-24 21:06:31', '2025-06-24 21:06:31'),
+(6, 51, 'piernera', 'b-25-3', 1, 0.00, '2025-06-24 21:06:31', '2025-06-24 21:06:31');
+
+-- --------------------------------------------------------
 
 --
--- Indexes for dumped tables
+-- Estructura de tabla para la tabla `stoporder`
+--
+
+CREATE TABLE `stoporder` (
+  `id` int NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `punctuation` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `stoporder`
+--
+
+INSERT INTO `stoporder` (`id`, `description`, `punctuation`) VALUES
+(1, 'Gestión de compra', 0),
+(2, 'No hay presupuesto', 0),
+(3, 'Equipo obsoleto', 0),
+(4, 'Proveedor sin repuestos', 0),
+(5, 'Ninguna', 0),
+(6, 'Finalizada', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `stopreason`
+--
+
+CREATE TABLE `stopreason` (
+  `id_Reason` int NOT NULL,
+  `Description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `punctuation` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `stopreason`
+--
+
+INSERT INTO `stopreason` (`id_Reason`, `Description`, `punctuation`) VALUES
+(1, 'Mal uso', 0),
+(2, 'Falla equipo', 1),
+(3, 'Falta Consumible', 0),
+(4, 'Diagnostico', 0),
+(5, 'Preventivo', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tagnotifications`
+--
+
+CREATE TABLE `tagnotifications` (
+  `id_tagn` int NOT NULL,
+  `user` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `message` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `tagnotifications`
+--
+
+INSERT INTO `tagnotifications` (`id_tagn`, `user`, `message`, `createdAt`, `updatedAt`) VALUES
+(184, '1', '4', '2025-06-14 17:35:16', '2025-06-14 17:35:16'),
+(185, '1', '4', '2025-06-14 17:35:54', '2025-06-14 17:35:54'),
+(186, '1', '4', '2025-06-14 17:37:05', '2025-06-14 17:37:05'),
+(187, '1', '4', '2025-06-14 17:38:40', '2025-06-14 17:38:40'),
+(188, '1', '11', '2025-06-14 17:41:25', '2025-06-14 17:41:25'),
+(189, '1', '24', '2025-06-14 17:41:43', '2025-06-14 17:41:43'),
+(190, '1', '24', '2025-06-14 17:42:30', '2025-06-14 17:42:30'),
+(191, '1', '11', '2025-06-14 17:43:20', '2025-06-14 17:43:20'),
+(192, '1', '24', '2025-06-14 17:43:48', '2025-06-14 17:43:48'),
+(193, '1', '11', '2025-06-14 17:44:00', '2025-06-14 17:44:00'),
+(194, '1', '4', '2025-06-14 17:44:15', '2025-06-14 17:44:15'),
+(195, '1', '4', '2025-06-14 17:44:33', '2025-06-14 17:44:33'),
+(196, '1', '24', '2025-06-14 17:45:13', '2025-06-14 17:45:13'),
+(197, '1', '11', '2025-06-14 17:45:43', '2025-06-14 17:45:43'),
+(198, '1', '72', '2025-06-14 18:00:28', '2025-06-14 18:00:28'),
+(199, '1', '11', '2025-06-14 18:01:06', '2025-06-14 18:01:06'),
+(200, '1', '72', '2025-06-14 18:02:25', '2025-06-14 18:02:25'),
+(201, '1', '72', '2025-06-14 18:02:43', '2025-06-14 18:02:43'),
+(202, '1', '72', '2025-06-14 18:03:12', '2025-06-14 18:03:12'),
+(203, '1', '72', '2025-06-14 18:07:11', '2025-06-14 18:07:11'),
+(204, '1', '4', '2025-06-14 18:07:36', '2025-06-14 18:07:36'),
+(205, '1', '72', '2025-06-14 18:07:48', '2025-06-14 18:07:48'),
+(206, '1', '11', '2025-06-14 18:08:00', '2025-06-14 18:08:00'),
+(207, '1', '72', '2025-06-14 18:08:06', '2025-06-14 18:08:06'),
+(208, '1', '72', '2025-06-14 18:08:17', '2025-06-14 18:08:17'),
+(209, '1', '4', '2025-06-14 18:09:48', '2025-06-14 18:09:48'),
+(210, '1', '11', '2025-06-14 18:10:18', '2025-06-14 18:10:18'),
+(211, '1', '11', '2025-06-14 18:10:41', '2025-06-14 18:10:41'),
+(212, '1', '23', '2025-06-14 18:11:05', '2025-06-14 18:11:05'),
+(213, '1', '72', '2025-06-14 18:11:28', '2025-06-14 18:11:28'),
+(214, '1', '4', '2025-06-14 18:14:02', '2025-06-14 18:14:02'),
+(215, '1', '11', '2025-06-14 18:14:37', '2025-06-14 18:14:37'),
+(216, '1', '23', '2025-06-14 18:15:10', '2025-06-14 18:15:10'),
+(217, '1', '15', '2025-06-14 18:22:21', '2025-06-14 18:22:21'),
+(218, '1', '72', '2025-06-14 18:22:52', '2025-06-14 18:22:52'),
+(219, '1', '6', '2025-06-14 18:26:27', '2025-06-14 18:26:27'),
+(220, '1', '6', '2025-06-15 01:38:06', '2025-06-15 01:38:06'),
+(221, '1', '1', '2025-06-15 01:38:35', '2025-06-15 01:38:35'),
+(222, '1', '15', '2025-06-15 01:38:55', '2025-06-15 01:38:55'),
+(223, '1', '23', '2025-06-15 01:39:15', '2025-06-15 01:39:15'),
+(224, '1', '17', '2025-06-15 01:40:25', '2025-06-15 01:40:25'),
+(225, '1', '6', '2025-06-15 01:59:12', '2025-06-15 01:59:12'),
+(226, '1', '6', '2025-06-15 02:02:27', '2025-06-15 02:02:27'),
+(227, '1', '6', '2025-06-15 02:02:51', '2025-06-15 02:02:51'),
+(228, '1', '6', '2025-06-15 02:03:05', '2025-06-15 02:03:05'),
+(229, '1', '1', '2025-06-15 02:11:06', '2025-06-15 02:11:06'),
+(230, '1', '6', '2025-06-15 02:14:41', '2025-06-15 02:14:41'),
+(231, '1', '1', '2025-06-15 02:27:13', '2025-06-15 02:27:13'),
+(232, '1', '23', '2025-06-15 02:30:25', '2025-06-15 02:30:25'),
+(233, '1', '23', '2025-06-15 02:39:03', '2025-06-15 02:39:03'),
+(234, '1', '6', '2025-06-15 02:43:18', '2025-06-15 02:43:18'),
+(235, '1', '6', '2025-06-15 02:44:53', '2025-06-15 02:44:53'),
+(236, '1', '23', '2025-06-15 02:46:16', '2025-06-15 02:46:16'),
+(237, '1', '1', '2025-06-15 02:47:06', '2025-06-15 02:47:06'),
+(238, '1', '23', '2025-06-15 02:47:18', '2025-06-15 02:47:18'),
+(239, '1', '23', '2025-06-15 03:09:56', '2025-06-15 03:09:56'),
+(240, '1', '23', '2025-06-15 03:10:19', '2025-06-15 03:10:19'),
+(241, '1', '23', '2025-06-15 03:10:45', '2025-06-15 03:10:45'),
+(242, '1', '6', '2025-06-15 03:10:57', '2025-06-15 03:10:57'),
+(243, '1', '1', '2025-06-15 03:11:14', '2025-06-15 03:11:14'),
+(244, '1', '17', '2025-06-15 03:11:37', '2025-06-15 03:11:37'),
+(245, '1', '6', '2025-06-15 03:11:52', '2025-06-15 03:11:52'),
+(246, '1', '23', '2025-06-15 03:12:01', '2025-06-15 03:12:01'),
+(247, '1', '6', '2025-06-15 03:15:23', '2025-06-15 03:15:23'),
+(248, '1', '23', '2025-06-15 04:55:41', '2025-06-15 04:55:41'),
+(249, '1', '6', '2025-06-15 04:56:03', '2025-06-15 04:56:03'),
+(250, '1', '17', '2025-06-15 04:56:14', '2025-06-15 04:56:14'),
+(251, '1', '17', '2025-06-15 04:57:07', '2025-06-15 04:57:07'),
+(252, '1', '23', '2025-06-15 04:57:17', '2025-06-15 04:57:17'),
+(253, '1', '23', '2025-06-15 05:04:37', '2025-06-15 05:04:37'),
+(254, '1', '23', '2025-06-15 05:05:22', '2025-06-15 05:05:22'),
+(255, '1', '23', '2025-06-15 05:05:43', '2025-06-15 05:05:43'),
+(256, '1', '23', '2025-06-15 05:08:49', '2025-06-15 05:08:49'),
+(257, '1', '17', '2025-06-15 05:08:59', '2025-06-15 05:08:59'),
+(258, '1', '6', '2025-06-15 07:39:50', '2025-06-15 07:39:50'),
+(259, '1', '6', '2025-06-15 07:40:09', '2025-06-15 07:40:09'),
+(260, '1', '6', '2025-06-15 07:40:39', '2025-06-15 07:40:39'),
+(261, '1', '6', '2025-06-15 07:41:02', '2025-06-15 07:41:02'),
+(262, '1', '6', '2025-06-15 07:41:16', '2025-06-15 07:41:16'),
+(263, '1', '1', '2025-06-15 07:41:29', '2025-06-15 07:41:29'),
+(264, '1', '1', '2025-06-15 08:10:58', '2025-06-15 08:10:58'),
+(265, '1', '23', '2025-06-15 08:12:39', '2025-06-15 08:12:39'),
+(266, '1', '6', '2025-06-17 20:56:37', '2025-06-17 20:56:37'),
+(267, '1', '6', '2025-06-17 21:04:33', '2025-06-17 21:04:33'),
+(268, '1', '6', '2025-06-17 21:04:55', '2025-06-17 21:04:55'),
+(269, '1', '1', '2025-06-18 22:04:14', '2025-06-18 22:04:14'),
+(270, '1', '6', '2025-06-18 22:04:27', '2025-06-18 22:04:27'),
+(271, '1', '23', '2025-06-18 22:04:35', '2025-06-18 22:04:35'),
+(272, '1', '72', '2025-06-18 22:04:54', '2025-06-18 22:04:54'),
+(273, '1', '1', '2025-06-18 22:05:35', '2025-06-18 22:05:35'),
+(274, '1', '1', '2025-06-18 23:57:08', '2025-06-18 23:57:08'),
+(275, '1', '1', '2025-06-19 00:00:02', '2025-06-19 00:00:02'),
+(276, '1', '23', '2025-06-24 04:57:26', '2025-06-24 04:57:26'),
+(277, '1', '23', '2025-06-24 04:57:39', '2025-06-24 04:57:39'),
+(278, '1', '23', '2025-06-24 04:57:56', '2025-06-24 04:57:56'),
+(279, '1', '72', '2025-06-24 04:58:21', '2025-06-24 04:58:21'),
+(280, '1', '72', '2025-06-24 04:59:26', '2025-06-24 04:59:26'),
+(281, '1', '1', '2025-06-24 04:59:44', '2025-06-24 04:59:44'),
+(282, '1', '1', '2025-06-24 05:00:07', '2025-06-24 05:00:07'),
+(283, '1', '1', '2025-06-24 05:01:08', '2025-06-24 05:01:08'),
+(284, '1', '1', '2025-06-24 05:04:30', '2025-06-24 05:04:30'),
+(285, '1', '1', '2025-06-24 05:28:31', '2025-06-24 05:28:31'),
+(286, '1', '1', '2025-06-24 05:32:40', '2025-06-24 05:32:40'),
+(287, '1', '1', '2025-06-24 05:33:18', '2025-06-24 05:33:18'),
+(288, '1', '1', '2025-06-24 05:33:30', '2025-06-24 05:33:30'),
+(289, '1', '1', '2025-06-24 05:35:24', '2025-06-24 05:35:24'),
+(290, '1', '1', '2025-06-24 05:36:19', '2025-06-24 05:36:19'),
+(291, '1', '1', '2025-06-24 05:45:28', '2025-06-24 05:45:28'),
+(292, '1', '72', '2025-06-24 05:45:56', '2025-06-24 05:45:56'),
+(293, '1', '1', '2025-06-24 05:46:17', '2025-06-24 05:46:17'),
+(294, '1', '38', '2025-06-24 21:12:53', '2025-06-24 21:12:53'),
+(295, '1', '38', '2025-06-24 21:15:15', '2025-06-24 21:15:15');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `workorders`
+--
+
+CREATE TABLE `workorders` (
+  `Code` int NOT NULL,
+  `StartDate` text COLLATE utf8mb4_general_ci NOT NULL,
+  `EndDate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Cost` decimal(15,2) DEFAULT NULL,
+  `Priority` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `createdAt` datetime NOT NULL,
+  `updatedAt` datetime NOT NULL,
+  `ClinicalEnginnerDSSN` bigint DEFAULT NULL,
+  `EquipmentCode` int DEFAULT NULL,
+  `Solution` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `Workdate` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `id_typeW` int DEFAULT NULL,
+  `id_StopReason` int DEFAULT NULL,
+  `id_RepairStage` int DEFAULT NULL,
+  `id_stopOrder` int DEFAULT NULL,
+  `SolicitanteID` bigint DEFAULT NULL,
+  `SolicitanteRole` enum('MedicalStaff','ClinicalEngineer','Other') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `FirmaSolicitante` text COLLATE utf8mb4_general_ci,
+  `id_Department` int DEFAULT NULL,
+  `id_AgentSupplier` int DEFAULT NULL,
+  `NombreTecnicoProveedor` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `FirmaProveedor` text COLLATE utf8mb4_general_ci,
+  `NotasSalida` text COLLATE utf8mb4_general_ci,
+  `FechaSalida` datetime DEFAULT NULL,
+  `FechaEntrada` datetime DEFAULT NULL,
+  `TecnicoEntrega` bigint DEFAULT NULL,
+  `FirmaTecnicoEntrega` text COLLATE utf8mb4_general_ci,
+  `FechaEntregaArea` datetime DEFAULT NULL,
+  `firma_personal` text COLLATE utf8mb4_general_ci,
+  `observaciones_entrega` text COLLATE utf8mb4_general_ci,
+  `costo_mano_obra` decimal(10,2) DEFAULT NULL,
+  `totalCost` decimal(15,2) DEFAULT NULL,
+  `date_work_end` datetime DEFAULT NULL,
+  `FirmaTecnicoReparacion` text COLLATE utf8mb4_general_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `workorders`
+--
+
+INSERT INTO `workorders` (`Code`, `StartDate`, `EndDate`, `Description`, `Cost`, `Priority`, `createdAt`, `updatedAt`, `ClinicalEnginnerDSSN`, `EquipmentCode`, `Solution`, `Workdate`, `id_typeW`, `id_StopReason`, `id_RepairStage`, `id_stopOrder`, `SolicitanteID`, `SolicitanteRole`, `FirmaSolicitante`, `id_Department`, `id_AgentSupplier`, `NombreTecnicoProveedor`, `FirmaProveedor`, `NotasSalida`, `FechaSalida`, `FechaEntrada`, `TecnicoEntrega`, `FirmaTecnicoEntrega`, `FechaEntregaArea`, `firma_personal`, `observaciones_entrega`, `costo_mano_obra`, `totalCost`, `date_work_end`, `FirmaTecnicoReparacion`) VALUES
+(15, '2025-06-03T14:02', '2025-06-04T14:02', 'ruptura de sensor de capnografia', 626.80, 'High', '2025-06-04 07:42:28', '2025-06-05 14:28:03', 6458161, 41, 'se compró un sensor nuevo', '2025-06-04', 5, 4, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(16, '2025-06-09T14:02', '2025-06-10T14:02', 'Falla de pantalla', 0.00, 'Medium', '2025-06-10 03:22:54', '2025-06-13 07:10:42', 6458161, 3, 'Se cambio la pantalla por el proveedor', '2025-06-09T17:09', 1, 2, 8, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(17, '2025-06-09T14:02', '2025-06-12T02:00', 'PRUEBA', 0.00, 'Low', '2025-06-11 04:01:00', '2025-06-11 04:02:06', 6458161, 1, 'si, se cambio...', '2025-06-09T15:04', 1, 2, 8, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(18, '2025-06-09T08:30', '2025-06-09T14:30', 'ESTUDIO DE CABEZA SE DETIENE', 0.00, 'High', '2025-06-12 19:47:59', '2025-06-12 19:49:09', 6458161, 72, 'CAMBIO DE TRANSCEIVERS EN ICE JO2 Y DPP1 J9', '2025-06-09T08:30', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(19, '2025-04-21T08:30', '2025-04-21T17:00', 'EQUIPO NO FUNCIONA', 0.00, 'High', '2025-06-12 19:54:37', '2025-06-12 19:54:37', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(20, '2025-04-14T08:30', '2025-04-14T16:30', 'SCAN STOPPED DUE TO ERROR RECEIVER', 0.00, 'High', '2025-06-12 19:57:25', '2025-06-12 19:57:25', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(21, '2025-04-18T12:30', '2025-04-18T16:30', 'TRACKBALL 1 Y 2 NO FUNCIONAN', 0.00, 'High', '2025-06-12 20:01:50', '2025-06-12 20:01:50', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(22, '2025-03-06T08:30', '2025-03-06T09:00', 'CONFIGURACION DE WORKLIST', 0.00, 'Medium', '2025-06-12 20:03:34', '2025-06-12 20:03:34', 6458161, 72, '', '', 2, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(23, '2024-12-19T14:00', '2024-12-19T16:00', 'SIN MOVIMIENTO DE PUNTERO', 0.00, 'High', '2025-06-12 20:13:22', '2025-06-12 20:13:22', 6458161, 72, '', '', 1, 2, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(24, '2024-12-24T11:00', '2024-12-24T12:00', 'BAJO CAUDAL DE COMPRESOR', 0.00, 'Medium', '2025-06-12 20:14:09', '2025-06-12 20:14:09', 6458161, 72, '', '', 2, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(25, '2024-11-05T15:30', '2024-11-05T17:30', 'POSICION DE HOME DE MESA CON DESFASE', 0.00, 'Medium', '2025-06-12 20:14:52', '2025-06-12 20:14:52', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(26, '2024-10-04T15:30', '2024-10-04T16:30', 'NO SE PUEDE CORRER LA CALIBRACION CUSHIN', 0.00, 'Medium', '2025-06-12 20:16:35', '2025-06-12 20:16:35', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(27, '2025-09-30T16:00', '2025-09-30T17:00', 'CONFIGURACION DE WORKLIST', 0.00, 'Low', '2025-06-12 20:20:05', '2025-06-12 20:20:05', 6458161, 72, '', '', 6, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(28, '2024-12-10T08:30', '2024-12-10T09:00', 'GANTRY NO ENCIENDE', 0.00, 'High', '2025-06-12 20:23:08', '2025-06-12 20:23:08', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(29, '2024-06-22T09:30', '2024-06-22T13:45', 'MENSAJE FALTA DE ESPACIO EN APPLICATION SYSTEM DISK', 0.00, 'High', '2025-06-12 20:24:32', '2025-06-12 20:24:32', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(30, '2024-07-26T14:00', '2024-07-26T18:15', 'DIAGNOSTICO', 0.00, 'Medium', '2025-06-12 20:25:57', '2025-06-12 20:25:57', 6458161, 72, '', '', 7, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(31, '2024-08-15T17:00', '2024-08-15T18:00', 'CONFIGURACION', 0.00, 'Low', '2025-06-12 20:27:15', '2025-06-12 20:27:15', 6458161, 72, '', '', 6, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(32, '2024-08-02T15:00', '2024-08-02T17:30', 'DIAGNOSTICO', 0.00, 'Low', '2025-06-12 20:27:57', '2025-06-12 20:27:57', 6458161, 72, '', '', 7, 4, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(33, '2024-05-16T08:45', '2024-05-16T09:45', 'CAUDAL DE AGUA AL LIMITE', 0.00, 'Medium', '2025-06-12 20:29:10', '2025-06-12 20:29:10', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(34, '2025-04-24T16:00', '2025-04-24T18:00', 'FALLO MAGNET MONITOR', 0.00, 'High', '2025-06-12 20:29:51', '2025-06-12 20:29:51', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(35, '2024-04-10T15:30', '2024-04-10T16:30', 'BOBINA DE HOMBRO CON VALORES INCORRECTOS', 0.00, 'Medium', '2025-06-12 20:32:53', '2025-06-12 20:32:53', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(36, '2024-04-09T08:30', '2024-04-09T09:00', 'MAGNET MONITOR NO ENCIENDE', 0.00, 'High', '2025-06-12 20:33:29', '2025-06-12 20:33:29', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(37, '2024-03-05T09:03', '2024-03-05T12:05', 'NO HAY RAYOS X', 0.00, 'Medium', '2025-06-12 20:34:30', '2025-06-12 20:34:30', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(38, '2024-02-29T13:00', '2024-02-29T14:00', 'MCQA PRESENTA FALLO CANAL 4', 0.00, 'High', '2025-06-12 20:35:18', '2025-06-12 20:35:18', 6458161, 72, '', '', 1, 2, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(44, '2025-06-13T03:43', '2025-06-13T03:43', 'Telegram 3', 0.00, 'Low', '2025-06-13 07:43:30', '2025-06-13 07:43:30', 24697, 8, '', '', 1, 2, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(45, '2025-06-13T03:55', '2025-06-13T03:56', 'PRUEBA DE GRUPO', 0.00, 'Low', '2025-06-13 07:55:19', '2025-06-13 07:55:19', 6458161, 10, '', '', 1, 2, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(46, '2025-06-13T14:52', '2025-06-13T14:52', 'Tele medical', 0.00, 'Low', '2025-06-13 18:52:38', '2025-06-13 18:52:38', 454567, 23, '', '', 7, 2, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(47, '2025-06-16T15:45', '2025-06-17T15:45', 'PARA REVISION', 0.00, 'Low', '2025-06-16 19:46:20', '2025-06-16 19:46:20', 6458161, 42, '', '', 7, 4, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(48, '2025-06-17T16:57', '2025-06-18T22:57', 'PRUEBA', 0.00, 'Medium', '2025-06-17 20:59:03', '2025-06-17 20:59:03', 6458161, 6, '', '', 1, 1, 1, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(49, '2025-06-18T19:57', '2025-06-19T19:57', 'prueba pre defensa', 50.00, 'Medium', '2025-06-18 23:57:32', '2025-06-22 01:09:48', 6458161, 1, 'sss', '2025-06-18T21:09', 7, 2, 6, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '/signatures/firma_reparacion_49_1750554588933.png'),
+(50, '2025-06-24T00:39', '2025-06-24T00:39', 'PRUEBA DE ERRROR DEL EQUIPO, SOLO ES UNA PRUEBA', 500.00, 'Medium', '2025-06-24 04:39:39', '2025-06-24 04:42:27', 6458161, 1, 'se repara el equipo', '2025-06-24T00:41', 1, 2, 6, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '/signatures/firma_reparacion_50_1750740147923.png'),
+(51, '2025-06-24T17:04', '2025-06-24T17:04', 'PRUEBA', 600.00, 'Medium', '2025-06-24 21:04:57', '2025-06-24 21:06:31', 6458161, 1, 'ok', '2025-06-24T17:06', 7, 2, 6, 6, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '/signatures/firma_reparacion_51_1750799191788.png');
+
+--
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `agentsuppliers`
+-- Indices de la tabla `acquisitiontype`
+--
+ALTER TABLE `acquisitiontype`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `agentsuppliers`
 --
 ALTER TABLE `agentsuppliers`
   ADD PRIMARY KEY (`Id`);
 
 --
--- Indexes for table `breakdowns`
+-- Indices de la tabla `brand`
+--
+ALTER TABLE `brand`
+  ADD PRIMARY KEY (`id_brand`);
+
+--
+-- Indices de la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `EquipmentCode` (`EquipmentCode`);
 
 --
--- Indexes for table `clinicalenginners`
+-- Indices de la tabla `categories`
 --
-ALTER TABLE `clinicalenginners`
-  ADD PRIMARY KEY (`DSSN`),
-  ADD KEY `DepartmentCode` (`DepartmentCode`);
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`IdCat`);
 
 --
--- Indexes for table `departments`
+-- Indices de la tabla `clinicalenginners`
+--
+ALTER TABLE `clinicalenginners`
+  ADD PRIMARY KEY (`DSSN`);
+
+--
+-- Indices de la tabla `departments`
 --
 ALTER TABLE `departments`
   ADD PRIMARY KEY (`Code`),
@@ -611,7 +1447,13 @@ ALTER TABLE `departments`
   ADD UNIQUE KEY `Name` (`Name`);
 
 --
--- Indexes for table `dialyinspections`
+-- Indices de la tabla `departureorder`
+--
+ALTER TABLE `departureorder`
+  ADD PRIMARY KEY (`id_departure`);
+
+--
+-- Indices de la tabla `dialyinspections`
 --
 ALTER TABLE `dialyinspections`
   ADD PRIMARY KEY (`Code`),
@@ -619,15 +1461,47 @@ ALTER TABLE `dialyinspections`
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`);
 
 --
--- Indexes for table `equipment`
+-- Indices de la tabla `entryorder`
+--
+ALTER TABLE `entryorder`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `equipment`
 --
 ALTER TABLE `equipment`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `AgentSupplierId` (`AgentSupplierId`),
-  ADD KEY `DepartmentCode` (`DepartmentCode`);
+  ADD KEY `DepartmentCode` (`DepartmentCode`),
+  ADD KEY `fk_equipment_acquisitiontype` (`AcquisitionTypeID`),
+  ADD KEY `fk_equipment_reception_status` (`ReceptionStatusId`),
+  ADD KEY `fk_equipment_nameequipment` (`NameEquipmentId`),
+  ADD KEY `fk_equipment_model` (`ModelId`);
 
 --
--- Indexes for table `maintenances`
+-- Indices de la tabla `equipmentspareparts`
+--
+ALTER TABLE `equipmentspareparts`
+  ADD PRIMARY KEY (`id_equipment`,`id_sparepart`),
+  ADD KEY `equipmentspareparts_ibfk_2` (`id_sparepart`);
+
+--
+-- Indices de la tabla `equipment_brand_model`
+--
+ALTER TABLE `equipment_brand_model`
+  ADD PRIMARY KEY (`id_equipment`,`id_brand`,`id_model`),
+  ADD KEY `id_brand` (`id_brand`),
+  ADD KEY `id_model` (`id_model`);
+
+--
+-- Indices de la tabla `insuranceequipment`
+--
+ALTER TABLE `insuranceequipment`
+  ADD PRIMARY KEY (`id_Insurance`),
+  ADD KEY `id_equipment` (`id_equipment`);
+
+--
+-- Indices de la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
   ADD PRIMARY KEY (`Id`),
@@ -635,14 +1509,39 @@ ALTER TABLE `maintenances`
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`);
 
 --
--- Indexes for table `ppmquestions`
+-- Indices de la tabla `medicalstaffs`
+--
+ALTER TABLE `medicalstaffs`
+  ADD PRIMARY KEY (`DSSN`);
+
+--
+-- Indices de la tabla `models`
+--
+ALTER TABLE `models`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_brand` (`id_brand`);
+
+--
+-- Indices de la tabla `nameequipment`
+--
+ALTER TABLE `nameequipment`
+  ADD PRIMARY KEY (`id_nameE`);
+
+--
+-- Indices de la tabla `ordertype`
+--
+ALTER TABLE `ordertype`
+  ADD PRIMARY KEY (`id_typeW`);
+
+--
+-- Indices de la tabla `ppmquestions`
 --
 ALTER TABLE `ppmquestions`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `EquipmentCode` (`EquipmentCode`);
 
 --
--- Indexes for table `ppms`
+-- Indices de la tabla `ppms`
 --
 ALTER TABLE `ppms`
   ADD PRIMARY KEY (`Code`),
@@ -650,128 +1549,320 @@ ALTER TABLE `ppms`
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`);
 
 --
--- Indexes for table `spareparts`
+-- Indices de la tabla `preventivetasks`
 --
-ALTER TABLE `spareparts`
-  ADD PRIMARY KEY (`Code`),
-  ADD KEY `AgentSupplierId` (`AgentSupplierId`),
+ALTER TABLE `preventivetasks`
+  ADD PRIMARY KEY (`id`),
   ADD KEY `EquipmentCode` (`EquipmentCode`);
 
 --
--- Indexes for table `workorders`
+-- Indices de la tabla `receptionstatus`
+--
+ALTER TABLE `receptionstatus`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indices de la tabla `repairstage`
+--
+ALTER TABLE `repairstage`
+  ADD PRIMARY KEY (`id_Stage`);
+
+--
+-- Indices de la tabla `spareparts`
+--
+ALTER TABLE `spareparts`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `AgentSupplierId` (`AgentSupplierId`),
+  ADD KEY `fk_category` (`CategoryId`),
+  ADD KEY `fk_spareparts_brand` (`id_brand`);
+
+--
+-- Indices de la tabla `sparepartswos`
+--
+ALTER TABLE `sparepartswos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `stoporder`
+--
+ALTER TABLE `stoporder`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `stopreason`
+--
+ALTER TABLE `stopreason`
+  ADD PRIMARY KEY (`id_Reason`);
+
+--
+-- Indices de la tabla `tagnotifications`
+--
+ALTER TABLE `tagnotifications`
+  ADD PRIMARY KEY (`id_tagn`);
+
+--
+-- Indices de la tabla `workorders`
 --
 ALTER TABLE `workorders`
   ADD PRIMARY KEY (`Code`),
   ADD KEY `ClinicalEnginnerDSSN` (`ClinicalEnginnerDSSN`),
-  ADD KEY `EquipmentCode` (`EquipmentCode`);
+  ADD KEY `EquipmentCode` (`EquipmentCode`),
+  ADD KEY `fk_workorders_ordertype` (`id_typeW`),
+  ADD KEY `fk_workorders_stopreason` (`id_StopReason`),
+  ADD KEY `fk_workorders_repairstage` (`id_RepairStage`),
+  ADD KEY `fk_workorders_stopOrder` (`id_stopOrder`),
+  ADD KEY `fk_workorders_agentsupplier` (`id_AgentSupplier`),
+  ADD KEY `fk_workorders_department` (`id_Department`),
+  ADD KEY `fk_workorders_tecnicoentrega` (`TecnicoEntrega`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `agentsuppliers`
+-- AUTO_INCREMENT de la tabla `acquisitiontype`
+--
+ALTER TABLE `acquisitiontype`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `agentsuppliers`
 --
 ALTER TABLE `agentsuppliers`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11131;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11133;
 
 --
--- AUTO_INCREMENT for table `breakdowns`
+-- AUTO_INCREMENT de la tabla `brand`
+--
+ALTER TABLE `brand`
+  MODIFY `id_brand` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=137;
+
+--
+-- AUTO_INCREMENT de la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
--- AUTO_INCREMENT for table `dialyinspections`
+-- AUTO_INCREMENT de la tabla `categories`
+--
+ALTER TABLE `categories`
+  MODIFY `IdCat` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `departureorder`
+--
+ALTER TABLE `departureorder`
+  MODIFY `id_departure` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `dialyinspections`
 --
 ALTER TABLE `dialyinspections`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `maintenances`
+-- AUTO_INCREMENT de la tabla `entryorder`
+--
+ALTER TABLE `entryorder`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `insuranceequipment`
+--
+ALTER TABLE `insuranceequipment`
+  MODIFY `id_Insurance` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT for table `ppmquestions`
+-- AUTO_INCREMENT de la tabla `models`
+--
+ALTER TABLE `models`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+
+--
+-- AUTO_INCREMENT de la tabla `nameequipment`
+--
+ALTER TABLE `nameequipment`
+  MODIFY `id_nameE` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240;
+
+--
+-- AUTO_INCREMENT de la tabla `ordertype`
+--
+ALTER TABLE `ordertype`
+  MODIFY `id_typeW` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `ppmquestions`
 --
 ALTER TABLE `ppmquestions`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
--- AUTO_INCREMENT for table `ppms`
+-- AUTO_INCREMENT de la tabla `ppms`
 --
 ALTER TABLE `ppms`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT for table `workorders`
+-- AUTO_INCREMENT de la tabla `preventivetasks`
+--
+ALTER TABLE `preventivetasks`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=388;
+
+--
+-- AUTO_INCREMENT de la tabla `receptionstatus`
+--
+ALTER TABLE `receptionstatus`
+  MODIFY `ID` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `repairstage`
+--
+ALTER TABLE `repairstage`
+  MODIFY `id_Stage` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `spareparts`
+--
+ALTER TABLE `spareparts`
+  MODIFY `Id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=991415572;
+
+--
+-- AUTO_INCREMENT de la tabla `sparepartswos`
+--
+ALTER TABLE `sparepartswos`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `stoporder`
+--
+ALTER TABLE `stoporder`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `stopreason`
+--
+ALTER TABLE `stopreason`
+  MODIFY `id_Reason` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `tagnotifications`
+--
+ALTER TABLE `tagnotifications`
+  MODIFY `id_tagn` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=296;
+
+--
+-- AUTO_INCREMENT de la tabla `workorders`
 --
 ALTER TABLE `workorders`
-  MODIFY `Code` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `Code` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `breakdowns`
+-- Filtros para la tabla `breakdowns`
 --
 ALTER TABLE `breakdowns`
   ADD CONSTRAINT `breakdowns_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `clinicalenginners`
---
-ALTER TABLE `clinicalenginners`
-  ADD CONSTRAINT `clinicalenginners_ibfk_1` FOREIGN KEY (`DepartmentCode`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `dialyinspections`
+-- Filtros para la tabla `dialyinspections`
 --
 ALTER TABLE `dialyinspections`
   ADD CONSTRAINT `dialyinspections_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `dialyinspections_ibfk_2` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `equipment`
+-- Filtros para la tabla `equipment`
 --
 ALTER TABLE `equipment`
   ADD CONSTRAINT `equipment_ibfk_1` FOREIGN KEY (`AgentSupplierId`) REFERENCES `agentsuppliers` (`Id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `equipment_ibfk_2` FOREIGN KEY (`DepartmentCode`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `equipment_ibfk_2` FOREIGN KEY (`DepartmentCode`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_equipment_acquisitiontype` FOREIGN KEY (`AcquisitionTypeID`) REFERENCES `acquisitiontype` (`ID`),
+  ADD CONSTRAINT `fk_equipment_model` FOREIGN KEY (`ModelId`) REFERENCES `models` (`id`),
+  ADD CONSTRAINT `fk_equipment_nameequipment` FOREIGN KEY (`NameEquipmentId`) REFERENCES `nameequipment` (`id_nameE`),
+  ADD CONSTRAINT `fk_equipment_reception_status` FOREIGN KEY (`ReceptionStatusId`) REFERENCES `receptionstatus` (`ID`);
 
 --
--- Constraints for table `maintenances`
+-- Filtros para la tabla `equipmentspareparts`
+--
+ALTER TABLE `equipmentspareparts`
+  ADD CONSTRAINT `equipmentspareparts_ibfk_1` FOREIGN KEY (`id_equipment`) REFERENCES `equipment` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `equipmentspareparts_ibfk_2` FOREIGN KEY (`id_sparepart`) REFERENCES `spareparts` (`Id`);
+
+--
+-- Filtros para la tabla `equipment_brand_model`
+--
+ALTER TABLE `equipment_brand_model`
+  ADD CONSTRAINT `equipment_brand_model_ibfk_1` FOREIGN KEY (`id_equipment`) REFERENCES `nameequipment` (`id_nameE`),
+  ADD CONSTRAINT `equipment_brand_model_ibfk_2` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id_brand`),
+  ADD CONSTRAINT `equipment_brand_model_ibfk_3` FOREIGN KEY (`id_model`) REFERENCES `models` (`id`);
+
+--
+-- Filtros para la tabla `insuranceequipment`
+--
+ALTER TABLE `insuranceequipment`
+  ADD CONSTRAINT `insuranceequipment_ibfk_1` FOREIGN KEY (`id_equipment`) REFERENCES `equipment` (`Code`);
+
+--
+-- Filtros para la tabla `maintenances`
 --
 ALTER TABLE `maintenances`
   ADD CONSTRAINT `maintenances_ibfk_1` FOREIGN KEY (`BreakDownCode`) REFERENCES `breakdowns` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `maintenances_ibfk_2` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `ppmquestions`
+-- Filtros para la tabla `models`
+--
+ALTER TABLE `models`
+  ADD CONSTRAINT `models_ibfk_1` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id_brand`);
+
+--
+-- Filtros para la tabla `ppmquestions`
 --
 ALTER TABLE `ppmquestions`
   ADD CONSTRAINT `ppmquestions_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `ppms`
+-- Filtros para la tabla `ppms`
 --
 ALTER TABLE `ppms`
   ADD CONSTRAINT `ppms_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `ppms_ibfk_2` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Constraints for table `spareparts`
+-- Filtros para la tabla `preventivetasks`
 --
-ALTER TABLE `spareparts`
-  ADD CONSTRAINT `spareparts_ibfk_1` FOREIGN KEY (`AgentSupplierId`) REFERENCES `agentsuppliers` (`Id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `spareparts_ibfk_2` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `preventivetasks`
+  ADD CONSTRAINT `preventivetasks_ibfk_1` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`);
 
 --
--- Constraints for table `workorders`
+-- Filtros para la tabla `spareparts`
+--
+ALTER TABLE `spareparts`
+  ADD CONSTRAINT `fk_category` FOREIGN KEY (`CategoryId`) REFERENCES `categories` (`IdCat`),
+  ADD CONSTRAINT `fk_spareparts_brand` FOREIGN KEY (`id_brand`) REFERENCES `brand` (`id_brand`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  ADD CONSTRAINT `spareparts_ibfk_1` FOREIGN KEY (`AgentSupplierId`) REFERENCES `agentsuppliers` (`Id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Filtros para la tabla `workorders`
 --
 ALTER TABLE `workorders`
+  ADD CONSTRAINT `fk_workorders_agentsupplier` FOREIGN KEY (`id_AgentSupplier`) REFERENCES `agentsuppliers` (`Id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_workorders_department` FOREIGN KEY (`id_Department`) REFERENCES `departments` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_workorders_ordertype` FOREIGN KEY (`id_typeW`) REFERENCES `ordertype` (`id_typeW`),
+  ADD CONSTRAINT `fk_workorders_repairstage` FOREIGN KEY (`id_RepairStage`) REFERENCES `repairstage` (`id_Stage`),
+  ADD CONSTRAINT `fk_workorders_stopOrder` FOREIGN KEY (`id_stopOrder`) REFERENCES `stoporder` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_workorders_stopreason` FOREIGN KEY (`id_StopReason`) REFERENCES `stopreason` (`id_Reason`),
+  ADD CONSTRAINT `fk_workorders_tecnicoentrega` FOREIGN KEY (`TecnicoEntrega`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `workorders_ibfk_1` FOREIGN KEY (`ClinicalEnginnerDSSN`) REFERENCES `clinicalenginners` (`DSSN`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `workorders_ibfk_2` FOREIGN KEY (`EquipmentCode`) REFERENCES `equipment` (`Code`) ON DELETE SET NULL ON UPDATE CASCADE;
 COMMIT;
